@@ -26,7 +26,7 @@ jobs:
     - name: Archive native build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: nqc-${{ matrix.os }}-native
+        name: nqc-native-${{ matrix.os }}
         path: build/bin/
     - name: Archive WebAssembly build artifacts
       uses: actions/upload-artifact@v4

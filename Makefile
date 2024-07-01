@@ -94,7 +94,7 @@ ifneq (,$(strip $(findstring $(TARGETTYPE), WebAssembly)))
 	CXX = emcc
 	OBJ_SUBDIR_NAME = wobj
 	EXEC_SUBDIR_NAME = wasm
-	EXEC_EXT = .html
+	EXEC_EXT = .{html,js}
 	
 	# Documentation for various Emscripten flags
 	# - Full List:    https://github.com/emscripten-core/emscripten/blob/main/src/settings.js
