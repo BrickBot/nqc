@@ -72,7 +72,9 @@ FILE *gErrorStream = stderr;
 #define kMaxPrintedErrors   10
 
 
-#ifndef __wasm__
+// "__EMSCRIPTEN__" is defined automatically when Emscripten is used
+// https://emscripten.org/docs/compiling/Building-Projects.html?highlight=SINGLE_FILE#detecting-emscripten-in-preprocessor
+#ifndef __EMSCRIPTEN__
 class AutoLink : public RCX_Link
 {
 public:
@@ -130,7 +132,7 @@ enum {
     kHelpCode = kFirstActionCode,
     kApiCode,
     kCompileStdinCode,
-#ifndef __wasm__
+#ifndef __EMSCRIPTEN__
     kDatalogCode,
     kDatalogFullCode,
     kClearMemoryCode,
@@ -157,7 +159,7 @@ static const char *sActionNames[] = {
     "help",
     "api",
     "",
-#ifndef __wasm__
+#ifndef __EMSCRIPTEN__
     "datalog",
     "datalog_full",
     "clear",
@@ -224,7 +226,7 @@ static void PrintApi(bool compatMode);
 static bool SameString(const char *s1, const char *s2);
 static void PrintVersion();
 
-#ifndef __wasm__
+#ifndef __EMSCRIPTEN__
 static RCX_Result Download(RCX_Image *image);
 static RCX_Result UploadDatalog(bool verbose);
 static RCX_Result DownloadFirmware(const char *filename, bool fast);
@@ -258,7 +260,7 @@ int main(int argc, char **argv)
     result = ProcessCommandLine(argc, argv);
     PrintError(result);
 
-#ifndef __wasm__
+#ifndef __EMSCRIPTEN__
     gLink.Close();
 #endif
 
@@ -389,7 +391,7 @@ RCX_Result ProcessCommandLine(int argc, char ** argv)
                 case '1':
                     req.fFlags |= Compiler::kCompat_Flag;
                     break;
-#ifndef __wasm__                    
+#ifndef __EMSCRIPTEN__                    
                 case 'b':
                     req.fBinary = true;
                     break;
@@ -607,7 +609,7 @@ RCX_Result ProcessFile(const char *sourceFile, const Request &req)
 
 
 // The option to provide a file that is not to be compiled is not supported in WebAssembly
-#ifndef __wasm__
+#ifndef __EMSCRIPTEN__
     if (req.fDownload) {
     	// The supplied input file was specified to not be compiled
         result = Download(image);
@@ -700,7 +702,7 @@ RCX_Image *Compile(const char *sourceFile, int flags)
 }
 
 // There is no communication with the brick from WebAssembly
-#ifndef __wasm__
+#ifndef __EMSCRIPTEN__
 
 /**
  * Set the clock/watch on the target
@@ -1086,7 +1088,7 @@ void PrintError(RCX_Result error, const char *filename)
             fprintf(STDERR, "Problem talking to IR device\n");
             break;
         case kRCX_ReplyError:
-#ifndef __wasm__
+#ifndef __EMSCRIPTEN__
             if (gLink.WasErrorFromMissingFirmware()) {
                 fprintf(STDERR, "No firmware installed on %s\n", targetName);
             }
@@ -1186,7 +1188,7 @@ void PrintUsage()
     fprintf(stdout,"   -q: quiet; suppress action sounds\n");
     fprintf(stdout,"   -O<outfile>: specify output file\n");
     fprintf(stdout,"   -1: use NQC API 1.x compatibility mode\n");
-#ifndef __wasm__
+#ifndef __EMSCRIPTEN__
     fprintf(stdout,"   -b: treat input file as a binary file (don't compile it)\n");
     fprintf(stdout,"Communication Options:\n");
     fprintf(stdout,"   -d: send program to \%s\n", targetName);
@@ -1213,7 +1215,7 @@ void PrintUsage()
 }
 
 // No AutoLink instance in WebAssembly
-#ifndef __wasm__
+#ifndef __EMSCRIPTEN__
 RCX_Result AutoLink::Open()
 {
     RCX_Result result;
