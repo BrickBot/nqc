@@ -96,10 +96,9 @@ ifneq (,$(strip $(findstring $(TARGETTYPE), WebAssembly)))
 	EXEC_SUBDIR_NAME = wasm
 	EXEC_EXT = .html
 
-	# Emscripten optimization documentation
+	# Emscripten optimization flags documentation
 	# - https://emscripten.org/docs/optimizing/Optimizing-Code.html#optimizing-code
 	# - https://emscripten.org/docs/tools_reference/emcc.html#emcc-compiler-optimization-options
-	CFLAGS += -Os
 	
 	# Documentation for various Emscripten flags
 	# - Full List:    https://github.com/emscripten-core/emscripten/blob/main/src/settings.js
