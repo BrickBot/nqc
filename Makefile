@@ -99,7 +99,7 @@ ifneq (,$(strip $(findstring $(TARGETTYPE), WebAssembly)))
 	# Emscripten optimization documentation
 	# - https://emscripten.org/docs/optimizing/Optimizing-Code.html#optimizing-code
 	# - https://emscripten.org/docs/tools_reference/emcc.html#emcc-compiler-optimization-options
-  	CFLAGS += -O2
+	CFLAGS += -Os
 	
 	# Documentation for various Emscripten flags
 	# - Full List:    https://github.com/emscripten-core/emscripten/blob/main/src/settings.js
@@ -112,9 +112,9 @@ else
 ifneq (,$(strip $(findstring $(OSTYPE), Darwin)))
 	# Mac OS X
 	LIBS += -framework IOKit -framework CoreFoundation
-  	USBOBJ = RCX_USBTowerPipe_osx
-  	CXX = c++
-  	CFLAGS += -O3 -std=c++11 -Wno-deprecated-register
+	USBOBJ = RCX_USBTowerPipe_osx
+	CXX = c++
+	CFLAGS += -O3 -std=c++11 -Wno-deprecated-register
 else
 ifneq (,$(strip $(findstring $(OSTYPE), Linux)))
 	# Linux
@@ -126,22 +126,22 @@ ifneq (,$(strip $(findstring $(OSTYPE), Linux)))
 	CFLAGS += -DLEGO_TOWER_SET_READ_TIMEOUT='$(LEGO_TOWER_SET_READ_TIMEOUT)' -Wno-deprecated
 else
 ifneq (,$(findstring $(OSTYPE), SunOS))
-  	# Solaris
-  	CFLAGS += -DSOLARIS
+	# Solaris
+	CFLAGS += -DSOLARIS
 else
 ifneq (,$(strip $(findstring $(OSTYPE), FreeBSD)))
-  	# FreeBSD
-  	USBOBJ = RCX_USBTowerPipe_fbsd
-  	DEFAULT_SERIAL_NAME?= "/dev/cuad0"
-  	CFLAGS += -Wno-deprecated
+	# FreeBSD
+	USBOBJ = RCX_USBTowerPipe_fbsd
+	DEFAULT_SERIAL_NAME?= "/dev/cuad0"
+	CFLAGS += -Wno-deprecated
 else
 ifneq (,$(strip $(findstring $(OSTYPE), OpenBSD)))
-  	# OpenBSD i386
-  	DEFAULT_SERIAL_NAME ?= "/dev/cua00"
-  	CFLAGS += -O2 -std=gnu++98 -pipe
+	# OpenBSD i386
+	DEFAULT_SERIAL_NAME ?= "/dev/cua00"
+	CFLAGS += -O2 -std=gnu++98 -pipe
 else
-  	# default Unix build without USB support
-  	CFLAGS += -O2
+	# default Unix build without USB support
+	CFLAGS += -O2
 endif
 endif
 endif
