@@ -15,10 +15,21 @@ jobs:
         os: [ ubuntu-latest ]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: apt-get update
-      run: sudo apt-get --assume-yes update
-    - name: install build dependencies
-      run: sudo apt-get --assume-yes install flex bison emscripten
-    - name: make
-      run: make DEFAULT_SERIAL_NAME='"/dev/ttyS0"' DEFAULT_USB_NAME='"/dev/usb/legousbtower0"' DEFAULT_PORT_NAME='"usb"'
+    - name: Get the latest from version control
+      uses: actions/checkout@v4
+    - name: Update build environment
+      run:  sudo apt-get --assume-yes update
+    - name: Install build dependencies
+      run:  sudo apt-get --assume-yes install flex bison emscripten
+    - name: Execute the build
+      run:  make DEFAULT_SERIAL_NAME='"/dev/ttyS0"' DEFAULT_USB_NAME='"/dev/usb/legousbtower0"' DEFAULT_PORT_NAME='"usb"'
+    - name: Archive native build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: nqc-${{ matrix.os }}-native
+        path: build/bin/
+    - name: Archive WebAssembly build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: nqc-WebAssembly-${{ matrix.os }}
+        path: build/wasm/
