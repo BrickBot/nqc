@@ -94,11 +94,12 @@ ifneq (,$(strip $(findstring $(TARGETTYPE), WebAssembly)))
 	CXX = emcc
 	OBJ_SUBDIR_NAME = wobj
 	EXEC_SUBDIR_NAME = wasm
-	EXEC_EXT = .html
+	EXEC_EXT = .js
 
 	# Emscripten optimization flags documentation
 	# - https://emscripten.org/docs/optimizing/Optimizing-Code.html#optimizing-code
 	# - https://emscripten.org/docs/tools_reference/emcc.html#emcc-compiler-optimization-options
+	CFLAGS += -Os
 	
 	# Documentation for various Emscripten flags
 	# - Full List:    https://github.com/emscripten-core/emscripten/blob/main/src/settings.js
@@ -106,7 +107,7 @@ ifneq (,$(strip $(findstring $(TARGETTYPE), WebAssembly)))
 	# - Environment:  https://emscripten.org/docs/getting_started/FAQ.html#can-i-build-javascript-that-only-runs-on-the-web
 	# - Single File:  https://emscripten.org/docs/compiling/Building-Projects.html?highlight=SINGLE_FILE#emscripten-linker-output-files
 	CFLAGS_EXEC += --shell-file ./emscripten/webnqc_shell.html -s EXPORT_NAME=createWebNqc  -s EXPORTED_RUNTIME_METHODS='["callMain","FS"]' \
-		-s INVOKE_RUN=false  -s MODULARIZE=1  -s ENVIRONMENT=web  -s WASM=0
+		-s INVOKE_RUN=false  -s MODULARIZE=1  -s ENVIRONMENT=web  -s SINGLE_FILE
 else
 ifneq (,$(strip $(findstring $(OSTYPE), Darwin)))
 	# Mac OS X
