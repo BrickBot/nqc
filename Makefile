@@ -95,6 +95,11 @@ ifneq (,$(strip $(findstring $(TARGETTYPE), WebAssembly)))
 	OBJ_SUBDIR_NAME = wobj
 	EXEC_SUBDIR_NAME = wasm
 	EXEC_EXT = .html
+
+	# Emscripten optimization documentation
+	# - https://emscripten.org/docs/optimizing/Optimizing-Code.html#optimizing-code
+	# - https://emscripten.org/docs/tools_reference/emcc.html#emcc-compiler-optimization-options
+  	CFLAGS += -Os
 	
 	# Documentation for various Emscripten flags
 	# - Full List:    https://github.com/emscripten-core/emscripten/blob/main/src/settings.js
@@ -117,7 +122,7 @@ ifneq (,$(strip $(findstring $(OSTYPE), Linux)))
 	TCPOBJ = RCX_TcpPipe_linux
 	DEFAULT_SERIAL_NAME ?= "/dev/ttyS0"
 	# Timeout value is 200 in kernel driver module legousbtower.c
-	LEGO_TOWER_SET_READ_TIMEOUT?= 200
+	LEGO_TOWER_SET_READ_TIMEOUT ?= 200
 	CFLAGS += -DLEGO_TOWER_SET_READ_TIMEOUT='$(LEGO_TOWER_SET_READ_TIMEOUT)' -Wno-deprecated
 else
 ifneq (,$(findstring $(OSTYPE), SunOS))
@@ -204,7 +209,7 @@ exec: info $(EXEC_DIR)/nqc$(EXEC_EXT)
 
 $(EXEC_DIR)/nqc$(EXEC_EXT): compiler/parse.cpp $(OBJ)
 	$(MKDIR) $(dir $@)
-	$(CXX) -o $@ $(CFLAGS_EXEC) $(OBJ) $(LIBS)
+	$(CXX) -o $@ $(CFLAGS) $(CFLAGS_EXEC) $(OBJ) $(LIBS)
 
 #
 # Emscripten build for WebAssembly
