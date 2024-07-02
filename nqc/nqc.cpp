@@ -123,8 +123,9 @@ private:
 
 
 // error codes in addition to RCX_Result codes
-#define kUsageError (kRCX_LastError - 1)
-#define kQuietError (kRCX_LastError - 2)
+#define kNoOptions  (kRCX_LastError - 1)
+#define kUsageError (kRCX_LastError - 2)
+#define kQuietError (kRCX_LastError - 3)
 
 // codes for the actions (not all are supported by WebAssembly)
 enum {
@@ -1109,10 +1110,17 @@ void PrintError(RCX_Result error, const char *filename)
             fprintf(STDERR, "File \'%s\' is not a valid RCX image\n",
                 filename);
             break;
+        case kNoOptions:
         case kUsageError:
             PrintVersion();
+            if (error != kNoOptions) {
+                fprintf(STDERR,
+                    "Usage error: Unrecognized options\n");
+            }
+#ifndef __EMSCRIPTEN__
             fprintf(STDERR,
-                "Usage error: try \'nqc -help\' to display options\n");
+                "Try \'nqc -help\' to display options\n");
+#endif
             break;
         case kQuietError:
             break;
