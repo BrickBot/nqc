@@ -225,7 +225,7 @@ static void PrintToken(int t, TokenVal v);
 #endif
 static void PrintApi(bool compatMode);
 static bool SameString(const char *s1, const char *s2);
-static void PrintVersion();
+static void PrintVersion(FILE* gStream);
 
 #ifndef __EMSCRIPTEN__
 static RCX_Result Download(RCX_Image *image);
@@ -1112,8 +1112,8 @@ void PrintError(RCX_Result error, const char *filename)
             break;
         case kNoOptions:
         case kUsageError:
-            PrintVersion();
-            if (error != kNoOptions) {
+            PrintVersion(kNoOptions == error ? stdout : STDERR);
+            if (kNoOptions != error) {
                 fprintf(STDERR,
                     "Usage error: Unrecognized options\n");
             }
@@ -1159,18 +1159,18 @@ void PrintError(RCX_Result error, const char *filename)
     fflush(STDERR);
 }
 
-void PrintVersion()
+void PrintVersion(FILE* gStream)
 {
-    fprintf(STDERR,"nqc version %s (built %s, %s)\n",
+    fprintf(gStream, "nqc version %s (built %s, %s)\n",
         VERSION_STRING, __DATE__, __TIME__);
-    fprintf(STDERR,"     Copyright (C) 2005 John Hansen.  All Rights Reserved.\n");
+    fprintf(gStream, "     Copyright (C) 2005 John Hansen.  All Rights Reserved.\n");
 }
 
 void PrintUsage()
 {
     const char *targetName = getTarget(gTargetType)->fName;
 
-    PrintVersion();
+    PrintVersion(stdout);
     fprintf(stdout,"Usage: nqc [options] [actions] [ - | filename ] [actions]\n");
     fprintf(stdout,"   - : read from stdin instead of a source_file\n");
     fprintf(stdout,"Help Options:\n");
@@ -1181,7 +1181,7 @@ void PrintUsage()
     for (unsigned i=0; i < sizeof(sTargetNames) / sizeof(const char *); ++i) {
         fprintf(stdout, " %s", sTargetNames[i]);
     }
-    fprintf(stdout, " (target=%s)\n", targetName);
+    fprintf(stdout," (target=%s)\n", targetName);
     fprintf(stdout,"   -n: prevent the API header file from being included\n");
     fprintf(stdout,"   -D<sym>[=<value>] : define macro <sym>\n");
     fprintf(stdout,"   -U<sym>: undefine macro <sym>\n");
