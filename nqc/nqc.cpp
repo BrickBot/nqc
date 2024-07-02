@@ -513,7 +513,7 @@ RCX_Result ProcessCommandLine(int argc, char ** argv)
 
     // check if we did anything (compile and/or actions)
     if (optionsOK) {
-        return kUsageError;
+        return kNoOptions;
     }
 
     return result;
