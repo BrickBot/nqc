@@ -1,20 +1,23 @@
 NQC Release Notes
 =================
 
+version 3.2 r2
+--------------
+
+* Add support for building as a WebAssembly (based on work initiated by [maehw](https://github.com/maehw/WebNQC))
+
+
 version 3.2 r1
 --------------
 
-* Add support for building as a WebAssembly
-
-
-version 3.2 r1
---------------
-
-* Added TCP support, facilitating use of NQC with programs such as BrickEmu (an RCX emulator)
-* Added additional capabilities for specifying the default USB port, including at both compile time using a Make variable and via enhanced command-line argument support
-* Support Makefile variables DESTDIR and TOOLPREFIX
-* Enable specifying the default IR tower name in a configuration file
-* Support using a Make variable to specify the default compile-time port name, instead of having to modify source code files
+First release from the BrickBot/nqc repository on GitHub
+* [Patches that were posted by Matthew Sheets to the original SourceForge project site following the release of nqc 3.1r6 but never incorporated](https://sourceforge.net/p/bricxcc/patches/):
+  + [Added TCP support, facilitating use of NQC with programs such as BrickEmu (an RCX emulator)](https://sourceforge.net/p/bricxcc/patches/2/)
+  + [Added additional capabilities for specifying the default USB port, including at both compile time using a Make variable and via enhanced command-line argument support](https://sourceforge.net/p/bricxcc/patches/2/)
+  + [Support Makefile variables DESTDIR and TOOLPREFIX](https://sourceforge.net/p/bricxcc/patches/3/)
+  + [Enable specifying the default IR tower name in a configuration file](https://sourceforge.net/p/bricxcc/patches/4/)
+  + [Support using a Make variable to specify the default compile-time port name, instead of having to modify source code files](https://sourceforge.net/p/bricxcc/patches/5/)
+* Updates made to the [jverne/nqc](https://github.com/jverne/nqc) fork, which was maintained to keep NQC building and running on OS X and BSD
 
 
 version 3.1 r6
