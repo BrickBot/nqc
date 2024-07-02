@@ -21,7 +21,7 @@
 // 0=alpha, 2=release
 #define RELEASE_STAGE_INDEX 0
 
-#define RELEASE_BUILD	1
+#define RELEASE_BUILD	2
 
 #define STR_(x)	#x
 #define STR(x)	STR_(x)

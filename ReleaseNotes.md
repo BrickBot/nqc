@@ -1,12 +1,20 @@
 NQC Release Notes
------------------
+=================
 
-Please send bug reports to bricxcc@comcast.net.  Be sure to include
-details about what platform you are running nqc on and a sample
-file that demonstrates the bug if possible.
+version 3.2 r1
+--------------
 
-For updates and additional documentation, visit the NQC Web Site:
-http://bricxcc.sourceforge.net/nqc.  Send emails to bricxcc@comcast.net.
+* Add support for building as a WebAssembly
+
+
+version 3.2 r1
+--------------
+
+* Added TCP support, facilitating use of NQC with programs such as BrickEmu (an RCX emulator)
+* Added additional capabilities for specifying the default USB port, including at both compile time using a Make variable and via enhanced command-line argument support
+* Support Makefile variables DESTDIR and TOOLPREFIX
+* Enable specifying the default IR tower name in a configuration file
+* Support using a Make variable to specify the default compile-time port name, instead of having to modify source code files
 
 
 version 3.1 r6
@@ -31,7 +39,7 @@ version 3.1 r4
 version 3.1 r3
 --------------
 
-* Fixed bug in NQC code generation for expressions like a = a*2 + a*3;.
+* Fixed bug in NQC code generation for expressions like `a = a*2 + a*3;`.
 
 
 version 3.1 r2
@@ -84,8 +92,8 @@ version 2.5 r3
 version 2.5 r2
 --------------
 
-* added support for the USB tower Linux driver available from http://legousb.sourceforge.net/.  Any questions regarding the USB driver itself
-should be directed to David Glance <david@csse.uwa.edu.au>
+* Added support for the USB tower Linux driver available from http://legousb.sourceforge.net/.
+  Any questions regarding the USB driver itself should be directed to David Glance <david@csse.uwa.edu.au>.
 
 
 version 2.5 r1
@@ -93,6 +101,7 @@ version 2.5 r1
 
 Functionally the same as 2.5 a5, except that it is now an official release instead of
 in beta test.
+
 
 version 2.5 a5
 --------------
@@ -103,28 +112,33 @@ version 2.5 a5
 * fixed a bug with right shift of a negative operand
 * added version resource in win32 build
 
+
 version 2.5 a4
 --------------
 
-* added resource support for Spybotics (__res keyword)
+* added resource support for Spybotics (`__res` keyword)
 
 * removed a few Spybotics features from the built-in API file.  The
   Spybotics API will be maintained as a separate file until it becomes
   more stable, at which point it will be merged back into the compiler.
 
+
 version 2.5 a3
 --------------
 
-* Added optimizations for using short branches (jmp instead of jmpl and chk instead of chkl).
+* Added optimizations for using short branches (jmp instead of jmpl and
+  chk instead of chkl).
 
 * Added fast firmware for USB (Mac OS X only, but framework is in place
   for other platforms to use).
 
-* Added the -R option to redirect text output to a file (this is somewhat redundant for operating systems that provide good control over redirecting stdout and stderr).
+* Added the -R option to redirect text output to a file (this is somewhat
+  redundant for operating systems that provide good control over
+  redirecting stdout and stderr).
 
 * Added limited "goto" support.  Goto should be used with care since
   the compiler doesn't currently check to see if the goto would
-  enter/leave control blocks such as acquire() and monitor().  As
+  enter/leave control blocks such as `acquire()` and `monitor()`.  As
   a result, those control blocks may not be properly set up or
   finished.  The bottom line is that you probably shouldn't be using
   goto in the first place, but if you need to, then you should use
@@ -147,9 +161,9 @@ version 2.5 a1
   no LCD display, and no Datalog.  There are some new capabilities with
   Spybotics, but not everything has an API in NQC yet.  Use "nqc -api"
   to view the current API definition (pay particular attention to things
-  conditionally defined using __SPY).
+  conditionally defined using `__SPY`).
   
-* Fixed a bug with the Program() call.
+* Fixed a bug with the `Program()` call.
 
 * Removed a debugging printf (kept saying "draining") from the Unix build.
 
@@ -168,8 +182,9 @@ version 2.4 r3
   device drivers).  If NQC hangs when you try to download, append
   ":nodrain" to the device name.  For example, if your device was
   /dev/ttys0 then you would do this:
-  
+```Bash
      nqc -S/dev/ttys0:nodrain -d test.nqc
+```
 
 * Mac OS X now defaults to enabling tcdrain().  This works fine under
   10.1.3 with the Keyspan serial drivers.  If you are using a combination
@@ -188,18 +203,18 @@ version 2.4 r1
 --------------
 
 * Fixed a bug that caused -D arguments not to be processed
-* Improved #pragma reserve for locals
+* Improved `#pragma` reserve for locals
 * changed -firmfast send delay to 100ms (should have better performance now)
 * srecord parser is now more tolerant about line endings
-* fixed bug with #elif not expanding macros if previous condition was false
-* return code from main() is now an error code instead of just 0 or -1 
+* fixed bug with `#elif` not expanding macros if previous condition was false
+* return code from `main()` is now an error code instead of just 0 or -1 
 * reorganized the Makefile
 
 version 2.4 a4
 --------------
 
 * fixed bug that caused a crash when no serial device was specified (either
-  with a -S option or the RCX_PORT environment variable).
+  with a -S option or the `RCX_PORT` environment variable).
 
 
 version 2.4 a3
@@ -216,14 +231,14 @@ version 2.4 a3
 version 2.4 a2
 --------------
 
-* added __sensor() expression for arg checking.  This fixes an old
-  problem with SensorValueRaw(SENSOR_x) and other macros that can
-  take a SENSOR_x as an argument.
+* added `__sensor()` expression for arg checking.  This fixes an old
+  problem with `SensorValueRaw(SENSOR_x)` and other macros that can
+  take a `SENSOR_x` as an argument.
 
-* added the __NQC__ compile time symbol for the version number of
-  NQC (for 2.4, __NQC__ is 204)
+* added the `__NQC__` compile time symbol for the version number of
+  NQC (for 2.4, `__NQC__` is 204)
   
-* improved the predictive timing of RCX_Link
+* improved the predictive timing of `RCX_Link`
 
 * fixed a few minor bugs
 
@@ -300,7 +315,7 @@ precedence and associativity is identical to that of C
 * implemented partial catches for monitor statements, that is it is possible
 to have multiple catch clauses to handle separate events.  This only works
 for RCX 2.0.
-
+```C
     monitor(EVENT_MASK(1) + EVENT_MASK(2) + EVENT_MASK(3))
     {
     }
@@ -312,8 +327,9 @@ for RCX 2.0.
     {
       // will handle any other events (2 and 3)
     }
+```
 
-* Added CurrentEvents() to the API.  This returns the enents that triggered
+* Added `CurrentEvents()` to the API.  This returns the events that triggered
 an event handler.  In general, its simpler to just use partial catches and
 let the compiler do the work for you.
 
@@ -321,7 +337,7 @@ let the compiler do the work for you.
 
 * rcxifile version updated to 1.0.2 (addition of target type)
 
-* __taskid added - this expression returns the number of the task.  Note it
+* `__taskid` added - this expression returns the number of the task.  Note it
 must be possible to determine the task number lexically at compile time for
 this to be a valid expression (in other words, don't use it in a subroutine
 called from multiple tasks).
@@ -332,11 +348,11 @@ version 2.2 r2
 --------------
 
 
-* enabled SetSleepTime() and SleepNow() in Scout API
+* enabled `SetSleepTime()` and `SleepNow()` in Scout API
 
-* fixed a bug in Event()
+* fixed a bug in `Event()`
 
-* allow 16-bit unsigned constants (EVENT_MASK(15) now works)
+* allow 16-bit unsigned constants (`EVENT_MASK(15)` now works)
 
 * ignore ctrl-Z characters (0x1a) in input files
 
@@ -347,11 +363,11 @@ version 2.2 r2
 version 2.2 r1
 --------------
 
-* removed SensorParam() from the API
+* removed `SensorParam()` from the API
 
-* added SENSOR_TYPE_NONE to the API
+* added `SENSOR_TYPE_NONE` to the API
 
-* fixed a bug where CalibrateEvent() used the args in the wrong order
+* fixed a bug where `CalibrateEvent()` used the args in the wrong order
 
 * fixed a bug in the disassembly listing for the chkl opcode
 
@@ -359,11 +375,11 @@ version 2.2 r1
   used decvjnl for looping.  The offsets were not computed correctly
   (due to a sign bit) for offsets greater than 127 bytes.
 
-* optimized code generation when __ASM_NO_LOCAL restrictor is used
+* optimized code generation when `__ASM_NO_LOCAL`restrictor is used
   with an atomic expression of a restricted source.  Previously,
   the restricted source was moved to a local temp, then a global.  Now
   the restricted source is moved directly to a global temp.  In practice
-  this means that AddToDatalog(Message()) takes two opcodes instead of
+  this means that `AddToDatalog(Message())` takes two opcodes instead of
   three (and dirties one temp instead of two).
 
 
@@ -384,23 +400,23 @@ version 2.2 b1
 * Most of the raw serial APIs have been changed slightly.  For the most
  part the change was replacing SerXXX with SerialXXX.
 
-* EVENT_MASK() macro added to help in building event sets
+* `EVENT_MASK()` macro added to help in building event sets
 
-* EVENT_TYPE_MAILBOX changed to EVENT_TYPE_MESSAGE
+* `EVENT_TYPE_MAILBOX` changed to `EVENT_TYPE_MESSAGE`
 
-* Duration() changed to ClickTime()
+* `Duration()` changed to `ClickTime()`
 
-* Most parameters, such as UpperLimit() now have calls such as 
- SetUpperLimit() to set their value.
+* Most parameters, such as `UpperLimit()` now have calls such as 
+ `SetUpperLimit()` to set their value.
 
 * Most of the global output commands were removed due to how confusing
  the whole system was.  There are now only three primitive commands:
- SetGlobalOutput(), SetGlobalDirection() and SetMaxPower().
+ `SetGlobalOutput()`, `SetGlobalDirection()`, and `SetMaxPower()`.
 
 * Minor changes to Scout calls for setting up the light sensor.  These
  changes make the Scout terminology align with the RCX2 calls.
 
-* Constants for scout events, such as EVENT_1_PRESSED have been added.
+* Constants for scout events, such as `EVENT_1_PRESSED` have been added.
 
 * fixed bug that prevented 'continue' from working in a switch nested
  within a loop
@@ -409,24 +425,25 @@ version 2.2 b1
 version 2.2 a2
 --------------
 
-* "#praga reserve" may be used to prevent RCX variables from being used
+* `#praga reserve` may be used to prevent RCX variables from being used
 by NQC.  The syntax is
-
+```C
 #pragma reserve start [end]
+```
 
 For example, to reserve locations 0 and 1 (where the RCX2 counters are):
-
+```C
 #pragma reserve 0 1
+```
 
+* added `SetSleepTime()` and `SleepNow()` to the API
 
-* added SetSleepTime() and SleepNow() to the API
-
-* removed Display() from the API (SetUserDisplay() is sufficient)
+* removed `Display()` from the API (`SetUserDisplay()` is sufficient)
 
 * changed SetEvent and event sources...now just specify the source literally:
-
+```C
 	SetEvent(0, SENSOR_2, EVENT_TYPE_PRESSED);
-
+```
 
 * Error checking netsted monitor or acquire statements
 
@@ -444,10 +461,11 @@ version 2.2 a1
 they can be generated directly from NQC (which contains ebmedded versions of
 these files).  The -api option will cause NQC to emit the appropraite API
 file (normally the 2.0 api, unless 1.0 compatability mode has been selected):
-
+```Bash
 	nqc -api
 
 	nqc -1 -api
+```
 
 * Firmware download supports large files (such as the RCX 2.0 firmware).  Also
 fixed a bug in fast firmware download.
@@ -457,13 +475,14 @@ fixed a bug in fast firmware download.
 * Preliminary RCX 2.0 API - see the api file for the actual constants and
 functions.  Use a target of rcx2  in order to generate RCX 2.0 code.
 For example:
-
+```Bash
 	nqc -Trcx2 -d test.nqc
+```
 
 * local variables are utilized when compiling for Scout or RCX 2
 
 * event monitoring is supported with a monitor/catch construct...
-
+```C
 	monitor(events)
 	{
 		// body
@@ -472,6 +491,7 @@ For example:
 	{
 		// handler
 	}
+```
 	
 	'events' is the set of events to watch.  The 'catch' and handler are
 	optional.  The body is executed.  If one of the monitored events occur,
@@ -479,7 +499,7 @@ For example:
 	are only availabe for Scout and RCX 2.
 
 * resource acquisition is supported with acquire/catch construct...
-
+```C
 	acquire(resources)
 	{
 		// body
@@ -488,8 +508,9 @@ For example:
 	{
 		// handler
 	}
-	
-	'resources' is the set of resources to acquire (ACQUIRE_OUT_A, etc) and
+```
+
+	'resources' is the set of resources to acquire (`ACQUIRE_OUT_A`, etc) and
 	must be a compile-time constant.  An attempt is made to acquire the
 	resources.  If sucessful, execution proceeds to the body.  If unsuccessful,
 	or if during execution of the body the resources are preempted by another
@@ -501,10 +522,10 @@ For example:
 NOTE - event monitoring and resource acquisition are still in preliminary form.
 There are a number of unimplemented details...
 
- - Nesting of monitor and/or acquire statements will almost certainly result
+  - Nesting of monitor and/or acquire statements will almost certainly result
  in programs that don't operate as expected.
  
- - Statments such as break, continue, or return that cause flow control from
+  - Statments such as break, continue, or return that cause flow control from
  inside a monitor/acquire statement to outside it will not operate properly.
 
 
@@ -549,7 +570,7 @@ version 2.1 r1
 version 2.1 b3 (beta 3)
 -----------------------
 
-* Fixed bug where __SCOUT was not defined properly
+* Fixed bug where `__SCOUT` was not defined properly
 
 * Output files now default to being placed in the current directory rather
 that next to the source file.
@@ -564,9 +585,9 @@ is a temporary measure for RcxCC compatability until RcxCC can be updated.
 version 2.1 b2 (beta 2)
 -----------------------
 
-* Added the NQC_OPTIONS environment variable, which can be used to specify
+* Added the `NQC_OPTIONS` environment variable, which can be used to specify
 extra options to be inserted into the command line.  For example, setting
-NQC_OPTIONS to "-TScout" would cause nqc to target the Scout by default.
+`NQC_OPTIONS` to "-TScout" would cause nqc to target the Scout by default.
 
 * A 'switch' statement was added. The generated code is reasonably good
 considering the limitations of the RCX bytecodes.  However, some optimizations
@@ -574,13 +595,13 @@ considering the limitations of the RCX bytecodes.  However, some optimizations
   
 * Expressions are now coerced into conditions where appropriate.  For example,
 you can do this:
-
+```C
   int x;
   
   while(x)
   {
   }
-  
+```
 
 * Improved Scout support - battery level is checked on download, API file
 merged into compiler so "scout.nqh" no longer needs to be included, PlayTone()
@@ -590,7 +611,7 @@ now supports both constant and variable argument for frequency.
 Scout SDK.  Bytecodes not present on Scout still use the older NQC mnemonics,
 but will change eventually.
 
-* __type() operator added.  This is just a nasty low-level hack to
+* `__type()` operator added.  This is just a nasty low-level hack to
 allow an inline function to call two different bytecodes depending on the
 type of the argument passed in.  Used for PlayTone() when targeting the Scout.
 
@@ -608,9 +629,10 @@ on Scout support in NQC.
 about 4 times as fast with this option, but it requires the IR tower to
 be in "near" mode.  If you have trouble getting the fast download to work,
 please revert to the older (and slower) method.
-
+```
   Fast:  nqc -firmfast <filename>
   Slow:  nqc -firmware <filename>
+```
 
 * The -o, -e, and -s options have been removed (they were deprecated quite
 a while back).  If you still use these options, please change to the -O,
@@ -618,10 +640,11 @@ a while back).  If you still use these options, please change to the -O,
 
 * The -c option (cybermaster support) has been deprectaed.  NQC now has a
 more general option to specify the target: use -TCM for cybermaster:
-
+```Bash
   nqc -TCM -d test.nqc
+```
 
-Other targets include -TScout and -TRCX (the default).
+  - Other targets include -TScout and -TRCX (the default).
 
 * A couple of bugs relating to compiling stdin were fixed.
 

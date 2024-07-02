@@ -106,6 +106,7 @@ ifneq (,$(strip $(findstring $(TARGETTYPE), WebAssembly)))
 	# - Modularize:   https://emscripten.org/docs/getting_started/FAQ.html#can-i-use-multiple-emscripten-compiled-programs-on-one-web-page
 	# - Environment:  https://emscripten.org/docs/getting_started/FAQ.html#can-i-build-javascript-that-only-runs-on-the-web
 	# - Single File:  https://emscripten.org/docs/compiling/Building-Projects.html?highlight=SINGLE_FILE#emscripten-linker-output-files
+	# - Target JavaScript instead of WASM:  -s WASM=0
 	CFLAGS_EXEC += --shell-file ./emscripten/webnqc_shell.html -s EXPORT_NAME=createWebNqc  -s EXPORTED_RUNTIME_METHODS='["callMain","FS"]' \
 		-s INVOKE_RUN=false  -s MODULARIZE=1  -s ENVIRONMENT=web  -s SINGLE_FILE
 else
