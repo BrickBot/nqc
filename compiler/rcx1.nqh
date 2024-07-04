@@ -86,7 +86,7 @@
 
 
 /**************************
- * ouput
+ * output
  **************************/
 
 // constants for selecting outputs
@@ -171,7 +171,7 @@
 // CM specific data sources
 #define TachoCount(n)          @(0x50000 + (n)-1) // Use OUT_x as parameter
 #define TachoSpeed(n)          @(0x60000 + (n)-1) // Use OUT_x as parameter
-#define ExternalMotorRunning() @(0x70002)         // Refered in the SDK as MotorCurrent(2). Non zero if external motor running.
+#define ExternalMotorRunning() @(0x70002)         // Referred in the SDK as MotorCurrent(2). Non zero if external motor running.
 #define AGC()                  @(0x100000)        // Automatic Gain Control
 #endif
 

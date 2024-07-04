@@ -24,7 +24,7 @@ static const char *sErrorText[] = {
 	"internal error",
 	"%s",
 	"unterminated #if/#ifdef/#ifndef",
-	"%s without preceeding #if/#ifdef/#ifndef",
+	"%s without preceding #if/#ifdef/#ifndef",
 	"illegal preprocessor directive",
 	"#include requires a filename",
 	"could not open file %s",

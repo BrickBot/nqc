@@ -210,7 +210,7 @@ exec: info $(EXEC_DIR)/nqc$(EXEC_EXT)
 
 $(EXEC_DIR)/nqc$(EXEC_EXT): compiler/parse.cpp $(OBJ)
 	$(MKDIR) $(dir $@)
-	$(CXX) $(CFLAGS) $(CFLAGS_EXEC) -o $@ $(OBJ) $(LIBS)
+	$(CXX) $(CFLAGS) $(CFLAGS_EXEC) -o $@ $(OBJ) $(LIBS) $(LDFLAGS)
 
 #
 # Emscripten build for WebAssembly
@@ -322,7 +322,7 @@ install: all
 	test -d $(DESTDIR)$(BINDIR) || mkdir -p $(DESTDIR)$(BINDIR)
 	cp -r $(EXEC_DIR)/* $(DESTDIR)$(BINDIR)
 	test -d $(DESTDIR)$(MANDIR)  || mkdir -p $(DESTDIR)$(MANDIR)
-	cp nqc-man-2.1r1-0.man $(DESTDIR)$(MANDIR)/nqc.$(MANEXT)
+	cp nqc-man.man $(DESTDIR)$(MANDIR)/nqc.$(MANEXT)
 
 #
 # Print some info about the environment

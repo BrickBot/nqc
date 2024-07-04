@@ -58,7 +58,7 @@ instead of to stderr.
 .TP
 \fB\-I\fR\fIpath\fR
 search \fIpath\fR for include files.  Multiple directories should be
-seperated as normal for the platform (under Linux / Unix, that'd be "\fB\:\fR"). 
+separated as normal for the platform (under Linux / Unix, that'd be "\fB\:\fR"). 
 Can also be set with the NQC_INCLUDE environment variable.
 .TP
 \fB\-L\fR[\fIfilename\fR]
@@ -195,7 +195,7 @@ bytecode listing to the screen in human-readable format:
 .PP
 )
 .SH FILES
-Older versions of nqc required a seperate \fIrcx.nqh\fR or \fIrcx2.nqh\fR
+Older versions of nqc required a separate \fIrcx.nqh\fR or \fIrcx2.nqh\fR
 file.  This is now integrated into the binary and no longer necessary,
 but for reference, \fIrcx2.nqh\fR is included with the package. 
 (If you installed the RPM, try \fI/usr/doc/nqc-2.1.0/rcx2.nqh\fR).
