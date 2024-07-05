@@ -1111,8 +1111,8 @@ bool ResourceType(RCX_ChunkType type)
 
 void RCX_Disasm::FindLabelArg(ULong format, const UByte *code, UShort pc)
 {
-    char text[256];
-    char buf[272];
+    char text[272];
+    char buf[256];
     int value;
     switch(format) {
         case kAF_Jump8:
