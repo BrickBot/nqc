@@ -89,11 +89,11 @@ TCPOBJ ?= RCX_TcpPipe_none
 #
 OSTYPE := $(strip $(shell uname -s))
 
-ifneq (,$(strip $(findstring $(TARGETTYPE), WebAssembly)))
-	# WebAssembly
+ifneq (,$(strip $(findstring $(TARGETTYPE), JS-WebAssembly)))
+	# WebAssembly embedded in JavaScript
 	CXX = emcc
 	OBJ_SUBDIR_NAME = wobj
-	EXEC_SUBDIR_NAME = wasm
+	EXEC_SUBDIR_NAME = js-wasm
 	EXEC_EXT = .js
 
 	# Emscripten optimization flags documentation
@@ -216,7 +216,7 @@ $(EXEC_DIR)/nqc$(EXEC_EXT): compiler/parse.cpp $(OBJ)
 # Emscripten build for WebAssembly
 #
 emscripten-emmake:
-	emmake make exec TARGETTYPE=WebAssembly
+	emmake make exec TARGETTYPE=JS-WebAssembly
 
 #
 # general rule for compiling

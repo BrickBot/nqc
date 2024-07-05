@@ -28,8 +28,8 @@ jobs:
       with:
         name: nqc-native-${{ matrix.os }}
         path: build/bin/
-    - name: Archive WebAssembly build artifacts
+    - name: Archive JavaScript-WebAssembly build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: nqc-WebAssembly-${{ matrix.os }}
-        path: build/wasm/
+        name: nqc-JS-WebAssembly-${{ matrix.os }}
+        path: build/js-wasm/
