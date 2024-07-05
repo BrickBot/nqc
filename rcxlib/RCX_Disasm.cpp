@@ -910,7 +910,7 @@ void RCX_Disasm::Print(RCX_Printer *dst, bool genLASM, string name,
 RCX_Result RCX_Disasm::Print1(RCX_Printer *dst, const UByte *code, int length, UShort pc)
 {
     char text[256];
-    char line[256];
+    char line[264];
 
     RCX_Result result = SPrint1(text, code, length, pc);
 
@@ -933,8 +933,9 @@ RCX_Result RCX_Disasm::Print1(RCX_Printer *dst, const UByte *code, int length, U
             else
                 sprintf(line, "\t%s ", text);
         }
-    } else
+    } else {
         sprintf(line, "%03d %-42s ", pc, text);
+    }
 
     dst->Print(line);
 
@@ -1111,7 +1112,7 @@ bool ResourceType(RCX_ChunkType type)
 void RCX_Disasm::FindLabelArg(ULong format, const UByte *code, UShort pc)
 {
     char text[256];
-    char buf[256];
+    char buf[272];
     int value;
     switch(format) {
         case kAF_Jump8:
