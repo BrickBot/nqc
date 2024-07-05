@@ -5,6 +5,9 @@ version 3.2 r2
 --------------
 
 * Add support for building as a WebAssembly (based on work initiated by [maehw](https://github.com/maehw/WebNQC))
+* Cleanup and typo fixes
+* Address compiler warnings
+* Add support for linker hardening via LDFLAGS
 
 
 version 3.2 r1
