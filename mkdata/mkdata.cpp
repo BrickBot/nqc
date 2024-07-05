@@ -9,7 +9,7 @@ using std::strcmp;
 static const char *sTestArgs[] = {"mkdata", "-s", "fastdl.srec", "RCX_nub.h", "rcxNub" };
 
 
-int main(int argc, const char **argv)
+int main(int argc, const char *argv[])
 {
 	FILE *src;
 	FILE *dst;
@@ -20,7 +20,7 @@ int main(int argc, const char **argv)
 	if (argc == 0)
 	{
 		// special case for debugging under the Metrowerks console
-		argv = (char **)sTestArgs;
+		argv = sTestArgs;
 		argc = sizeof(sTestArgs) / sizeof(char *);
 	}
 
