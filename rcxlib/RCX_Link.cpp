@@ -150,8 +150,9 @@ RCX_Result RCX_Link::Open(RCX_TargetType target, const char *portName, ULong opt
         gUSB = false;
         if (portName) {
             // strip off "serial:" prefix if present
-            devName = CheckPrefix(portName, "serial");
-            if (!devName) devName = portName;
+            if ((devName = CheckPrefix(portName, "serial")) != 0) {}
+            // strip off "com:" prefix if present
+            else if (!devName) { devName = portName; }
         }
         else {
             devName = PSerial::GetDefaultName();
