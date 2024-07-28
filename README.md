@@ -34,6 +34,10 @@ Additionally, the Makefile has also been updated so that only one command—`mak
 
 With NQC compiled as **WebAssembly bytecode (WASM)**, it can run in a web browser—without any installation and independent of the machine’s platform (Windows, Linux, Unix, MacOS, etc).
 
+Installation on Linux
+=====================
+
+See [INSTALL.md](./INSTALL.md)
 
 ---
 
