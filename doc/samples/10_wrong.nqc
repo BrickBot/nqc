@@ -1,0 +1,25 @@
+task main()
+{
+  SetSensor(SENSOR_1,SENSOR_TOUCH);
+  start check_sensors;
+  while (true)
+  {
+    OnFwd(OUT_A+OUT_C); Wait(100);
+    OnRev(OUT_C); Wait(85);
+  }
+}
+
+task check_sensors()
+{
+  while (true)
+  {
+    if (SENSOR_1 == 1)
+    { 
+      OnRev(OUT_A+OUT_C);
+      Wait(50);
+      OnFwd(OUT_A);
+      Wait(85);
+      OnFwd(OUT_C);
+    }
+  }
+}

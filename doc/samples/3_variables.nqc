@@ -1,0 +1,17 @@
+int aaa;
+int bbb,ccc;
+int values[10];
+
+task main()
+{
+  aaa = 10;
+  bbb = 20 * 5;
+  ccc = bbb;
+  ccc /= aaa;
+  ccc -= 5;         
+  aaa = 10 * (ccc + 3); // aaa is now equal to 80
+  values[0] = aaa;
+  values[1] = bbb;
+  values[2] = aaa*bbb;
+  values[3] = ccc;
+}

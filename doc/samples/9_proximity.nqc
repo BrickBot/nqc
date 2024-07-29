@@ -1,0 +1,26 @@
+int lastlevel;           // To store the previous level
+
+task send_signal()
+{
+  while(true) 
+    {SendMessage(0); Wait(10);}
+}
+
+task check_signal()
+{
+  while(true)
+  {
+    lastlevel = SENSOR_2;
+    if(SENSOR_2 > lastlevel + 200) 
+      {OnRev(OUT_C); Wait(85); OnFwd(OUT_A+OUT_C);}
+  }
+}
+
+task main()
+{
+  SetSensorType(SENSOR_2, SENSOR_TYPE_LIGHT); 
+  SetSensorMode(SENSOR_2, SENSOR_MODE_RAW);
+  OnFwd(OUT_A+OUT_C);
+  start send_signal;
+  start check_signal;
+}

@@ -1,0 +1,13 @@
+//#include "test.h"
+#define test 124
+
+task main()
+{
+  if (test == 124) {
+    SetSensorMode(SENSOR_1, SENSOR_MODE_FAHRENHEIT+test);
+    SetSensorMode(SENSOR_2, SENSOR_MODE_PERCENT);
+    SetSensorType(SENSOR_3, SENSOR_TYPE_ROTATION);
+    SetSensorMode(SENSOR_3, SENSOR_MODE_ROTATION);
+  }
+}
+

@@ -1,0 +1,33 @@
+ int sem;
+
+task main()
+{
+  sem = 0;
+  start move_square;
+  SetSensor(SENSOR_1,SENSOR_TOUCH);
+  while (true)
+  {
+    if (SENSOR_1 == 1)
+    { 
+      until (sem == 0); sem = 1;
+      OnRev(OUT_A+OUT_C); Wait(50);
+      OnFwd(OUT_A); Wait(85);
+      sem = 0;
+    }
+  }
+}
+
+task move_square()
+{
+  while (true)
+  {
+    until (sem == 0); sem = 1;
+    OnFwd(OUT_A+OUT_C); 
+    sem = 0;
+    Wait(100);
+    until (sem == 0); sem = 1;
+    OnRev(OUT_C); 
+    sem = 0;
+    Wait(85);
+  }
+}

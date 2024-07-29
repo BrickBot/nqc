@@ -1,0 +1,20 @@
+ task music()
+{
+  while (true)
+  {
+    PlayTone(262,40);  Wait(50);
+    PlayTone(294,40);  Wait(50);
+    PlayTone(330,40);  Wait(50);
+    PlayTone(294,40);  Wait(50);
+  }
+}
+
+task main()
+{
+  start music;
+  while(true)
+  {
+    OnFwd(OUT_A+OUT_B); Wait(300);
+    OnRev(OUT_A+OUT_B); Wait(300);
+  }
+}

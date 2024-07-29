@@ -1,0 +1,17 @@
+#define turn_right(s,t)  SetPower(OUT_A+OUT_B,s);OnFwd(OUT_A);OnRev(OUT_B);Wait(t);
+#define turn_left(s,t)   SetPower(OUT_A+OUT_B,s);OnRev(OUT_A);OnFwd(OUT_B);Wait(t);
+#define forwards(s,t)    SetPower(OUT_A+OUT_B,s);OnFwd(OUT_A+OUT_B);Wait(t);
+#define backwards(s,t)   SetPower(OUT_A+OUT_B,s);OnRev(OUT_A+OUT_B);Wait(t);
+
+task main()
+{
+  backwards(5,1000);
+  forwards(5,1000);
+  turn_left(7,75);
+  forwards(7,100);
+  backwards(7,200);
+  forwards(7,100);
+  turn_right(7,75);
+  forwards(3,200);
+  Off(OUT_A+OUT_B);
+}

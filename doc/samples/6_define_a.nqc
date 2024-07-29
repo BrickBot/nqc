@@ -1,0 +1,13 @@
+#define turn_around     OnRev(OUT_B); Wait(340);OnFwd(OUT_A+OUT_B);
+
+task main()
+{
+  OnFwd(OUT_A+OUT_B);
+  Wait(100);
+  turn_around;
+  Wait(200);
+  turn_around;
+  Wait(100);
+  turn_around;
+  Off(OUT_A+OUT_B);
+}

@@ -1,0 +1,32 @@
+int ttt,tt2;
+
+task moverandom()
+{
+  while (true)
+  {
+    ttt = Random(50) + 40;
+    tt2 = Random(1);
+    if (tt2 > 0)
+      { OnRev(OUT_A); OnFwd(OUT_C); Wait(ttt); }
+    else
+      { OnRev(OUT_C); OnFwd(OUT_A);Wait(ttt); }
+    ttt = Random(150) + 50;
+    OnFwd(OUT_A+OUT_C);Wait(ttt);
+  }
+}
+
+task main()
+{
+  start moverandom;
+  SetSensorType(SENSOR_1,SENSOR_TYPE_LIGHT);
+  SetSensorMode(SENSOR_1,SENSOR_MODE_RAW);
+  while (true)
+  {
+    if ((SENSOR_1 < 100) || (SENSOR_1 > 750))
+    {
+      stop moverandom;
+      OnRev(OUT_A+OUT_C);Wait(30);
+      start moverandom;
+    }
+  }
+}

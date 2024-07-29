@@ -1,0 +1,10 @@
+task main()
+{
+  SelectDisplay(DISPLAY_SENSOR_1); Wait(100);  // Input 1
+  SelectDisplay(DISPLAY_SENSOR_2); Wait(100);  // Input 2
+  SelectDisplay(DISPLAY_SENSOR_3); Wait(100);  // Input 3
+  SelectDisplay(DISPLAY_OUT_A);    Wait(100);  // Output A
+  SelectDisplay(DISPLAY_OUT_B);    Wait(100);  // Output B
+  SelectDisplay(DISPLAY_OUT_C);    Wait(100);  // Output C
+  SelectDisplay(DISPLAY_WATCH);    Wait(100);  // System clock
+}

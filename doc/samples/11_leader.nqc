@@ -1,0 +1,35 @@
+task main()
+{
+  ClearMessage();
+  Wait(200);             // make sure all robots are on
+  Wait(Random(400));      // wait between 0 and 4 seconds
+  if (Message() > 0)      // somebody else was first
+  {
+    start slave;
+  }
+  else
+  {
+    SendMessage(1);       // I am the master now
+    Wait(400);           // make sure everybody else knows
+    start master;
+  }
+}
+
+task master()
+{
+  SendMessage(1); Wait(200);
+  SendMessage(2); Wait(200);
+  SendMessage(3);
+}
+
+task slave()
+{
+  while (true)
+  {
+    ClearMessage();
+    until (Message() != 0);
+    if (Message() == 1) {OnFwd(OUT_A+OUT_C);}
+    if (Message() == 2) {OnRev(OUT_A+OUT_C);}
+    if (Message() == 3) {Off(OUT_A+OUT_C);}
+  }
+}

@@ -1,0 +1,11 @@
+task main()          // SLAVE
+{
+  while (true)
+  {
+    ClearMessage();
+    until (Message() != 0);
+    if (Message() == 1) {OnFwd(OUT_A+OUT_C);}
+    if (Message() == 2) {OnRev(OUT_A+OUT_C);}
+    if (Message() == 3) {Off(OUT_A+OUT_C);}
+  }
+}

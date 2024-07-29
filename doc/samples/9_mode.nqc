@@ -1,0 +1,13 @@
+task main()
+{
+  SetSensorType(SENSOR_1,SENSOR_TYPE_TOUCH);
+  SetSensorMode(SENSOR_1,SENSOR_MODE_PULSE);
+  while(true)
+  {
+    ClearSensor(SENSOR_1);
+    until (SENSOR_1 >0);
+    Wait(100);
+    if (SENSOR_1 == 1) {Off(OUT_A+OUT_C);}
+    if (SENSOR_1 == 2) {OnFwd(OUT_A+OUT_C);}
+  }
+}

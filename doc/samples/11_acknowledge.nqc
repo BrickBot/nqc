@@ -1,0 +1,10 @@
+task main()
+{
+  do
+  {
+    SendMessage(1);
+    ClearMessage();
+    Wait(10);
+  }
+  while (Message() != 255);
+}

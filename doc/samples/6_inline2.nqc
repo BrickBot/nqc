@@ -1,0 +1,17 @@
+void turn_around(int turntime)
+{
+  OnRev(OUT_C); Wait(turntime);
+  OnFwd(OUT_A+OUT_C);
+}
+
+task main()
+{
+  OnFwd(OUT_A+OUT_C);
+  Wait(100);
+  turn_around(200);
+  Wait(200);
+  turn_around(50);
+  Wait(100);
+  turn_around(300);
+  Off(OUT_A+OUT_C);
+}
