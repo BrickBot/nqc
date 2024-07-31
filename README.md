@@ -4,8 +4,9 @@ Not Quite C is a simple language with a C-like syntax that can be used to progra
 * If you are just getting started with programming, then graphical environments such as the MindStorms RIS software or RoboLab are probably better choices.
 * If, however, you are a C programmer and prefer typing a few lines to drag-and-drop icon programming, then NQC might be perfect for you.
 
-> [!TIP]
-> For tutorials, examples, reusable libraries, and more, please check out the associated [NQC-Libs project](https://github.com/BrickBot/nqc-libs).
+Getting Started
+---------------
+For tutorials, examples, reusable libraries, and more, please check out the associated [NQC-Libs project](https://github.com/BrickBot/nqc-libs).
 
 About
 -----
