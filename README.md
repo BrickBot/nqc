@@ -4,8 +4,51 @@ Not Quite C is a simple language with a C-like syntax that can be used to progra
 * If you are just getting started with programming, then graphical environments such as the MindStorms RIS software or RoboLab are probably better choices.
 * If, however, you are a C programmer and prefer typing a few lines to drag-and-drop icon programming, then NQC might be perfect for you.
 
-> [!TIP]
-> For tutorials, examples, reusable libraries, and more, please check out the associated [NQC-Libs project](https://github.com/BrickBot/nqc-libs).
+Getting Started
+---------------
+
+See [NQC on Windows](#nqc-on-windows) or [NQC on Linux](#nqc-on-linux) for how
+to download the appropriate compiler (`nqc` or `nqc.exe`) and put it where your
+shell can find it as a command.
+
+The IR tower should be connected to your modem port (Mac/Linux) or COM1
+(Windows). The IR tower should be set for "near" mode (small triangle). The RCX
+should also be set for this mode, and firmware must already be downloaded.
+
+Compile and download the test file using the following command line:
+
+```
+nqc -d test.nqc
+```
+
+The test program assumes there's a motor on output A and a touch sensor
+on input 1.  It turns on the motor and waits for the switch to be
+pressed, then it turns off the motor and plays a sound.
+
+If you are using a USB tower or a different serial port you will need to
+specify the port either by adding a `-Sx` option (where `x` is the name of the
+port) to the command line or by setting the `RCX_PORT` environment variable.
+Refer to [Installation on Linux](#installation-on-linux) for using USB tower on
+Linux.
+
+Here are some examples:
+
+USB tower (where supported)
+```
+nqc -Susb -d test.nqc
+```
+
+Win32 COM2 port:
+```
+set RCX_PORT=COM2
+```
+
+Win32 USB port:
+```
+set RCX_PORT=usb
+```
+
+For tutorials, examples, reusable libraries, and more, please check out the associated [NQC-Libs project](https://github.com/BrickBot/nqc-libs).
 
 About
 -----
@@ -21,6 +64,145 @@ This release also attempts to build on the [jverne/nqc](https://github.com/jvern
 
 For bug reports about _this_ fork of NQC, please [file a GitHub Issue](https://github.com/BrickBot/nqc/issues) for this project.
 
+
+NQC on Windows
+--------------
+
+You can download the The "official" Win32 release of NQC posted on the original
+project website [here](https://github.com/BrickBot/nqc/releases/tag/v3.1-r6).
+
+The `nqc-win-3.1-r6.zip` contains the `nqc.exe` needed to compile and upload
+your programs and RCX firmware.
+
+This is the note to Windows Users from the [original README](./readme.txt):
+
+NQC is a command line based tool - normally you run it by typing an
+appropriate command into an MS-DOS window.  There is no GUI for it and
+if you double-click the `nqc.exe` file an MS-DOS console will be created
+for you, NQC will run within it, then since NQC finishes almost
+immediately, the entire window will disappear.
+
+Some people prefer command line based tools because they allow you to
+use the text editor of your choice, etc. It also makes for identical
+behavior under Windows, Mac, and Linux. In order to use the command line
+version of NQC you'll need to do two things:
+
+1. Use some sort of text editor (such as Notepad) to edit and save a
+source file for NQC to compile.
+
+2. From an MS-DOS window type the appropriate NQC command. Its usually
+best to either put all of your programs and `nqc.exe` in the same
+directory, or make sure the directory containing NQC is in your command
+path.
+
+If any of the above seem either too confusing or too tedious, then you
+may want to try the BricxCC which provides a familiar Windows style GUI on top
+of the standard NQC compiler.  You can download BricxCC
+[here](http://bricxcc.sourceforge.net/).
+
+NQC on Linux
+------------
+
+### USB Tower
+
+Most Linux distributions ship with Linux kernels which include support for the LEGO USB Tower by default.
+
+To check if your Linux has support for the LEGO USB Tower open a terminal and show the kernel ring buffer using this command:
+
+```
+sudo dmesg --follow
+```
+
+(If your `dmesg` does not support the `--follow` option, plug in the tower first and call `dmesq` afterwards.)
+
+Now plug in the LEGO USB Tower. The kernel ring buffer should show lines similar to those below:
+```
+[1006170.647340] usb 1-2: new low-speed USB device number 26 using xhci_hcd
+[1006170.815426] usb 1-2: New USB device found, idVendor=0694, idProduct=0001, bcdDevice= 1.00
+[1006170.815441] usb 1-2: New USB device strings: Mfr=4, Product=26, SerialNumber=0
+[1006170.815449] usb 1-2: Product: LEGO USB Tower
+[1006170.815456] usb 1-2: Manufacturer: LEGO Group
+[1006171.465241] legousbtower 1-2:1.0: LEGO USB Tower firmware version is 1.0 build 134
+[1006171.465453] legousbtower 1-2:1.0: LEGO USB Tower #0 now attached to major 180 minor 160
+[1006171.465511] usbcore: registered new interface driver legousbtower
+```
+
+Most important here are the last three lines containing "legousbtower". They indicate that the tower has been recognized and its driver has been loaded.
+
+### Serial Port
+
+By default `nqc` uses `/dev/ttyS0` as the device name for the serial port.  If
+you are using the second serial port, then `/dev/ttyS1` should work.
+
+### Build NQC
+
+#### Prerequisite
+
+In order to build NQC you need
+
+- `git` to download the source code (optional - you can also download a ZIP archive)
+- a toolchain, `yacc` and `flex` to build the sources
+- `emscripten` for WebAssembly support
+
+On Debian based distributions you can install those using:
+
+```
+sudo apt update
+sudo apt install git build-essential yacc flex emscripten
+```
+
+#### Download NQC sources
+
+Goto https://github.com/BrickBot/nqc to dowload the ZIP archive (`<>` Code -> Download ZIP).
+
+Or use `git`:
+
+```
+git clone https://github.com/BrickBot/nqc.git
+```
+
+#### Compile NQC
+
+Change into the NQC source directory
+
+```
+cd nqc
+```
+and build it:
+
+```
+make
+```
+
+### Upload Firmware to RCX
+
+Change into the NQC source directory (if not already there):
+
+```
+cd nqc
+```
+Upload the latest firmware:
+
+```
+./bin/nqc  -Susb -firmware firmware/firm0332.lgo
+```
+
+### Run test programm
+
+Change into the NQC source directory (if not already there):
+
+```
+cd nqc
+```
+
+Upload the test program:
+
+```
+./bin/nqc -Susb -d test.nqc
+```
+
+Proceed with [Getting started](#getting-started).
+
 ---
 
 WebAssembly Support
@@ -34,91 +216,13 @@ Additionally, the Makefile has also been updated so that only one command—`mak
 
 With NQC compiled as **WebAssembly bytecode (WASM)**, it can run in a web browser—without any installation and independent of the machine’s platform (Windows, Linux, Unix, MacOS, etc).
 
-
 ---
 
-The original README from the NQC project follows:
+Original NQC Project
+===================
 
-(Orignal) NQC ReadMe
-====================
+For reference the original README is still [here](./readme.txt).
 
-If you have a problem, PLEASE CHECK THE FAQ:
-* http://bricxcc.sourceforge.net/nqc/doc/faq.html
-  
-Send bug reports to bricxcc@comcast.net.  Be sure to include details about what
-platform you are running nqc on and a sample file that demonstrates the bug if
-possible.
-
-For updates and additional documentation, visit the [NQC Web Site](http://bricxcc.sourceforge.net/nqc)
-
-
-Note to Windows Users
----------------------
-
-NQC is a command line based tool - normally you run it by typing an
-appropriate command into an MS-DOS window.  There is no GUI for it and
-if you double-click the nqc.exe file an MS-DOS console will be created
-for you, NQC will run within it, then since NQC finishes almost
-immediately, the entire window will disappear.
-
-Some people prefer command line based tools because they allow you to
-use the text editor of your choice, etc. It also makes for identical
-behavior under Windows, Mac, and Linux. In order to use the command line
-version of NQC you'll need to do two things:
-
-1. Use some sort of text editor (such as Notepad) to edit and save a
-source file for NQC to compile.
-
-2. From an MS-DOS window type the appropriate NQC command. Its usually
-best to either put all of your programs and nqc.exe in the same
-directory, or make sure the directory containing NQC is in your command
-path. 
-
-If any of the above seem either too confusing or too tedious, then you
-may want to try the BricxCC which provides a familiar Windows style GUI on top
-of the standard NQC compiler.  You can download BricxCC here:
-
-http://bricxcc.sourceforge.net/
-
-
-Getting started
----------------
-
-Download the appropriate compiler (nqc or nqc.exe) and put it where
-your shell can find it as a command.
-
-The IR tower should be connected to your modem port (macintosh) or COM1
-(Win32/Linux). The IR tower should be set for "near" mode (small
-triangle). The RCX should also be set for this mode, and firmware must
-already be downloaded.
-
-Compile and download the test file using the following command line:
-
-`nqc -d test.nqc
-
-The test program assumes there's a motor on output A and a touch sensor
-on input 1.  It turns on the motor and waits for the switch to be
-pressed, then it turns off the motor and plays a sound.
-
-If you are using a USB tower or a different serial port you will need to
-specify the port either by adding a -Sx option (where x is the name of the
-port) to the command line or by setting the RCX_PORT environment variable.
-
-Here are some examples:
-
-USB tower (where supported)
-	nqc -Susb -d test.nqc
-
-Win32 COM2 port:
-	set RCX_PORT=COM2
-
-Win32 USB port:
-	set RCX_PORT=usb
-	
-Linux:
-	The syntax for setting environment variables is shell specific.  By
-	default nqcc uses "/dev/ttyS0" as the device name for the serial
-    port.  If you are using the second serial port, then "/dev/ttyS1"
-    should work.  Other device drivers may or may not work depending on if
-    they implement the expected ioctl's to setup the baud rate, parity,
-    etc.
+* Original [NQC Web Site](http://bricxcc.sourceforge.net/nqc)
+* [FAQ](http://bricxcc.sourceforge.net/nqc/doc/faq.html)
+* You may contact the project founder via bricxcc@comcast.net
