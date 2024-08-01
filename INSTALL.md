@@ -12,7 +12,7 @@ sudo dmesg --follow
 
 (If your `dmesg` does not support the `--follow` option, plug in the tower first and call `dmesq` afterwards.)
 
-Now plug in the LEGO USB Tower. The kernel ring buffer should lines similar to those below:
+Now plug in the LEGO USB Tower. The kernel ring buffer should show lines similar to those below:
 ```
 [1006170.647340] usb 1-2: new low-speed USB device number 26 using xhci_hcd
 [1006170.815426] usb 1-2: New USB device found, idVendor=0694, idProduct=0001, bcdDevice= 1.00
@@ -73,6 +73,7 @@ Change into the NQC source directory (if not already there):
 ```
 cd nqc
 ```
+Upload the latest firmware:
 
 ```
 ./bin/nqc  -Susb -firmware firmware/firm0332.lgo
