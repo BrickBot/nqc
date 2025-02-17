@@ -48,7 +48,8 @@ Win32 USB port:
 set RCX_PORT=usb
 ```
 
-For tutorials, examples, reusable libraries, and more, please check out the associated [NQC-Libs project](https://github.com/BrickBot/nqc-libs).
+> [!Tip]
+> For tutorials, examples, reusable libraries, and more, please check out the associated [NQC-Libs project](https://github.com/BrickBot/nqc-libs).
 
 About
 -----
