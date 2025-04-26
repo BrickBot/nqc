@@ -1,26 +1,30 @@
 NQC Release Notes
 =================
 
-version 3.2 r2
---------------
-
-* Add support for building as a WebAssembly (based on work initiated by [maehw](https://github.com/maehw/WebNQC))
-* Cleanup and typo fixes
-* Address compiler warnings
-* Add support for linker hardening via LDFLAGS
-
-
-version 3.2 r1
---------------
+version 4.0.0
+-------------
 
 First release from the BrickBot/nqc repository on GitHub
-* [Patches that were posted by Matthew Sheets to the original SourceForge project site following the release of nqc 3.1r6 but never incorporated](https://sourceforge.net/p/bricxcc/patches/):
+* [Patches that were posted by Matthew Sheets to the original SourceForge project site following the release of nqc 3.1r6 but never incorporated](https://sourceforge.net/p/bricxcc/patches/) (primarily enhancing capabilities on Linux):
   + [Added TCP support, facilitating use of NQC with programs such as BrickEmu (an RCX emulator)](https://sourceforge.net/p/bricxcc/patches/2/)
   + [Added additional capabilities for specifying the default USB port, including at both compile time using a Make variable and via enhanced command-line argument support](https://sourceforge.net/p/bricxcc/patches/2/)
   + [Support Makefile variables DESTDIR and TOOLPREFIX](https://sourceforge.net/p/bricxcc/patches/3/)
   + [Enable specifying the default IR tower name in a configuration file](https://sourceforge.net/p/bricxcc/patches/4/)
   + [Support using a Make variable to specify the default compile-time port name, instead of having to modify source code files](https://sourceforge.net/p/bricxcc/patches/5/)
 * Updates made to the [jverne/nqc](https://github.com/jverne/nqc) fork, which was maintained to keep NQC building and running on OS X and BSD
+* Add support for building as a WebAssembly (based on work initiated by [maehw](https://github.com/maehw/WebNQC), which was itself forked from this BrickBot/nqc project)
+* Address compiler warnings
+* Add support for linker hardening via LDFLAGS
+* Ensure Swan code does not segfault
+* Fix error text format assuming %d usage for intptr_t
+* Cleanup and typo fixes
+* Replace or remove dead links in manual page
+* Update release versioning to generally align with [semantic versioning](https://semver.org/) practices
+* Update Makefile
+  + Created or enhanced troubleshooting targets (e.g. info, list-variables, submake-list)
+  + Added targets for Stow support
+  + Adopted more common install variables, such as prefix, exec_prefix, bindir, datarootdir, mandir, man1dir, etc.
+  + Updated the default path for manuals to move under the "share" directory
 
 
 version 3.1 r6
