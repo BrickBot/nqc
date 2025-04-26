@@ -10,7 +10,7 @@ Usage recommendation matrix:
 
 | Scenario | Suggestion |
 | -------- | ---------- |
-| Just getting started with programming? | Graphical environments such as the MindStorms RIS software or RoboLab might offer a more suitable starting point. |
+| Just getting started with programming? | Graphical environments such as the MindStorms RIS software, [VisualNQC](https://github.com/BrickBot/VisualNQC), or RoboLab might offer a more suitable starting point. |
 | A C programmer who prefers typing a few lines code over drag-and-drop icon programming ? | NQC might be perfect for you. |
 
 Getting Started
