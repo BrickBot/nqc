@@ -493,7 +493,7 @@ public:
 };
 
 /// Swan support code
-const ubyte nSwanInstructionLength[256] = {
+ubyte nSwanInstructionLength[256] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

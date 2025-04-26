@@ -12,6 +12,7 @@
  *
  */
 #include <cstdio>
+#include <inttypes.h>
 #include "parser.h"
 #include "Buffer.h"
 #include "Error.h"
@@ -46,8 +47,8 @@ static const char *sErrorText[] = {
 	"expression is not a legal target for assignment",
 
 	"undefined task \'%s\'",
-	"maximum of %d subroutines exceeded",
-	"maximum of %d tasks exceeded",
+	"maximum of %" PRIdPTR " subroutines exceeded",
+	"maximum of %" PRIdPTR " tasks exceeded",
 	"initialization function \'%s\' is not defined",
 	"task \'main\' not defined",
 	"\'continue\' is only valid within a loop",
@@ -88,7 +89,7 @@ static const char *sErrorText[] = {
 	"label \'%s\' redefined",
 
 	"illegal resource type",
-	"maximum of %d resources of this type exceeded",
+	"maximum of %" PRIdPTR " resources of this type exceeded",
 
         "cannot take the address of an array with a non-constant index",
 
