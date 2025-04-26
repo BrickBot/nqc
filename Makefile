@@ -47,11 +47,31 @@ FLEX ?= flex -Cfe
 #
 LIBS ?= -lstdc++
 
-# installation information
-PREFIX ?= /usr/local
-BINDIR ?= ${PREFIX}/bin
-MANDIR ?= ${PREFIX}/man/man1
-MANEXT ?= 1
+
+# installation defaults
+
+# Normalize for path prepending (remove any trailing slash)
+# Cannot use \$(realpath \$(dir)) since this path might not exist
+ifneq ($(DESTDIR),)
+DESTDIR := $(patsubst %/,%,$(DESTDIR))
+endif
+
+ifneq ($(prefix),)
+prefix := $(patsubst %/,%,$(prefix))
+endif
+
+prefix ?= /opt/stow/nqc
+exec_prefix ?= $(prefix)
+bindir ?= $(exec_prefix)/bin
+datarootdir ?= $(prefix)/share
+mandir ?= $(datarootdir)/man
+man1dir ?= $(mandir)/man1
+manext ?= 1
+
+STOW_TARGET ?= /usr/local
+STOW_DIR ?= $(dir $(prefix))
+STOW_PACKAGE = $(shell basename $(prefix))
+STOW_STANDARD_ARGS = --dir=$(DESTDIR)$(STOW_DIR) --target=$(DESTDIR)$(STOW_TARGET) --verbose
 
 # other commands
 CP ?= cp -f
@@ -228,10 +248,12 @@ $(OBJ_DIR)/%.o: %.cpp
 #
 # clean up stuff
 #
-clean: clean-parser clean-lexer clean-obj clean-nqh clean-nub
+clean: clean-parser clean-lexer clean-obj clean-build clean-nqh clean-nub
+
+clean-build:
+	-$(RM) -r $(BUILD_DIR)/*
 
 clean-obj:
-	-$(RM) $(BUILD_DIR)/*
 	-$(RM) */*.o
 
 clean-parser:
@@ -318,17 +340,60 @@ docs:
 #
 # Installation of binary and man page
 #
-install: all
-	test -d $(DESTDIR)$(BINDIR) || mkdir -p $(DESTDIR)$(BINDIR)
-	cp -r $(EXEC_DIR)/* $(DESTDIR)$(BINDIR)
-	test -d $(DESTDIR)$(MANDIR)  || mkdir -p $(DESTDIR)$(MANDIR)
-	cp nqc-man.man $(DESTDIR)$(MANDIR)/nqc.$(MANEXT)
+install: info nqh nub exec
+	-mkdir -p $(DESTDIR)$(bindir)
+	cp -r $(EXEC_DIR)/* $(DESTDIR)$(bindir)
+	-mkdir -p $(DESTDIR)$(man1dir)
+	cp nqc-man.man $(DESTDIR)$(man1dir)/nqc.$(manext)
+
+#
+# Stow targets
+#
+
+# Defining STOW_DIR as a prerequisite of stow and
+#  install as a prerequitise of STOW_DIR still causes
+#  the install target to executed every time, even if
+#  configured as an order-only prerequisite.  Thus,
+#  we check for STOW_DIR and trigger install manually.
+stow: install
+ifeq (,$(wildcard $(DESTDIR)$(STOW_DIR)))
+	$(MAKE)  install
+endif
+	stow $(STOW_STANDARD_ARGS) --stow "$(STOW_PACKAGE)"
+
+restow:
+	stow $(STOW_STANDARD_ARGS) --restow "$(STOW_PACKAGE)"
+
+unstow:
+	stow $(STOW_STANDARD_ARGS) --delete "$(STOW_PACKAGE)"
+
 
 #
 # Print some info about the environment
 #
+list-variables:
+	$(foreach v, \
+		$(shell echo "$(filter-out .VARIABLES,$(.VARIABLES))" | tr ' ' '\n' | sort), \
+		$(info $(shell printf "%-20s" "$(v)")= $(value $(v))) \
+	)
+
+submake-list:
+	$(MAKE) list-variables
+
 info:
 	@echo Building for: $(OSTYPE)
+	@echo DESTDIR=$(DESTDIR)
+	@echo prefix=$(prefix)
+	@echo exec_prefix=$(exec_prefix)
+	@echo bindir=$(bindir)
+	@echo datarootdir=$(datarootdir)
+	@echo mandir=$(mandir)
+	@echo man1dir=$(man1dir)
+	@echo manext=$(manext)
+	@echo STOW_TARGET=$(STOW_TARGET)
+	@echo STOW_DIR=$(STOW_DIR)
+	@echo STOW_PACKAGE=$(STOW_PACKAGE)
+	@echo STOW_STANDARD_ARGS=$(STOW_STANDARD_ARGS)
 	@echo BUILD_DIR=$(BUILD_DIR)
 	@echo OBJ_DIR=$(OBJ_DIR)
 	@echo UTILS_DIR=$(UTILS_DIR)
@@ -336,7 +401,6 @@ info:
 	@echo EXEC_EXT=$(EXEC_EXT)
 	@echo USBOBJ=$(USBOBJ)
 	@echo TCPOBJ=$(TCPOBJ)
-	@echo PREFIX=$(PREFIX)
 	@echo YACC=$(YACC)
 	@echo FLEX=$(FLEX)
 	@echo LIBS=$(LIBS)
