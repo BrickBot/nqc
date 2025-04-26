@@ -1163,7 +1163,9 @@ void PrintVersion(FILE* gStream)
 {
     fprintf(gStream, "nqc version %s (built %s, %s)\n",
         VERSION_STRING, __DATE__, __TIME__);
-    fprintf(gStream, "     Copyright (C) 2005 John Hansen.  All Rights Reserved.\n");
+    fprintf(gStream, "    Original Copyright (C) 2005 John Hansen.  All Rights Reserved.\n");
+    fprintf(gStream, "    Updates  Copyright (C) 2025 Matthew Sheets & contributors.\n");
+    fprintf(gStream, "    Original: https://bricxcc.sf.net/nqc/  Updates: https://BrickBot.GitHub.io/\n");
 }
 
 void PrintUsage()
