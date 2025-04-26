@@ -14,11 +14,12 @@
 #ifndef __version_h
 #define __version_h
 
-#define MAJOR_VERSION	3
-#define MINOR_VERSION	2
-#define RELEASE_STAGE	"r"
+#define MAJOR_VERSION	4
+#define MINOR_VERSION	0
+#define PATCH_VERSION 0
 
 // 0=alpha, 2=release
+#define RELEASE_STAGE	"r"
 #define RELEASE_STAGE_INDEX 0
 
 #define RELEASE_BUILD	2
@@ -26,6 +27,6 @@
 #define STR_(x)	#x
 #define STR(x)	STR_(x)
 
-#define VERSION_STRING STR(MAJOR_VERSION) "." STR(MINOR_VERSION) " " RELEASE_STAGE STR(RELEASE_BUILD) "\0"
+#define VERSION_STRING STR(MAJOR_VERSION) "." STR(MINOR_VERSION) "." STR(PATCH_VERSION) "\0"
 
 #endif
