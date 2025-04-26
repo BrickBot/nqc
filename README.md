@@ -1,8 +1,17 @@
 NQC  ![NQC CI](https://github.com/BrickBot/nqc/workflows/NQC%20CI/badge.svg)
 ===
-Not Quite C is a simple language with a C-like syntax that can be used to program Lego's RCX programmable brick (from the MindStorms set).
-* If you are just getting started with programming, then graphical environments such as the MindStorms RIS software or RoboLab are probably better choices.
-* If, however, you are a C programmer and prefer typing a few lines to drag-and-drop icon programming, then NQC might be perfect for you.
+Not Quite C is a simple language with a C-like syntax that can be used to program
+LEGO’s RCX programmable brick (from the MindStorms set) that is running
+firmware either [standard LEGO firmware](https://github.com/BrickBot/Archive/releases/tag/LEGO) (latest [0332] recommended)
+or the earlier versions of [Dick Swan’s “fast” firmware](https://github.com/BrickBot/RobotC/releases/tag/Firmware)
+that were still compatible with NQC.
+
+Usage recommendation matrix:
+
+| Scenario | Suggestion |
+| -------- | ---------- |
+| Just getting started with programming? | Graphical environments such as the MindStorms RIS software or RoboLab might offer a more suitable starting point. |
+| A C programmer who prefers typing a few lines code over drag-and-drop icon programming ? | NQC might be perfect for you. |
 
 Getting Started
 ---------------
@@ -10,6 +19,8 @@ Getting Started
 See [NQC on Windows](#nqc-on-windows) or [NQC on Linux](#nqc-on-linux) for how
 to download the appropriate compiler (`nqc` or `nqc.exe`) and put it where your
 shell can find it as a command.
+
+On Debian-based systems, check out the `nqc` package (`sudo apt install nqc`)!
 
 The IR tower should be connected to your modem port (Mac/Linux) or COM1
 (Windows). The IR tower should be set for "near" mode (small triangle). The RCX
