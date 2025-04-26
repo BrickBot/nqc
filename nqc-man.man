@@ -201,24 +201,19 @@ but for reference, \fIrcx2.nqh\fR is included with the package.
 (If you installed the RPM, try \fI/usr/doc/nqc-2.1.0/rcx2.nqh\fR).
 .SH SEE ALSO
 .TP
-.I http://www.enteract.com/~dbaum/nqc/
+.I https://bricxcc.sourceforge.net/nqc/
 The main Not Quite C web site.  You'll definitely want to look here. 
 Notably, you'll find the \fINQC Programmer's Guide\fR, which covers the NQC
 language itself.
 .TP
-.I http://www.crynwr.com/lego-robotics/
+.I https://web.archive.org/web/20240620153414/http://www.crynwr.com/lego-robotics/
 A great site for alternative RCX / Mindstorms development.
 .TP
-.I http://graphics.stanford.edu/~kekoa/rcx/
+.I https://www.mralligator.com/rcx/
 Details on the internals of the RCX and the RCX protocol.
 .TP 
-.I http://www.lugnet.com/robotics/rcx/nqc/
+.I https://www.lugnet.com/robotics/rcx/nqc/
 Discussion group for NQC.  Also available via NNTP at \fIlugnet.com\fR.
-.TP 
-.I http://nqc.mattdm.org/
-Linux binaries and RPM-format packages for NQC, including source RPMs.  Also
-has an RPM containing the NQC language documentation from Dave's site, in
-case you'd prefer to have it installed locally.
 .SH BUGS
 None known.  But be aware that Scout support is still preliminary and may
 change significantly.
