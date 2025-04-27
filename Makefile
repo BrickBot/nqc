@@ -50,6 +50,18 @@ FLEX ?= flex -Cfe
 #
 LIBS ?= -lstdc++
 
+#
+# Toolchain for h8300-hitachi-coff
+#
+H8300_TOOLPREFIX ?= h8300-hitachi-coff-
+H8300_LD ?= $(H8300_TOOLPREFIX)ld
+H8300_AS ?= $(H8300_TOOLPREFIX)as
+H8300_OBJDUMP ?= $(H8300_TOOLPREFIX)objdump
+
+H8300_FOUND := $(shell $(H8300_AS) --version >/dev/null 2>&1 && echo found)
+ifneq ($(H8300_FOUND), found)
+$(warning h8300-hitachi-coff toolchain not found, using pre-built files)
+endif
 
 # installation defaults
 
@@ -84,7 +96,7 @@ RM ?= rm -f
 DOXYGEN ?= doxygen
 
 # Common local include directories
-INCLUDE_DIRS = platform rcxlib nqc compiler
+INCLUDE_DIRS = platform rcxlib nqc compiler $(GEN_DIR)/rcxlib
 INCLUDES = $(addprefix -I, $(INCLUDE_DIRS))
 
 # Common compiler flags
@@ -93,13 +105,17 @@ CFLAGS_FOR_BUILD += $(INCLUDES) -Wall
 
 # Default configuration values
 OBJ_SUBDIR_NAME ?= obj
+H8300_SUBDIR_NAME ?= h8300
 UTILS_SUBDIR_NAME ?= utils
 EXEC_SUBDIR_NAME ?= bin
+GEN_SUBDIR_NAME ?= generated
 
 BUILD_DIR ?= build
 OBJ_DIR ?= $(BUILD_DIR)/$(OBJ_SUBDIR_NAME)
+H8300_DIR ?= $(BUILD_DIR)/$(H8300_SUBDIR_NAME)
 EXEC_DIR ?= $(BUILD_DIR)/$(EXEC_SUBDIR_NAME)
 UTILS_DIR ?= $(BUILD_DIR)/$(UTILS_SUBDIR_NAME)
+GEN_DIR ?= $(BUILD_DIR)/$(GEN_SUBDIR_NAME)
 
 
 # Default to NO USB tower support and NO TCP support.
@@ -228,7 +244,7 @@ NQCOBJS = nqc SRecord DirList CmdLine
 NQCOBJ = $(addprefix nqc/, $(addsuffix .o, $(NQCOBJS)))
 
 
-all : info exec emscripten-emmake
+all: info exec emscripten-emmake default-check-fastdl
 
 exec: info $(EXEC_DIR)/nqc$(EXEC_EXT)
 
@@ -252,7 +268,7 @@ $(OBJ_DIR)/%.o: %.cpp | compiler/parse.cpp
 #
 # clean up stuff
 #
-clean: clean-parser clean-lexer clean-obj clean-build clean-nqh clean-nub
+clean: clean-parser clean-lexer clean-obj clean-build clean-nqh
 
 clean-build:
 	-$(RM) -r $(BUILD_DIR)/*
@@ -269,12 +285,10 @@ clean-lexer:
 clean-nqh:
 	-$(RM) compiler/rcx1_nqh.h compiler/rcx2_nqh.h
 
-clean-nub:
-	-$(RM) rcxlib/rcxnub.h
-
 #
 # create the parser files (parse.cpp and parse.tab.h)
 #
+compiler/parse.tab.h: compiler/parse.cpp
 compiler/parse.cpp: compiler/parse.y
 	cd compiler ; \
 	$(YACC) -d parse.y ; \
@@ -309,14 +323,70 @@ compiler/rcx2_nqh.h: compiler/rcx2.nqh $(UTILS_DIR)/mkdata
 $(OBJ_DIR)/compiler/Compiler.o: compiler/rcx1_nqh.h compiler/rcx2_nqh.h
 
 #
-# rcxnub.h
+# rcxnub.h & rcxnub_odd.h
 #
-nub: rcxlib/rcxnub.h
+nub: $(GEN_DIR)/rcxlib/rcxnub.h $(GEN_DIR)/rcxlib/rcxnub_odd.h
 
-rcxlib/rcxnub.h: rcxlib/fastdl.srec $(UTILS_DIR)/mkdata
+$(GEN_DIR)/rcxlib/rcxnub.h: $(H8300_DIR)/rcxlib/fastdl.srec $(UTILS_DIR)/mkdata
+	$(MKDIR) $(dir $@)
 	$(UTILS_DIR)/mkdata -s $< $@ rcxnub
 
-$(OBJ_DIR)/rcxlib/RCX_Link.o: rcxlib/rcxnub.h
+$(GEN_DIR)/rcxlib/rcxnub_odd.h: $(H8300_DIR)/rcxlib/fastdl_odd.srec $(UTILS_DIR)/mkdata
+	$(MKDIR) $(dir $@)
+	$(UTILS_DIR)/mkdata -s $< $@ rcxnub_odd
+
+$(OBJ_DIR)/rcxlib/RCX_Link.o: $(GEN_DIR)/rcxlib/rcxnub.h $(GEN_DIR)/rcxlib/rcxnub_odd.h
+
+#
+# fastdl.srec & fastdl_odd.srec
+#
+FASTDL = fastdl fastdl_odd
+fastdl: $(FASTDL:%=$(H8300_DIR)/rcxlib/%.srec)
+
+ifeq ($(H8300_FOUND), found)
+
+$(H8300_DIR)/rcxlib/fastdl.o: rcxlib/fastdl.s
+	$(MKDIR) $(dir $@)
+	$(H8300_AS) -o $@ $<
+
+$(H8300_DIR)/rcxlib/fastdl_odd.o: rcxlib/fastdl.s
+	$(MKDIR) $(dir $@)
+	$(H8300_AS) --defsym odd=1 -o $@ $<
+
+$(H8300_DIR)/rcxlib/%.srec: $(H8300_DIR)/rcxlib/%.o
+	$(MKDIR) $(dir $@)
+	$(H8300_LD) -Ttext 0x8000 -e __start --oformat srec -o $@ $<
+	chmod -x $@
+
+dis: $(FASTDL:%=$(H8300_DIR)/rcxlib/%.dis.s)
+%.dis.s: %.srec
+	$(H8300_OBJDUMP) -m h8300 -D $< > $@ || rm $@
+
+default-snapshot-fastdl: $(FASTDL:%=$(H8300_DIR)/rcxlib/%.srec)
+	$(MKDIR) default
+	$(CP) $(FASTDL:%=$(H8300_DIR)/rcxlib/%.srec) default
+
+default-check-fastdl: $(FASTDL:%=$(H8300_DIR)/rcxlib/%.srec.check)
+
+$(H8300_DIR)/rcxlib/%.srec.check: default/%.srec $(H8300_DIR)/rcxlib/%.srec
+	@echo "Please run make default-snapshot-fastdl and commit if this fail:"
+	diff -u $^
+	touch $@
+
+else
+
+$(H8300_DIR)/rcxlib/%.srec: default/%.srec
+	$(MKDIR) $(dir $@)
+	$(CP) $< $@
+
+default-snapshot-fastdl:
+	@echo "no h8300-hitachi-coff toolchain"
+	false
+
+default-check-fastdl:
+	@echo "no h8300-hitachi-coff toolchain, cannot check pre-built files"
+
+endif
 
 #
 # Use these targets to use the default parser/lexer files.  This is handy if
@@ -332,12 +402,13 @@ default-lexer:
 # This is used to create a default parser, lexer, and nqh files for later use.
 # You shouldn't need to do this as part of a port.
 #
-DEF_FILES = compiler/parse.cpp compiler/lexer.cpp compiler/rcx1_nqh.h compiler/rcx2_nqh.h
-default-snapshot: default $(DEF_FILES)
-	$(CP) $(DEF_FILES) compiler/parse.tab.h default
-
-default:
+DEF_FILES = compiler/parse.cpp compiler/parse.tab.h \
+	    compiler/lexer.cpp \
+	    compiler/rcx1_nqh.h compiler/rcx2_nqh.h
+default-snapshot: default-snapshot-fastdl $(DEF_FILES)
 	$(MKDIR) default
+	$(CP) $(DEF_FILES) default
+
 
 #
 # Generate API docs. Not part of a port.
@@ -404,7 +475,9 @@ info:
 	@echo STOW_STANDARD_ARGS=$(STOW_STANDARD_ARGS)
 	@echo BUILD_DIR=$(BUILD_DIR)
 	@echo OBJ_DIR=$(OBJ_DIR)
+	@echo H8300_DIR=$(H8300_DIR)
 	@echo UTILS_DIR=$(UTILS_DIR)
+	@echo GEN_DIR=$(GEN_DIR)
 	@echo EXEC_DIR=$(EXEC_DIR)
 	@echo EXEC_EXT=$(EXEC_EXT)
 	@echo USBOBJ=$(USBOBJ)
@@ -416,3 +489,8 @@ info:
 	@echo CFLAGS=$(CFLAGS)
 	@echo CFLAGS_EXEC=$(CFLAGS_EXEC)
 	@echo OBJ=$(OBJ)
+	@echo H8300_TOOLPREFIX=$(H8300_TOOLPREFIX)
+	@echo H8300_LD=$(H8300_LD)
+	@echo H8300_AS=$(H8300_AS)
+	@echo H8300_OBJDUMP=$(H8300_OBJDUMP)
+	@echo H8300_FOUND=$(H8300_FOUND)

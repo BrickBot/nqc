@@ -46,20 +46,24 @@ __start:
     push    r6
     mov.w   #rom_counter_struct,r6
     jsr     @init_timer
-    adds.w  #2,r7
+    adds    #2,r7
 
     mov.w   #rom_main_loop_state,r6
     jsr     @rom_init_handlers
 
+.ifndef odd
+
+    ; Turn off parity
+
+    bclr    #5,@0xd8:8
+
+.endif
+	
     ; Double the baud rate
 
     mov.b   #103,r6l
     mov.b   r6l,@0xd9:8
 
-    ; Turn off parity
-
-    bclr    #5,@0xd8:8
-	
     ; Turn off complements
 
     sub.b   r6l,r6l
