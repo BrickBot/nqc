@@ -29,6 +29,9 @@
 #
 CXX ?= ${CXX}
 # CXX ?= g++
+ifeq ($(origin CXX_FOR_BUILD), undefined)
+  CXX_FOR_BUILD := $(CXX)
+endif
 
 #
 # Pick your YACC processor
@@ -86,6 +89,7 @@ INCLUDES = $(addprefix -I, $(INCLUDE_DIRS))
 
 # Common compiler flags
 CFLAGS += $(INCLUDES) -Wall
+CFLAGS_FOR_BUILD += $(INCLUDES) -Wall
 
 # Default configuration values
 OBJ_SUBDIR_NAME ?= obj
@@ -224,7 +228,7 @@ NQCOBJS = nqc SRecord DirList CmdLine
 NQCOBJ = $(addprefix nqc/, $(addsuffix .o, $(NQCOBJS)))
 
 
-all : info nqh nub exec emscripten-emmake
+all : info exec emscripten-emmake
 
 exec: info $(EXEC_DIR)/nqc$(EXEC_EXT)
 
@@ -241,7 +245,7 @@ emscripten-emmake:
 #
 # general rule for compiling
 #
-$(OBJ_DIR)/%.o: %.cpp
+$(OBJ_DIR)/%.o: %.cpp | compiler/parse.cpp
 	$(MKDIR) $(dir $@)
 	$(CXX) -c $(CFLAGS) $< -o $@
 
@@ -289,7 +293,7 @@ compiler/lexer.cpp: compiler/lex.l
 #
 $(UTILS_DIR)/mkdata: mkdata/mkdata.cpp nqc/SRecord.cpp
 	$(MKDIR) $(dir $@)
-	$(CXX) -o $@ $(INCLUDES) $^
+	$(CXX_FOR_BUILD) $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) -o $@ $^
 
 #
 # NQH files
@@ -302,6 +306,8 @@ compiler/rcx1_nqh.h: compiler/rcx1.nqh $(UTILS_DIR)/mkdata
 compiler/rcx2_nqh.h: compiler/rcx2.nqh $(UTILS_DIR)/mkdata
 	$(UTILS_DIR)/mkdata $< $@ rcx2_nqh
 
+$(OBJ_DIR)/compiler/Compiler.o: compiler/rcx1_nqh.h compiler/rcx2_nqh.h
+
 #
 # rcxnub.h
 #
@@ -309,6 +315,8 @@ nub: rcxlib/rcxnub.h
 
 rcxlib/rcxnub.h: rcxlib/fastdl.srec $(UTILS_DIR)/mkdata
 	$(UTILS_DIR)/mkdata -s $< $@ rcxnub
+
+$(OBJ_DIR)/rcxlib/RCX_Link.o: rcxlib/rcxnub.h
 
 #
 # Use these targets to use the default parser/lexer files.  This is handy if
@@ -340,7 +348,7 @@ docs:
 #
 # Installation of binary and man page
 #
-install: info nqh nub exec
+install: info exec
 	-mkdir -p $(DESTDIR)$(bindir)
 	cp -r $(EXEC_DIR)/* $(DESTDIR)$(bindir)
 	-mkdir -p $(DESTDIR)$(man1dir)
