@@ -96,7 +96,7 @@ RM ?= rm -f
 DOXYGEN ?= doxygen
 
 # Common local include directories
-INCLUDE_DIRS = platform rcxlib nqc compiler $(GEN_DIR)/rcxlib
+INCLUDE_DIRS = platform rcxlib nqc compiler $(GEN_DIR)/rcxlib $(GEN_DIR)/compiler
 INCLUDES = $(addprefix -I, $(INCLUDE_DIRS))
 
 # Common compiler flags
@@ -268,7 +268,7 @@ $(OBJ_DIR)/%.o: %.cpp | compiler/parse.cpp
 #
 # clean up stuff
 #
-clean: clean-parser clean-lexer clean-obj clean-build clean-nqh
+clean: clean-parser clean-lexer clean-obj clean-build
 
 clean-build:
 	-$(RM) -r $(BUILD_DIR)/*
@@ -281,9 +281,6 @@ clean-parser:
 
 clean-lexer:
 	-$(RM) compiler/lexer.cpp
-
-clean-nqh:
-	-$(RM) compiler/rcx1_nqh.h compiler/rcx2_nqh.h
 
 #
 # create the parser files (parse.cpp and parse.tab.h)
@@ -312,15 +309,13 @@ $(UTILS_DIR)/mkdata: mkdata/mkdata.cpp nqc/SRecord.cpp
 #
 # NQH files
 #
-nqh: compiler/rcx1_nqh.h compiler/rcx2_nqh.h
+nqh: $(GEN_DIR)/compiler/rcx1_nqh.h $(GEN_DIR)/compiler/rcx2_nqh.h
 
-compiler/rcx1_nqh.h: compiler/rcx1.nqh $(UTILS_DIR)/mkdata
-	$(UTILS_DIR)/mkdata $< $@ rcx1_nqh
+$(GEN_DIR)/compiler/%_nqh.h: compiler/%.nqh $(UTILS_DIR)/mkdata
+	$(MKDIR) $(dir $@)
+	$(UTILS_DIR)/mkdata $< $@ $*_nqh
 
-compiler/rcx2_nqh.h: compiler/rcx2.nqh $(UTILS_DIR)/mkdata
-	$(UTILS_DIR)/mkdata $< $@ rcx2_nqh
-
-$(OBJ_DIR)/compiler/Compiler.o: compiler/rcx1_nqh.h compiler/rcx2_nqh.h
+$(OBJ_DIR)/compiler/Compiler.o: $(GEN_DIR)/compiler/rcx1_nqh.h $(GEN_DIR)/compiler/rcx2_nqh.h
 
 #
 # rcxnub.h & rcxnub_odd.h
@@ -399,12 +394,11 @@ default-lexer:
 	$(CP) default/lexer.cpp nqc
 
 #
-# This is used to create a default parser, lexer, and nqh files for later use.
+# This is used to create a default parser and lexer files for later use.
 # You shouldn't need to do this as part of a port.
 #
 DEF_FILES = compiler/parse.cpp compiler/parse.tab.h \
-	    compiler/lexer.cpp \
-	    compiler/rcx1_nqh.h compiler/rcx2_nqh.h
+	    compiler/lexer.cpp
 default-snapshot: default-snapshot-fastdl $(DEF_FILES)
 	$(MKDIR) default
 	$(CP) $(DEF_FILES) default
