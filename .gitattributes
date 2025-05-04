@@ -8,6 +8,9 @@
 *.h text
 *.l text
 
+# Text, but please do not touch.
+*.srec -text
+
 # Denote all files that are truly binary and should not be modified.
 *.png binary
 *.jpg binary
