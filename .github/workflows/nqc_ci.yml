@@ -7,9 +7,13 @@ on:
   pull_request:
     # branches: [ master ]
 
-jobs:
-  build:
+env:
+  UBUNTU_BUILD_DEPENDS:  flex bison emscripten
+  UBUNTU_CROSS_BUILD_DEPENDS:  binutils-h8300-hms
 
+jobs:
+  build_with_cross_compiler:
+    name:   Build with H8/300 Cross-Compiler
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -21,7 +25,34 @@ jobs:
     - name: Update build environment
       run:  sudo apt-get --assume-yes update
     - name: Install build dependencies
-      run:  sudo apt-get --assume-yes install flex bison binutils-h8300-hms emscripten
+      run:  sudo apt-get --assume-yes install $UBUNTU_BUILD_DEPENDS $UBUNTU_CROSS_BUILD_DEPENDS
+    - name: Execute the build
+      run:  make DEFAULT_SERIAL_NAME='"/dev/ttyS0"' DEFAULT_USB_NAME='"/dev/usb/legousbtower0"' DEFAULT_PORT_NAME='"usb"'
+    - name: Archive native build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: nqc-native-${{ matrix.os }}
+        path: build/bin/
+    - name: Archive JavaScript-WebAssembly build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: nqc-JS-WebAssembly-${{ matrix.os }}
+        path: build/js-wasm/
+
+  build_without_cross_compiler:
+    name:   Build without H8/300 Cross-Compiler
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+
+    steps:
+    - name: Get the latest from version control
+      uses: actions/checkout@v4
+    - name: Update build environment
+      run:  sudo apt-get --assume-yes update
+    - name: Install build dependencies
+      run:  sudo apt-get --assume-yes install $UBUNTU_BUILD_DEPENDS
     - name: Execute the build
       run:  make DEFAULT_SERIAL_NAME='"/dev/ttyS0"' DEFAULT_USB_NAME='"/dev/usb/legousbtower0"' DEFAULT_PORT_NAME='"usb"'
     - name: Archive native build artifacts
