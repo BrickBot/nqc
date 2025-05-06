@@ -38,6 +38,8 @@ jobs:
       with:
         name: nqc-JS-WebAssembly-${{ matrix.os }}
         path: build/js-wasm/
+    - name: Install the new build using Stow
+      run:  sudo make stow
 
   build_without_cross_compiler:
     name:   Build without H8/300 Cross-Compiler
