@@ -83,11 +83,6 @@ mandir ?= $(datarootdir)/man
 man1dir ?= $(mandir)/man1
 manext ?= 1
 
-STOW_TARGET ?= /usr/local
-STOW_DIR ?= $(dir $(prefix))
-STOW_PACKAGE = $(shell basename $(prefix))
-STOW_STANDARD_ARGS = --dir=$(DESTDIR)$(STOW_DIR) --target=$(DESTDIR)$(STOW_TARGET) --verbose
-
 # other commands
 CP ?= cp -f
 MKDIR ?= mkdir -p
@@ -419,40 +414,10 @@ install: info exec
 	-mkdir -p $(DESTDIR)$(man1dir)
 	cp nqc-man.man $(DESTDIR)$(man1dir)/nqc.$(manext)
 
-#
-# Stow targets
-#
-
-# Defining STOW_DIR as a prerequisite of stow and
-#  install as a prerequitise of STOW_DIR still causes
-#  the install target to executed every time, even if
-#  configured as an order-only prerequisite.  Thus,
-#  we check for STOW_DIR and trigger install manually.
-stow:
-ifeq (,$(wildcard $(DESTDIR)$(STOW_DIR)))
-	$(MAKE)  install
-endif
-	stow $(STOW_STANDARD_ARGS) --stow "$(STOW_PACKAGE)"
-
-restow:
-	stow $(STOW_STANDARD_ARGS) --restow "$(STOW_PACKAGE)"
-
-unstow:
-	stow $(STOW_STANDARD_ARGS) --delete "$(STOW_PACKAGE)"
-
 
 #
 # Print some info about the environment
 #
-list-variables:
-	$(foreach v, \
-		$(shell echo "$(filter-out .VARIABLES,$(.VARIABLES))" | tr ' ' '\n' | sort), \
-		$(info $(shell printf "%-20s" "$(v)")= $(value $(v))) \
-	)
-
-submake-list:
-	$(MAKE) list-variables
-
 info:
 	@echo Building for: $(OSTYPE)
 	@echo DESTDIR=$(DESTDIR)
@@ -467,6 +432,7 @@ info:
 	@echo STOW_DIR=$(STOW_DIR)
 	@echo STOW_PACKAGE=$(STOW_PACKAGE)
 	@echo STOW_STANDARD_ARGS=$(STOW_STANDARD_ARGS)
+	@echo STOW_PREREQ_TARGET=$(STOW_PREREQ_TARGET)
 	@echo BUILD_DIR=$(BUILD_DIR)
 	@echo OBJ_DIR=$(OBJ_DIR)
 	@echo H8300_DIR=$(H8300_DIR)
@@ -488,3 +454,6 @@ info:
 	@echo H8300_AS=$(H8300_AS)
 	@echo H8300_OBJDUMP=$(H8300_OBJDUMP)
 	@echo H8300_FOUND=$(H8300_FOUND)
+
+# Include the common Makefile utility targets
+include Makefile.utility

@@ -1,0 +1,74 @@
+### ==========================================================================
+###  $Id$
+###  FILE: Makefile.utility - Useful project-independent make targets
+###  Includes support for 
+###  * Stow: Makes the process of managing manual installs/uninstalls cleaner
+###       https://www.gnu.org/software/stow/
+###  * Debugging and troubleshooting
+###    - list-variables target: Outputs defined make variables & their values
+###    - submake-list target: Outputs list-variables for a submake
+### --------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
+#   Stow Support
+# ----------------------------------------------------------------------------
+
+# Stow Variables
+#
+STOW_TARGET ?= /usr/local
+STOW_DIR ?= $(dir $(prefix))
+STOW_PACKAGE = $(shell basename $(prefix))
+STOW_STANDARD_ARGS = --dir=$(DESTDIR)$(STOW_DIR) --target=$(DESTDIR)$(STOW_TARGET) --verbose
+
+# If STOW_DIR does not exist, the name of the target to execute to create it
+STOW_PREREQ_TARGET ?= install
+
+# Stow Targets
+#
+
+# Defining STOW_DIR as a prerequisite of stow and
+#  install as a prerequitise of STOW_DIR still causes
+#  the install target to executed every time, even if
+#  configured as an order-only prerequisite.  Thus,
+#  we check for STOW_DIR and trigger install manually.
+stow:   stow-check-package
+ifeq (,$(wildcard $(DESTDIR)$(STOW_DIR)))
+	$(MAKE)  $(STOW_PREREQ_TARGET)
+endif
+	stow $(STOW_STANDARD_ARGS) --stow "$(STOW_PACKAGE)"
+
+restow: stow-check-package
+	stow $(STOW_STANDARD_ARGS) --restow "$(STOW_PACKAGE)"
+
+unstow: stow-check-package
+	stow $(STOW_STANDARD_ARGS) --delete "$(STOW_PACKAGE)"
+
+stow-check-package:
+ifndef prefix
+	$(error The "prefix" variable needed by Stow is undefined)
+else
+	@echo "Stow package name identified as \"$(STOW_PACKAGE)\""
+endif
+
+
+# ----------------------------------------------------------------------------
+#   Output information about the environment
+# ----------------------------------------------------------------------------
+list-variables:
+	$(foreach v, \
+		$(shell echo "$(filter-out .VARIABLES,$(.VARIABLES))" | tr ' ' '\n' | sort), \
+		$(info $(shell printf "%-20s" "$(v)")= $(value $(v))) \
+	)
+
+submake-list:
+	$(MAKE) list-variables
+
+
+# ----------------------------------------------------------------------------
+#   Declare "phony" targets
+# ----------------------------------------------------------------------------
+.PHONY: stow restow unstow stow-check-package list-variables submake-list
+
+### --------------------------------------------------------------------------
+###                          End of FILE: Makefile.utility
+### ==========================================================================
