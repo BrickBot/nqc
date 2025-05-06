@@ -428,7 +428,7 @@ install: info exec
 #  the install target to executed every time, even if
 #  configured as an order-only prerequisite.  Thus,
 #  we check for STOW_DIR and trigger install manually.
-stow: install
+stow:
 ifeq (,$(wildcard $(DESTDIR)$(STOW_DIR)))
 	$(MAKE)  install
 endif
