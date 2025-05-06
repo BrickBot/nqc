@@ -2,6 +2,10 @@ name: NQC CI
 
 on:
   workflow_dispatch:
+  schedule:
+    # Following POSIX cron syntax, run every Monday morning at 5:30 AM UTC
+    #   https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
+    - cron:   '30 5 * * 1'
   push:
     # branches: [ master ]
   pull_request:
