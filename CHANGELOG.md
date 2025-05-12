@@ -1,6 +1,18 @@
 NQC Release Notes
 =================
 
+version 4.0.1
+-------------
+
+Nicolas Schodet
+* Remove execute permissions from files that don't need it
+* Build fastdl from the added source code
+* Generate rcxnub and rcxnub_odd from the assembly file
+* Fix build dependencies to enable parallel builds
+Matthew Sheets
+* Add the BrickBot Makefile.utility, including Stow support
+
+
 version 4.0.0
 -------------
 
