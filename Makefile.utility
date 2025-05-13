@@ -1,5 +1,5 @@
 ### ==========================================================================
-###  $Id$ 2025-05-05  Matthew Sheets
+###  $Id$ 2025-05-12  Matthew Sheets
 ###  FILE: Makefile.utility - Useful project-independent make targets
 ###  Includes support for 
 ###  * Stow: Makes the process of managing manual installs/uninstalls cleaner
@@ -16,8 +16,8 @@
 # Stow Variables
 #
 STOW_TARGET ?= /usr/local
-STOW_DIR ?= $(dir $(prefix))
-STOW_PACKAGE = $(shell basename $(prefix))
+STOW_DIR ?= $(dir $(abspath $(prefix)))
+STOW_PACKAGE = $(shell basename $(abspath $(prefix)))
 STOW_STANDARD_ARGS = --dir=$(DESTDIR)$(STOW_DIR) --target=$(DESTDIR)$(STOW_TARGET) --verbose
 
 # If STOW_DIR does not exist, the name of the target to execute to create it
@@ -35,7 +35,7 @@ stow:   stow-check-package
 ifeq (,$(wildcard $(DESTDIR)$(STOW_DIR)))
 	$(MAKE)  $(STOW_PREREQ_TARGET)
 endif
-	stow $(STOW_STANDARD_ARGS) --stow "$(STOW_PACKAGE)"
+	stow $(STOW_STANDARD_ARGS) --stow   "$(STOW_PACKAGE)"
 
 restow: stow-check-package
 	stow $(STOW_STANDARD_ARGS) --restow "$(STOW_PACKAGE)"
