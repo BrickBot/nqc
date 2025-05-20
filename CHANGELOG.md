@@ -23,7 +23,7 @@ First release from the BrickBot/nqc repository on GitHub
   + [Support Makefile variables DESTDIR and TOOLPREFIX](https://sourceforge.net/p/bricxcc/patches/3/)
   + [Enable specifying the default IR tower name in a configuration file](https://sourceforge.net/p/bricxcc/patches/4/)
   + [Support using a Make variable to specify the default compile-time port name, instead of having to modify source code files](https://sourceforge.net/p/bricxcc/patches/5/)
-* Updates made to the [jverne/nqc](https://github.com/jverne/nqc) fork, which was maintained to keep NQC building and running on OS X and BSD
+* Updates and cleanup from the [jverne/nqc](https://github.com/jverne/nqc) fork of John D. Vern, which was maintained to keep NQC building and running on OS X and BSD
 * Add support for building as a WebAssembly (based on work initiated by [maehw](https://github.com/maehw/WebNQC), which was itself forked from this BrickBot/nqc project)
 * Address compiler warnings
 * Add support for linker hardening via LDFLAGS
