@@ -1,5 +1,5 @@
 ### ==========================================================================
-###  $Id$ 2025-05-12  Matthew Sheets
+###  $Id$ 2025-05-24  Matthew Sheets
 ###  FILE: Makefile.utility - Useful project-independent make targets
 ###  Includes support for 
 ###  * Stow: Makes the process of managing manual installs/uninstalls cleaner
@@ -7,6 +7,7 @@
 ###  * Debugging and troubleshooting
 ###    - list-variables target: Outputs defined make variables & their values
 ###    - submake-list target: Outputs list-variables for a submake
+###    - list-env target: Outputs environment variables
 ### --------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
@@ -60,6 +61,9 @@ list-variables:
 		$(info $(shell printf "%-20s" "$(v)")= $(value $(v))) \
 	)
 
+list-env:
+	@printenv
+
 submake-list:
 	$(MAKE) list-variables
 
@@ -67,7 +71,7 @@ submake-list:
 # ----------------------------------------------------------------------------
 #   Declare "phony" targets
 # ----------------------------------------------------------------------------
-.PHONY: stow restow unstow stow-check-package list-variables submake-list
+.PHONY: stow restow unstow stow-check-package list-variables list-env submake-list
 
 ### --------------------------------------------------------------------------
 ###                          End of FILE: Makefile.utility
