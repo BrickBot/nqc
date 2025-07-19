@@ -17,11 +17,12 @@ env:
 
 jobs:
   build_with_cross_compiler:
-    name:   Build with H8/300 Cross-Compiler
+    name:   Build ${{ matrix.with_cross == 'true' &&  "with" || "without" }} H8/300 Cross-Compiler
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
+        os:         [ ubuntu-latest ]
+        with_cross: [ true, false ]
 
     steps:
     - name: Get the latest from version control
@@ -29,7 +30,7 @@ jobs:
     - name: Update build environment
       run:  sudo apt-get --assume-yes update
     - name: Install build dependencies
-      run:  sudo apt-get --assume-yes install $UBUNTU_BUILD_DEPENDS $UBUNTU_CROSS_BUILD_DEPENDS
+      run:  sudo apt-get --assume-yes install $UBUNTU_BUILD_DEPENDS $(if ${{ matrix.with_cross }} ; then echo "$UBUNTU_CROSS_BUILD_DEPENDS"; fi)
     - name: Execute the build
       run:  make DEFAULT_SERIAL_NAME='"/dev/ttyS0"' DEFAULT_USB_NAME='"/dev/usb/legousbtower0"' DEFAULT_PORT_NAME='"usb"'
     - name: Archive native build artifacts
