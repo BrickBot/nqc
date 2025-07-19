@@ -17,7 +17,7 @@ env:
 
 jobs:
   build_with_cross_compiler:
-    name:   Build ${{ matrix.with_cross && 'with' || 'without' }} H8/300 Cross-Compiler
+    name:   Build ${{ matrix.with_cross && 'with' || 'without' }} H8/300 Cross-Assembler
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -27,10 +27,11 @@ jobs:
     steps:
     - name: Get the latest from version control
       uses: actions/checkout@v4
-    - name: Update build environment
-      run:  sudo apt-get --assume-yes update
-    - name: Install build dependencies
-      run:  sudo apt-get --assume-yes install $UBUNTU_BUILD_DEPENDS $(if ${{ matrix.with_cross }} ; then echo "$UBUNTU_CROSS_BUILD_DEPENDS"; fi)
+    - name: Prepare the Ubuntu build environment
+      if:   contains(matrix.os, 'ubuntu')
+      run:  |
+        sudo apt-get --assume-yes update
+        sudo apt-get --assume-yes install $UBUNTU_BUILD_DEPENDS $(if ${{ matrix.with_cross }} ; then echo "$UBUNTU_CROSS_BUILD_DEPENDS"; fi)
     - name: Execute the build
       run:  make DEFAULT_SERIAL_NAME='"/dev/ttyS0"' DEFAULT_USB_NAME='"/dev/usb/legousbtower0"' DEFAULT_PORT_NAME='"usb"'
     - name: Archive native build artifacts
@@ -41,7 +42,7 @@ jobs:
     - name: Archive JavaScript-WebAssembly build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: nqc-JS-WebAssembly-${{ matrix.os }}
+        name: nqc-JS-WebAssembly-${{ matrix.with_cross && 'with' || 'without' }}-cross-assembler-on-${{ matrix.os }}
         path: build/js-wasm/
     - name: Install the new build using Stow
       run:  sudo make stow
@@ -50,7 +51,7 @@ jobs:
 
 
   build_without_cross_compiler:
-    name:   Build without H8/300 Cross-Compiler
+    name:   Build without H8/300 Cross-Assembler
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
