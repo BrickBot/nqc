@@ -44,6 +44,9 @@ jobs:
         path: build/js-wasm/
     - name: Install the new build using Stow
       run:  sudo make stow
+    - name: Show the directory tree of installed contents
+      run:  tree --dirsfirst "/opt/stow/nqc"
+
 
   build_without_cross_compiler:
     name:   Build without H8/300 Cross-Compiler
