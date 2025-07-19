@@ -17,7 +17,7 @@ env:
 
 jobs:
   build_with_cross_compiler:
-    name:   Build ${{ matrix.with_cross == 'true' &&  "with" || "without" }} H8/300 Cross-Compiler
+    name:   Build ${{ matrix.with_cross && 'with' || 'without' }} H8/300 Cross-Compiler
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
