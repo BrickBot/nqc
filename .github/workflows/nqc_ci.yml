@@ -37,7 +37,7 @@ jobs:
     - name: Archive native build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: nqc-native-${{ matrix.os }}
+        name: nqc-native-${{ matrix.with_cross && 'with' || 'without' }}-cross-assembler-on-${{ matrix.os }}
         path: build/bin/
     - name: Archive JavaScript-WebAssembly build artifacts
       uses: actions/upload-artifact@v4
