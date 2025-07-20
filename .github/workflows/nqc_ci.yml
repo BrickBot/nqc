@@ -12,8 +12,11 @@ on:
     # branches: [ master ]
 
 env:
-  UBUNTU_BUILD_DEPENDS:  flex bison emscripten stow
+  UBUNTU_BUILD_DEPENDS:        make flex bison binutils gcc g++ emscripten  stow
   UBUNTU_CROSS_BUILD_DEPENDS:  binutils-h8300-hms
+
+  CYGWIN_BUILD_DEPENDS:        make flex bison binutils gcc-core gcc-g++  stow
+  CYGWIN_CROSS_BUILD_DEPENDS:  h8300-hitachi-coff-toolchain
 
 jobs:
   build_with_cross_compiler:
@@ -21,28 +24,42 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os:         [ ubuntu-latest ]
-        with_cross: [ true, false ]
+        os:            [ "ubuntu-latest", "windows-latest" ]
+        with_cross:    [ true, false ]
+        platform:      [ "x86_64", "x86" ]
+        exclude:
+          - os:            ubuntu-latest
+            platform:      x86
+          - os:            windows-latest
+            with_cross:    true
 
     steps:
     - name: Get the latest from version control
       uses: actions/checkout@v4
-    - name: Prepare the Ubuntu build environment
+
+    - name: Setup Ubuntu build environment
       if:   contains(matrix.os, 'ubuntu')
-      run:  |
-        sudo apt-get --assume-yes update
-        sudo apt-get --assume-yes install $UBUNTU_BUILD_DEPENDS $(if ${{ matrix.with_cross }} ; then echo "$UBUNTU_CROSS_BUILD_DEPENDS"; fi)
+      run:  sudo apt-get --assume-yes update && sudo apt-get --assume-yes install $UBUNTU_BUILD_DEPENDS  ${{ matrix.with_cross && env.UBUNTU_CROSS_BUILD_DEPENDS }}
+
+    - name: Setup Cygwin build environment
+      if:   runner.os == 'Windows'
+      uses: cygwin/cygwin-install-action@v5
+      with:
+        platform: ${{ matrix.platform }}
+        packages: ${{ env.CYGWIN_BUILD_DEPENDS }}  ${{ matrix.with_cross && env.CYGWIN_CROSS_BUILD_DEPENDS }}
+
     - name: Execute the build
       run:  make DEFAULT_SERIAL_NAME='"/dev/ttyS0"' DEFAULT_USB_NAME='"/dev/usb/legousbtower0"' DEFAULT_PORT_NAME='"usb"'
+      # Cygwin action docs – https://github.com/marketplace/actions/install-cygwin-action
     - name: Archive native build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: nqc-native-${{ matrix.with_cross && 'with' || 'without' }}-cross-assembler-on-${{ matrix.os }}
+        name: nqc-native-${{ matrix.with_cross && 'with' || 'without' }}-cross-assembler-on-${{ matrix.os }}-${{ matrix.platform }}
         path: build/bin/
     - name: Archive JavaScript-WebAssembly build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: nqc-JS-WebAssembly-${{ matrix.with_cross && 'with' || 'without' }}-cross-assembler-on-${{ matrix.os }}
+        name: nqc-JS-WebAssembly-${{ matrix.with_cross && 'with' || 'without' }}-cross-assembler-on-${{ matrix.os }}-${{ matrix.platform }}
         path: build/js-wasm/
     - name: Install the new build using Stow
       run:  sudo make stow

@@ -251,7 +251,7 @@ $(EXEC_DIR)/nqc$(EXEC_EXT): compiler/parse.cpp $(OBJ)
 # Emscripten build for WebAssembly
 #
 emscripten-emmake:
-	emmake make exec TARGETTYPE=JS-WebAssembly
+	if which emmake > /dev/null 2>&1 ; then emmake make exec TARGETTYPE=JS-WebAssembly ; else echo -e "WARNING: \"emmake\" not found; skipping Emscripten build"; fi
 
 #
 # general rule for compiling
