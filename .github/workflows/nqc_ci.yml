@@ -20,7 +20,7 @@ env:
 
 jobs:
   build_with_cross_compiler:
-    name:   Build ${{ matrix.with_cross && 'with' || 'without' }} H8/300 Cross-Assembler
+    name:   Build ${{ matrix.with_cross && 'with' || 'without' }} H8/300 Cross-Assembler on ${{ matrix.os }}-${{ matrix-platform }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast:  false
@@ -55,12 +55,12 @@ jobs:
     - name: Archive native build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: nqc-native-${{ matrix.with_cross && 'with' || 'without' }}-cross-assembler-on-${{ matrix.os }}-${{ matrix.platform }}
+        name: nqc-native-${{ matrix.with_cross && ( 'with' || 'without' ) }}-cross-assembler-on-${{ matrix.os }}-${{ matrix.platform }}
         path: build/bin/
     - name: Archive JavaScript-WebAssembly build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: nqc-JS-WebAssembly-${{ matrix.with_cross && 'with' || 'without' }}-cross-assembler-on-${{ matrix.os }}-${{ matrix.platform }}
+        name: nqc-JS-WebAssembly-${{ matrix.with_cross && ( 'with' || 'without' ) }}-cross-assembler-on-${{ matrix.os }}-${{ matrix.platform }}
         path: build/js-wasm/
     - name: Install the new build using Stow
       run:  sudo make stow
