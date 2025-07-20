@@ -1,6 +1,19 @@
 NQC Release Notes
 =================
 
+version 4.0.2
+-------------
+
+Matthew Sheets
+* Add support for building under Cygwin (specifically in `PSerial_unix.cpp`)
+* Update `Makefile` to skip Emscripted build if `emmake` is not found
+* Update `Makefile.utility` with latest common version
+* Update CI Workflow with a matrix build configuration
+  + Cross-BinUtils:  With or Without
+  + OS: Ubuntu or Cygwin (Windows)
+  + Cygwin Platforms: x86_64 or x86
+
+
 version 4.0.1
 -------------
 
