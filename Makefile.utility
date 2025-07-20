@@ -36,7 +36,7 @@ stow:   stow-check-package
 ifeq (,$(wildcard $(DESTDIR)$(STOW_DIR)))
 	$(MAKE)  $(STOW_PREREQ_TARGET)
 endif
-	stow $(STOW_STANDARD_ARGS) --stow   "$(STOW_PACKAGE)"
+	stow $(STOW_STANDARD_ARGS) --stow "$(STOW_PACKAGE)"
 
 restow: stow-check-package
 	stow $(STOW_STANDARD_ARGS) --restow "$(STOW_PACKAGE)"
