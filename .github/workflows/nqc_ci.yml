@@ -55,15 +55,15 @@ jobs:
     - name: Archive native build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: nqc-native-${{ matrix.with_cross && ( 'with' || 'without' ) }}-cross-assembler-on-${{ matrix.os }}-${{ matrix.platform }}
+        name: nqc-native-${{ matrix.with_cross && 'with' || 'without' }}-cross-assembler-on-${{ matrix.os }}-${{ matrix.platform }}
         path: build/bin/
     - name: Archive JavaScript-WebAssembly build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: nqc-JS-WebAssembly-${{ matrix.with_cross && ( 'with' || 'without' ) }}-cross-assembler-on-${{ matrix.os }}-${{ matrix.platform }}
+        name: nqc-JS-WebAssembly-${{ matrix.with_cross && 'with' || 'without' }}-cross-assembler-on-${{ matrix.os }}-${{ matrix.platform }}
         path: build/js-wasm/
-    - name: Install the new build using Stow
-      run:  sudo make stow
+    - name: Install the new build to the Stow location
+      run:  make install
     - name: Show the directory tree of installed contents
       run:  tree --dirsfirst "/opt/stow/nqc"
 
