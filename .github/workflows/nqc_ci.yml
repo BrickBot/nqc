@@ -23,6 +23,7 @@ jobs:
     name:   Build ${{ matrix.with_cross && 'with' || 'without' }} H8/300 Cross-Assembler
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast:  false
       matrix:
         os:            [ "ubuntu-latest", "windows-latest" ]
         with_cross:    [ true, false ]
@@ -39,14 +40,14 @@ jobs:
 
     - name: Setup Ubuntu build environment
       if:   contains(matrix.os, 'ubuntu')
-      run:  sudo apt-get --assume-yes update && sudo apt-get --assume-yes install $UBUNTU_BUILD_DEPENDS  ${{ matrix.with_cross && env.UBUNTU_CROSS_BUILD_DEPENDS }}
+      run:  sudo apt-get --assume-yes update && sudo apt-get --assume-yes install $UBUNTU_BUILD_DEPENDS $(if ${{ matrix.with_cross }} ; then echo "$UBUNTU_CROSS_BUILD_DEPENDS"; fi)
 
     - name: Setup Cygwin build environment
       if:   runner.os == 'Windows'
       uses: cygwin/cygwin-install-action@v5
       with:
         platform: ${{ matrix.platform }}
-        packages: ${{ env.CYGWIN_BUILD_DEPENDS }}  ${{ matrix.with_cross && env.CYGWIN_CROSS_BUILD_DEPENDS }}
+        packages: ${{ env.CYGWIN_BUILD_DEPENDS }} $(if ${{ matrix.with_cross }} ; then echo "$CYGWIN_CROSS_BUILD_DEPENDS"; fi)
 
     - name: Execute the build
       run:  make DEFAULT_SERIAL_NAME='"/dev/ttyS0"' DEFAULT_USB_NAME='"/dev/usb/legousbtower0"' DEFAULT_PORT_NAME='"usb"'
