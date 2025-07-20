@@ -15,7 +15,7 @@ env:
   UBUNTU_BUILD_DEPENDS:        make flex bison binutils gcc g++ emscripten  stow
   UBUNTU_CROSS_BUILD_DEPENDS:  binutils-h8300-hms
 
-  CYGWIN_BUILD_DEPENDS:        make flex bison binutils gcc-core gcc-g++  stow
+  CYGWIN_BUILD_DEPENDS:        make flex bison binutils gcc-core gcc-g++  tree stow
   CYGWIN_CROSS_BUILD_DEPENDS:  h8300-hitachi-coff-toolchain
 
 jobs:
