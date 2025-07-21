@@ -58,9 +58,19 @@ H8300_LD ?= $(H8300_TOOLPREFIX)ld
 H8300_AS ?= $(H8300_TOOLPREFIX)as
 H8300_OBJDUMP ?= $(H8300_TOOLPREFIX)objdump
 
-H8300_FOUND := $(shell $(H8300_AS) --version >/dev/null 2>&1 && echo found)
-ifneq ($(H8300_FOUND), found)
-$(warning h8300-hitachi-coff toolchain not found, using pre-built files)
+H8300_FOUND := $(shell $(H8300_AS) --version > /dev/null 2>&1 && echo found)
+ifneq ($(H8300_FOUND),found)
+  $(warning h8300-hitachi-coff binutils toolchain not found, using pre-built files)
+endif
+
+#
+# Toolchain for Emscripten
+#
+EMSCRIPTEN_MAKE ?= emmake
+# NOTE: "emmake --version" does not work as a test and returns a non-zero error code
+EMSCRIPTEN_FOUND := $(shell which $(EMSCRIPTEN_MAKE) > /dev/null 2>&1 && echo found)
+ifneq ($(EMSCRIPTEN_FOUND),found)
+  $(warning Emscripten "$(EMSCRIPTEN_MAKE)" toolchain not found, skipping Emscripten build)
 endif
 
 # installation defaults
@@ -119,6 +129,9 @@ GEN_DIR ?= $(BUILD_DIR)/$(GEN_SUBDIR_NAME)
 USBOBJ ?= RCX_USBTowerPipe_none
 TCPOBJ ?= RCX_TcpPipe_none
 
+DEFAULT_USB_NAME ?= "/dev/usb/legousbtower0"
+DEFAULT_DEVICE_NAME ?= "usb"
+
 #
 # Platform specific settings
 #
@@ -144,15 +157,13 @@ ifneq (,$(strip $(findstring $(TARGETTYPE), JS-WebAssembly)))
 	# - Target JavaScript instead of WASM:  -s WASM=0
 	CFLAGS_EXEC += --shell-file ./emscripten/webnqc_shell.html -s EXPORT_NAME=createWebNqc  -s EXPORTED_RUNTIME_METHODS='["callMain","FS"]' \
 		-s INVOKE_RUN=false  -s MODULARIZE=1  -s ENVIRONMENT=web  -s SINGLE_FILE
-else
-ifneq (,$(strip $(findstring $(OSTYPE), Darwin)))
+else ifneq (,$(strip $(findstring $(OSTYPE), Darwin)))
 	# Mac OS X
 	LIBS += -framework IOKit -framework CoreFoundation
 	USBOBJ = RCX_USBTowerPipe_osx
 	CXX = c++
 	CFLAGS += -O3 -std=c++11 -Wno-deprecated-register
-else
-ifneq (,$(strip $(findstring $(OSTYPE), Linux)))
+else ifneq (,$(strip $(findstring $(OSTYPE), Linux)))
 	# Linux
 	USBOBJ = RCX_USBTowerPipe_linux
 	TCPOBJ = RCX_TcpPipe_linux
@@ -160,29 +171,30 @@ ifneq (,$(strip $(findstring $(OSTYPE), Linux)))
 	# Timeout value is 200 in kernel driver module legousbtower.c
 	LEGO_TOWER_SET_READ_TIMEOUT ?= 200
 	CFLAGS += -DLEGO_TOWER_SET_READ_TIMEOUT='$(LEGO_TOWER_SET_READ_TIMEOUT)' -Wno-deprecated
-else
-ifneq (,$(findstring $(OSTYPE), SunOS))
+else ifneq (,$(strip $(findstring $(OSTYPE), CYGWIN)))
+	# Cygwin
+	# USBOBJ = RCX_USBTowerPipe_linux
+	TCPOBJ = RCX_TcpPipe_linux
+	DEFAULT_DEVICE_NAME ?= "tcp"
+	DEFAULT_SERIAL_NAME ?= "/dev/ttyS0"
+	# Timeout value is 200 in kernel driver module legousbtower.c
+	LEGO_TOWER_SET_READ_TIMEOUT ?= 200
+	CFLAGS += -DLEGO_TOWER_SET_READ_TIMEOUT='$(LEGO_TOWER_SET_READ_TIMEOUT)' -Wno-deprecated
+else ifneq (,$(findstring $(OSTYPE), SunOS))
 	# Solaris
 	CFLAGS += -DSOLARIS
-else
-ifneq (,$(strip $(findstring $(OSTYPE), FreeBSD)))
+else ifneq (,$(strip $(findstring $(OSTYPE), FreeBSD)))
 	# FreeBSD
 	USBOBJ = RCX_USBTowerPipe_fbsd
 	DEFAULT_SERIAL_NAME?= "/dev/cuad0"
 	CFLAGS += -Wno-deprecated
-else
-ifneq (,$(strip $(findstring $(OSTYPE), OpenBSD)))
+else ifneq (,$(strip $(findstring $(OSTYPE), OpenBSD)))
 	# OpenBSD i386
 	DEFAULT_SERIAL_NAME ?= "/dev/cua00"
 	CFLAGS += -O2 -std=gnu++98 -pipe
 else
 	# default Unix build without USB support
 	CFLAGS += -O2
-endif
-endif
-endif
-endif
-endif
 endif
 
 CXX:=$(TOOLPREFIX)$(CXX)
@@ -191,14 +203,16 @@ CXX:=$(TOOLPREFIX)$(CXX)
 # If the serial port is explicitly set, use it.
 #
 ifneq ($(strip $(DEFAULT_SERIAL_NAME)),)
-	CFLAGS += -DDEFAULT_SERIAL_NAME='$(DEFAULT_SERIAL_NAME)'
+  CFLAGS += -DDEFAULT_SERIAL_NAME='$(DEFAULT_SERIAL_NAME)'
 endif
 
-DEFAULT_USB_NAME ?= "/dev/usb/legousbtower0"
-CFLAGS += -DDEFAULT_USB_NAME='$(DEFAULT_USB_NAME)'
+ifneq ($(strip $(DEFAULT_USB_NAME)),)
+  CFLAGS += -DDEFAULT_USB_NAME='$(DEFAULT_USB_NAME)'
+endif
 
-DEFAULT_DEVICE_NAME ?= "usb"
+ifneq ($(strip $(DEFAULT_DEVICE_NAME)),)
 CFLAGS += -DDEFAULT_DEVICE_NAME='$(DEFAULT_DEVICE_NAME)'
+endif
 
 #
 # Debug builds for most Clang/GCC environments.
@@ -251,7 +265,11 @@ $(EXEC_DIR)/nqc$(EXEC_EXT): compiler/parse.cpp $(OBJ)
 # Emscripten build for WebAssembly
 #
 emscripten-emmake:
-	if which emmake > /dev/null 2>&1 ; then emmake make exec TARGETTYPE=JS-WebAssembly ; else echo -e "WARNING: \"emmake\" not found; skipping Emscripten build"; fi
+ifeq ($(EMSCRIPTEN_FOUND), found)
+	$(EMSCRIPTEN_MAKE) make exec TARGETTYPE=JS-WebAssembly
+else
+	@echo -e "WARNING: \"$(EMSCRIPTEN_MAKE)\" not found; skipping Emscripten build"
+endif
 
 #
 # general rule for compiling
