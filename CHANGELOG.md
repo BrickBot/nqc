@@ -1,7 +1,14 @@
 NQC Release Notes
 =================
 
-version 4.0.2
+version 4.0.3 – August 12, 2025
+-------------
+
+Matthew Sheets
+* Make handling of Emscripten unavailability more robust
+
+
+version 4.0.2 – July 19, 2025
 -------------
 
 Matthew Sheets
@@ -14,7 +21,7 @@ Matthew Sheets
   + Cygwin Platforms: x86_64 or x86
 
 
-version 4.0.1
+version 4.0.1 – May 12, 2025
 -------------
 
 Nicolas Schodet
@@ -26,7 +33,7 @@ Matthew Sheets
 * Add the BrickBot Makefile.utility, including Stow support
 
 
-version 4.0.0
+version 4.0.0 – April 26, 2025
 -------------
 
 First release from the BrickBot/nqc repository on GitHub
@@ -52,7 +59,7 @@ First release from the BrickBot/nqc repository on GitHub
   + Updated the default path for manuals to move under the "share" directory
 
 
-version 3.1 r6
+version 3.1 r6 – June 6, 2007
 --------------
 
 * Minor code changes to support 64bit platforms.
@@ -60,7 +67,7 @@ version 3.1 r6
 * USB and serial tower timing tweaks.
 
 
-version 3.1 r4
+version 3.1 r4 – October 13, 2005
 --------------
 
 * Modified Spybot program code generation slightly so that it
@@ -71,19 +78,19 @@ version 3.1 r4
   than 8-15.
 
 
-version 3.1 r3
+version 3.1 r3 – October 3, 2005
 --------------
 
 * Fixed bug in NQC code generation for expressions like `a = a*2 + a*3;`.
 
 
-version 3.1 r2
+version 3.1 r2 – June 9, 2005
 --------------
 
 * Fixed Spybot FindWorld API function.
 
 
-version 3.1 r1
+version 3.1 r1 – March 15, 2005
 --------------
 
 * LASM-compatible listing output via the -c switch
@@ -93,13 +100,13 @@ version 3.1 r1
 * Change to USB Tower timing (Win32) when downloading user programs
 
 
-version 3.0 a2
+version 3.0 a2 – February 11, 2004
 --------------
 
 * Fixed a bug in returning from Spybotic subroutines 
 
 
-version 3.0 a1
+version 3.0 a1 – January 22, 2004
 --------------
 
 * -q quiet mode (no sound played after program download and firmware download)
