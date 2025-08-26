@@ -1,0 +1,13 @@
+task main()
+{
+  ClearTimer(0); 
+  do
+  {
+    OnFwd(OUT_A+OUT_C);
+    Wait(Random(100));
+    OnRev(OUT_C);
+    Wait(Random(100));
+  }
+  while (Timer(0)<200);
+  Off(OUT_A+OUT_C);
+}

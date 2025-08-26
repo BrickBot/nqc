@@ -1,0 +1,14 @@
+task main()
+{
+  SetSensor(SENSOR_1,SENSOR_ROTATION); ClearSensor(SENSOR_1);
+  SetSensor(SENSOR_3,SENSOR_ROTATION); ClearSensor(SENSOR_3);
+  while (true)
+  {
+    if (SENSOR_1 < SENSOR_3)
+      {OnFwd(OUT_A); Float(OUT_C);}
+    else if (SENSOR_1 > SENSOR_3)
+      {OnFwd(OUT_C); Float(OUT_A);}
+    else  
+      {OnFwd(OUT_A+OUT_C);}
+  }
+}

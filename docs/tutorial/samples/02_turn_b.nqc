@@ -1,0 +1,11 @@
+#define MOVE_TIME   100
+#define TURN_TIME    85
+
+task main()
+{
+  OnFwd(OUT_A+OUT_B);
+  Wait(MOVE_TIME);
+  OnRev(OUT_B);
+  Wait(TURN_TIME);
+  Off(OUT_A+OUT_B);
+}

@@ -13,7 +13,7 @@ Mainfest
 	platform   - source for utility classes
 	rcx.nqh    - system include file for using nqcc
 	rcxlib     - classes implementing the rcx interface
-	README.md - the readme file
+	README.md  - the readme file
 	test.nqc   - a trivial nqc test program
 
 

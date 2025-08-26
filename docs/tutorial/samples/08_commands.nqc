@@ -1,0 +1,12 @@
+task main()
+{
+  SetPower(OUT_A+OUT_B,7);
+  SetDirection(OUT_A+OUT_B,OUT_FWD);
+  SetOutput(OUT_A+OUT_B,OUT_ON);
+  Wait(200);
+  SetDirection(OUT_A+OUT_B,OUT_REV);
+  Wait(200);
+  SetDirection(OUT_A+OUT_B,OUT_TOGGLE);
+  Wait(200);
+  SetOutput(OUT_A+OUT_B,OUT_FLOAT);
+}

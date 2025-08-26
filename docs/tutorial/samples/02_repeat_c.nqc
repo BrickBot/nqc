@@ -1,0 +1,24 @@
+/*  10 SQUARES
+
+    by Mark Overmars
+
+This program make the robot run 10 squares
+*/
+
+#define MOVE_TIME   100     // Time for a straight move
+#define TURN_TIME    75     // Time for turning 90 degrees
+
+task main()
+{
+  repeat(10)                // Make 10 squares
+  {
+    repeat(4)
+    {
+      OnFwd(OUT_A+OUT_B);
+      Wait(MOVE_TIME);
+      OnRev(OUT_B);
+      Wait(TURN_TIME);
+    }
+  }
+  Off(OUT_A+OUT_B);         // Now turn the motors off
+}

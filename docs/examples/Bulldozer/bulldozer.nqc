@@ -1,0 +1,199 @@
+/* main.nqc		2004-11-01
+ *
+ * Paul Mucur and James Sudbury
+ * CMPS2D21 - Operating Systems Kernels and Architecture
+ */
+ 
+#define OBSTACLE	0
+#define BOUNDARY	1
+#define WHITE		44
+#define TENDEGREES	39
+#define EXPLORING 	0
+#define PUSHING 	1
+#define __NOTETIME	6
+#define __WAITTIME	6
+
+int obstacles;
+int status;
+
+task main() {
+
+	/* Initialise variables to zero. */
+	int turns = 0;
+	obstacles = 0;
+	status = EXPLORING;
+
+	/* Set up sensors and events. */
+	SetSensor(SENSOR_1, SENSOR_TOUCH);
+	SetSensor(SENSOR_2, SENSOR_LIGHT);
+	SetEvent(OBSTACLE, SENSOR_1, EVENT_TYPE_PRESSED);
+	SetEvent(BOUNDARY, SENSOR_2, EVENT_TYPE_LOW);
+	SetLowerLimit(BOUNDARY, WHITE);
+	SetUpperLimit(BOUNDARY, 80);
+	
+	/* Set up motors. */
+	SetPower(OUT_A, 7);
+	SetPower(OUT_C, 7);
+	
+	/* Wait for the PC to send a message. */
+	ClearMessage();
+	while (Message() == 0);
+	
+	/* Start timer of entire time taken. */
+	ClearTimer(0);
+	
+	/* Start tasks. */
+	start displayTimeTaken;
+	start countObstacles;
+	start playPushingTone;
+	start playTune;
+	
+	/* Turn on motors. */
+	On(OUT_A+OUT_C);
+	
+	/* Start timer of radius. */
+	ClearTimer(1);
+			
+	while (turns < 11) {
+		monitor (EVENT_MASK(BOUNDARY)) {
+			
+			/* Move forward. */
+			Fwd(OUT_A+OUT_C);
+		
+		} catch {
+			
+			/* Set the robot's status as "exploring" rather than "pushing". */
+			status = EXPLORING;
+			
+			/*
+			 * When boundary is hit, back off for the amount of time moved 
+			 * forward and play an intermittant tone.
+			 */
+			
+			start playReversingTone;
+			Rev(OUT_A+OUT_C);
+			Wait(FastTimer(1));
+			stop playReversingTone;
+			 
+			/* Rotate by 36 degrees or so. */
+			Fwd(OUT_A);
+			Wait(TENDEGREES);
+			  
+			/* Start timer of radius. */
+			ClearTimer(1);
+			
+			/* Increment the number of turns. */
+			turns++;
+			
+			/* Repeat. */
+		}
+	}
+	
+	/* 
+	 * When 360 degrees have been rotated, turn off motors and create the
+	 * datalog.
+	 */
+	Off(OUT_A+OUT_C);
+	CreateDatalog(2);
+	AddToDatalog(Timer(0) / 10);
+	AddToDatalog(obstacles);
+}
+
+task countObstacles() {
+		
+	/* 
+	 * If an obstacle is hit and the robot is not already pushing it out of the
+	 * area, increase the obstacle counter.
+	 */
+	while (true) {
+		monitor (EVENT_MASK(OBSTACLE)) {
+			Wait(100);
+		} catch {
+			if (status != PUSHING) {
+				obstacles++;
+				status = PUSHING;
+			}
+		}
+	}
+}
+
+task displayTimeTaken() {
+	while (true) {
+		SetUserDisplay(Timer(0) / 10, 0);
+	}
+}
+
+task playReversingTone(){
+	SetPriority(1);
+ 	acquire (ACQUIRE_SOUND){
+		while (true){
+			PlaySound(SOUND_DOUBLE_BEEP);
+			Wait(75);
+		}
+	}
+}
+
+task playPushingTone() {
+	SetPriority(2);
+	while (true) {
+		if (status == PUSHING) {
+			acquire (ACQUIRE_SOUND) {
+				PlayTone(659,4*__NOTETIME);
+				Wait(4*__WAITTIME);
+			}
+		}
+	}
+}
+
+task playTune() {
+	SetPriority(3);
+
+	while (true) {
+		acquire (ACQUIRE_SOUND) {
+		
+			/* Beethoven's Fur Elise */
+			PlayTone(659,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(622,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(659,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(622,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(659,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(494,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(587,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(523,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(440,4*__NOTETIME); Wait(4*__WAITTIME);
+			Wait(5*__WAITTIME);
+			PlayTone(262,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(330,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(440,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(494,4*__NOTETIME); Wait(4*__WAITTIME);
+			Wait(5*__WAITTIME);
+			PlayTone(330,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(415,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(494,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(523,4*__NOTETIME); Wait(4*__WAITTIME);
+			Wait(5*__WAITTIME);
+			PlayTone(330,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(659,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(622,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(659,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(622,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(659,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(494,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(587,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(523,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(440,4*__NOTETIME); Wait(4*__WAITTIME);
+			Wait(5*__WAITTIME);
+			PlayTone(262,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(330,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(440,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(494,4*__NOTETIME); Wait(4*__WAITTIME);
+			Wait(5*__WAITTIME);
+			PlayTone(294,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(523,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(494,4*__NOTETIME); Wait(4*__WAITTIME);
+			PlayTone(440,4*__NOTETIME); Wait(4*__WAITTIME);
+			Wait(5*__WAITTIME);
+			Wait(5*__WAITTIME);
+		}
+	}
+}

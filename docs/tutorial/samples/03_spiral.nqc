@@ -1,0 +1,17 @@
+#define TURN_TIME   85
+
+int move_time;              // define a variable
+
+task main()
+{
+  move_time = 20;           // set the initial value
+  repeat(50)
+  {
+    OnFwd(OUT_A+OUT_C);
+    Wait(move_time);       // use the variable for sleeping
+    OnRev(OUT_C);
+    Wait(TURN_TIME);
+    move_time += 5;         // increase the variable
+  }
+  Off(OUT_A+OUT_C);
+}

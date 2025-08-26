@@ -1,0 +1,474 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<!-- Copyright 1998 Dave Baum -->
+  <meta name="GENERATOR" content="Adobe PageMill 2.0 Mac">
+  <title>NQC FAQ</title>
+</head>
+<body bgcolor="#ffffff">
+<h2>NQC FAQ</h2>
+<h3>General</h3>
+<ul>
+  <li><a href="#nqc">What is NQC?</a> </li>
+  <li><a href="#mindstorms">What is LEGO MINDSTORMS?</a> </li>
+  <li><a href="#RIS2">Does NQC support RIS 2.0?</a> </li>
+  <li><a href="#firmware">How can I get the RCX 2.0 firmware?</a> </li>
+</ul>
+<h3>NQC Program Download Errors</h3>
+<ul>
+  <li><a href="#reply">"No reply from rcx2" message when using NQC directly</a></li>
+  <li><a href="#reply">"Compile Failed no (or invalid) reply from RCX" message in BricxCC</a></li>
+</ul>
+<h3>NQC Compiler Usage</h3>
+<ul>
+  <li><a href="#dos">I'm using Windows, and when I click on NQC a
+window with some text flashes on the screen then disappears. What's
+going on?</a> </li>
+  <li><a href="#-Trcx2">I'm using the RCX 2.0 firmware but get errors
+when trying to call 2.0 functions (e.g. SetUserDisplay). What's wrong?</a> </li>
+  <li><a href="#errors">How can I redirect errors to a file?</a> </li>
+  <li><a href="#spiritinstall">Where is Spirit.ocx? RcxCC complains
+that it is not installed.</a> </li>
+</ul>
+<h3>IR Communication</h3>
+<ul>
+  <li><a href="#usb">How do I get NQC to work with my USB IR tower?</a> </li>
+  <li><a href="#control">How do I use a computer to control the RCX?</a> </li>
+  <li><a href="#irusb">How do I use the IR tower with a USB Macintosh?</a> </li>
+  <li><a href="#irdebug">Help, RcxCC/MacNQC/NQC can't communicate with
+my RCX!</a> </li>
+  <li><a href="#irlaptop">How do I use my computer IR port with the RCX?</a></li>
+  <li><a href="file:///Users/dave/WebSite/nqc/doc/faq.html#irxp">How
+can I get the USB IR tower to work under Win XP?</a></li>
+</ul>
+<h3>Miscellaneous</h3>
+<ul>
+  <li><a href="#spirit">Why doesn't NQC use the Spirit OCX?</a> </li>
+  <li><a href="#vision">Does NQC support Vision Command?</a> </li>
+  <li><a href="#build">What computers/tools/etc do you use to develop
+NQC?</a> </li>
+</ul>
+<p></p>
+<hr align="left">
+<p></p>
+<h3><a name="nqc"></a>What is NQC?</h3>
+<p>NQC (Not Quite C) is a programming language for several LEGO
+MINDSTORMS products including the RCX, CyberMaster, and Scout. NQC's
+syntax is very similar to the C programming langauge, so experienced C
+programmers (and Java programmers) should find it very easy to get
+started with. Even if you aren't an experienced programmer, NQC is
+relatively easy to learn.</p>
+<p>The two primary reasons people move up to NQC from the standard
+tools (RCX Code and Robolab) is that NQC is a textual langauge, and it
+is more powerful. Graphical languages are often easier to learn (no
+syntax errors!) but are generally more tedious to use than a textual
+langauge. The graphical metaphors of RCX Code (and to a certain extent
+Robolab) also significantly limit the types of programs you can write.</p>
+<p>NQC uses the same firmware as LEGO's standard tools (RCX Code and
+Robolab). This means it is possible to have RCX Code, Robolab, and NQC
+programs loaded onto the RCX at the same time. NQC also benefits from
+the stability and user interface (e.g. the View button) provided by the
+standard firmware. On the minus side, NQC must live within the
+constraints of the standard firmware. For example, since the firmware
+does not provide floating point support, NQC cannot provide it either.
+Other altermatives for programming the RCX (notably legOS and pbForth)
+do not have such restrictions.</p>
+<p></p>
+<hr align="left">
+<p></p>
+<h3><a name="mindstorms"></a>What is LEGO MINDSTORMS?</h3>
+<p>LEGO MINDSTORMS is a series of LEGO sets that use special
+programmable bricks to allow construction of robots. The most versatile
+programmable brick is the RCX, which can be found in the Robotics
+Invention System set. A simpler brick, the Scout, can be found in the
+Robotics Discovery set. The simplest brick, Micro Scout, is featured in
+two sets with a Star Wars theme: Droid Developer Kit, and Dark Side
+Developer Kit. Even though it is the most expensive, the RCX based set
+is still the best value due to the versatility of the RCX itself. The
+Scout is a bit more limited, but still can be programmed (using NQC) to
+do some interesting things. The Micro-Scout is extremely limited, and it
+useful mainly as an accessory to another programmable brick such as the
+RCX or Scout. Further information on MINDSTORMS sets can be found at
+the official site: <a href="http://www.legomindstorms.com/"
+ target="_blank">www.legomindstorms.com</a>.</p>
+<p></p>
+<hr align="left">
+<p></p>
+<h3><a name="RIS2"></a>Does NQC Support RIS 2.0?</h3>
+<p>The RCX in the RIS 2.0 is nearly identical to the 1.0 RCX. However,
+new firmware is used to give the RCX some new capabilities. Fortunately
+for existing RCX owners, this firmware is available for download from
+www.legomindstorms.com (as part of the RIS 2.0 SDK). NQC supports this
+new firmware (see <a href="#-Trcx2">here for more info</a>).</p>
+<p>RIS 2.0 also uses a new IR tower with a USB connection (instead of
+the eariler RS-232 based towers). Support for the USB tower under
+Windows and Mac OS X is currently in <a href="../beta/index.html">beta
+test</a>. Support for Mac OS 9 will be added shortly and several other
+people are working on Linux support.</p>
+<h3>
+<hr align="left"><a name="firmware"></a>How can I get the RCX 2.0
+firmware?</h3>
+<p>The RCX 2.0 firmware is contained in a file named FIRM0328.LGO and
+is installed on your PC when you install the standard LEGO software. It
+is also installed as part of the Vision Command software and the 2.0 SDK.</p>
+<p>Unfortunately, all previously mentioned sources for the firmware
+require software to be installed on a Windows computer. If you are using
+a different operating system, then you will need to download the
+earlier Beta version of the 2.0 SDK which was packaged as a .zip file
+rather than a full installer. This .zip file may then be expanded to get
+the FIRM0328.LGO file. The SDK 2.0 Beta can be found at <a
+ href="http://mindstorms.lego.com/sdk2beta/default.asp" target="_blank">http://mindstorms.lego.com/sdk2beta/default.asp</a>.</p>
+<p></p>
+<hr align="left">
+<p></p>
+<h3><a name="reply"></a>"no (or invalid) reply" message</h3>
+<p>When downloading a program in BricxCC or by using the NQC command-line compiler 
+directly some users report that they get an error message saying that the reply
+from the brick was not received or that it was invalid.  When using NQC directly 
+the error is something like: "No reply from rcx2".  From within BricxCC the error is 
+something like: "Compile Failed no (or invalid) reply from RCX".  These errors are
+caused by a problem with the LEGO USB Tower driver.  Fixing it is very easy.
+</p>
+<p>1) Open the LEGO USB Tower control panel applet in the Control Panel.  The icon 
+looks like the USB tower.</p>
+<p>2) On the Advanced tab change the timeout values slightly and then 
+click the Apply button at the bottom of the dialog.</p>
+<p>3) Now change the values back to their original settings 
+(200, 200, 100).</p>
+<p>4) Close the applet window via the OK button.</p>
+<p>Now you should no longer experience the "no reply" error when using NQC
+with the USB tower.</p>
+<p></p>
+<hr align="left">
+<p></p>
+<h3><a name="dos"></a>I'm using Windows, and when I click on NQC a
+window with some text flashes on the screen then disappears. What's
+going on?</h3>
+<p>NQC is a command line based tool - normally you run it by typing an
+appropriate command into an MS-DOS window. When you double-click the exe
+file it launches an MS-DOS console, runs NQC within it, then since NQC
+finishes almost immediately, the entire window disappears.</p>
+<p>Some people prefer command line based tools because they allow you
+to use the text editor of your choice, etc. It also makes for identical
+behavior under Windows, Mac, and Linux. In order to use the command line
+version of NQC you'll need to do two things:</p>
+<p>1) Use some sort of text editor (such as Notepad) to edit and save a
+source file for NQC to compile.</p>
+<p>2) From an MS-DOS window type the appropriate NQC command. Its
+usually best to either put all of your programs and nqc.exe in the same
+directory, or make sure the directory containing NQC is in your command
+path. For example, to compile and download the program "test.nqc" using
+the default serial port you would type the following command:</p>
+<p>nqc -d test.nqc</p>
+<p>An alternative is to use the <a
+ href="http://www.cs.uu.nl/%7Emarkov/lego/" target="_parent">RCX
+Command Center</a> by Mark Overmars, which is a familiar Windows style
+application that provides a front end to the NQC compiler.</p>
+<p></p>
+<hr align="left">
+<p></p>
+<h3><a name="-Trcx2"></a>I'm using the RCX 2.0 firmware but get errors
+when trying to call 2.0 functions (e.g. SetUserDisplay). What's wrong?</h3>
+<p>When NQC compiles a program it needs to know what kind of
+programmable brick you want it to generate code for (this is called the <i>target</i>
+for the compile). By default, NQC assumes you are targetting RCX 1.0. If
+you want to use RCX 2.0 features, you need to tell the compiler you are
+using an RCX 2.0 target. If you are using a command line version of NQC,
+then add <tt>-Trcx2</tt> to the command line:</p>
+<p><tt>nqc -Trcx2 -d foo.nqc</tt></p>
+<p>If you don't want to type <tt>-Trcx2</tt> all the time, then just
+use the environment variable <tt>NQC_OPTIONS</tt> - NQC reads this
+environment variable and inserts any options in this variable at the
+front of the command line. For example, if <tt>NQC_OPTIONS</tt> was set
+to <tt>-Trcx2</tt> and you issued the following command</p>
+<p><tt>nqc -d foo.nqc</tt></p>
+<p>NQC would behave as if you actually typed</p>
+<p><tt>nqc -Trcx2 -d foo.nqc</tt></p>
+<p>The specifics of setting environment variables depends on your
+operating system and shell. For example, under Windows you could type
+the following in a command shell:</p>
+<p><tt>set NQC_OPTIONS=-Trcx2</tt></p>
+<p>If you want to always use RCX 2.0, then you can make this setting
+permament by editing the AUTOEXEC.BAT file and adding the above command
+to the end of the file. This way, the variable will get set every time
+Windows is started.</p>
+<p>If you are using a GUI based version of NQC (such as MacNQC), then
+there should be some preference setting for the target - just make sure
+it is set to "RCX 2.0". Unfortunately, RcxCC does not have an "RCX 2.0"
+setting, but there is a workaround. Leave the target as "RCX" (which
+means RcxCC won't specify any target information and just rely on the
+fact that NQC defaults to RCX), then use the <tt>NQC_OPTIONS</tt>
+environment variable to specify RCX 2.0 (as described above).</p>
+<p></p>
+<hr align="left">
+<p></p>
+<h3><a name="errors"></a>How can I redirect errors to a file?</h3>
+<p>Compile errors are written to stderr, not stdout. This is to allow
+the calling program to separate errors from the program listing (-l
+option) that appears on stdout. The normal redirection facility of a
+shell only redirects stdout, thus the errors will still be printed to
+the screen. Most shells have additional syntax that allows the stderr
+stream to be redirected (use "option-&gt;" in MPW, or "2&gt;" for
+WinNT). I do not know of any mechanism to redirect stderr in Win95
+command.com.</p>
+<p>In addition, nqcc now supports (verion 1.1 b1) the ability to route
+error messages to stdout with the -E option.</p>
+<p></p>
+<hr align="left">
+<p></p>
+<h3><a name="spiritinstall"></a>Where is Spirit.ocx? RcxCC complains
+that it is not installed.</h3>
+<p>NQC has never used Spirit.ocx, but RcxCC used to require Spirit.ocx
+for communication with the RCX. Lego no longer supports Spirit.ocx as of
+RIS 2.0, but fortunately RcxCC has been updated to no longer require
+it. In addition, RcxCC has been renamed to BricxCC (due to trademark
+concerns from Lego). You can download the latest version of BricxCC <a
+ href="http://members.aol.com/johnbinder/bricxcc.htm" target="_blank">here</a>.</p>
+<p></p>
+<hr align="left">
+<p></p>
+<h3><a name="usb"></a>How do I get NQC to work with my USB IR tower?</h3>
+<p>Presently, USB towers are only supported under Mac OS X and Windows.
+I will be releasing Mac OS 9 support shortly. Some other developers are
+working on a Linux solution.</p>
+<p>USB support is in beta test and requires version 2.4a4 of NQC.</p>
+<p><b>IMPORTANT</b>- you need to tell NQC that you want it to look for
+a USB tower, otherwise it assumes you have a serial tower and uses the
+default serial port for your operating system (e.g. COM1 under Windows).
+Add <tt>-Susb</tt> to the command line or set the <tt>RCX_PORT</tt>
+environment variable to <tt>usb</tt>. When adding a command line
+option, put it near the beginning of the command:</p>
+<p><tt>nqc -Susb -d test.nqc</tt></p>
+<p><b>Windows only:</b> NQC uses the USB driver installed by the Lego
+RIS 2.0 software, so you will need to install the RIS software and run
+it once with the USB tower connected in order for the driver to be
+correctly installed.</p>
+<p><b>Mac OS X only:</b> NQC talks directly to the USB tower. There is
+no driver, so you'll never see the tower show up in /dev.<br>
+</p>
+<p><span style="font-weight: bold;">FreeBSD (unoffical port):</span> As
+of NQC 2.5 a5, the USB tower is supported when running a FreeBSD build
+from 02/28/03 or later (the upcoming FreeBSD 5.1 will work).<br>
+</p>
+<p></p>
+<hr align="left">
+<p></p>
+<h3><a name="control"></a>How do I use a computer to control the RCX?</h3>
+<p>There are two basic ways to do this: send raw commands to the RCX,
+or send 'messages' which are then listened to by a program running on
+the RCX.</p>
+<h4>Sending Messages</h4>
+<p>This is generally the simplest way to interact with the RCX. First
+you write a program for the RCX that continuously checks for received
+messages (using the Message() and ClearMessage() calls) and then
+dispatches the messages accordingly. The messages may have any value
+between 1 and 255. There is no predefined meaning for these messages -
+your program can do whatever it wants with each message.</p>
+<p>There are several ways to send the message. You can use another RCX
+(or a Scout) by calling the SendMessage() function. You can also use the
+nqc command with the -msg option, for example to send message #3:</p>
+<p>nqc -msg 3</p>
+<p>You can use the LEGO remote control to send messages 1, 2, or 3. It
+is also possible to send the message by sending the appropriate command
+packet (see below)</p>
+<h4>Sending Raw Commands</h4>
+<p>Sending raw commands gives you complete control over the RCX. The
+commands (a.k.a. opcodes or bytecodes) and the general packet format are
+unofficially documented at <a
+ href="http://graphics.stanford.edu/%7Ekekoa/rcx/" target="_parent">http://graphics.stanford.edu/~kekoa/rcx/</a>.
+For example, to make the RCX play system sound #3 (upward tones), you
+would send a two-byte command (shown in hex):</p>
+<p>51 03</p>
+<p>Messages are just a specific type of command - F7 followed by the
+message value, so message #4 would be the packet</p>
+<p>F7 04</p>
+<p>If you are using NQC, you can let NQC take care of all the details
+of packet formatting, getting an acknowledgement from the RCX, and
+retrying if a failure occurs. You do this with the -raw option, which
+takes a single parameter listing all of the bytes (in hex format) for
+the command:</p>
+<p>nqc -raw 5103</p>
+<p>If you are writing your own program, you can build up the packet
+yourself. A suitable packet (for the plays sound command) would be:</p>
+<p>55 ff 00 51 ae 03 fc 54 ab</p>
+<h3>
+<hr align="left"><a name="irusb"></a>How do I use the IR tower with a
+USB Macintosh?</h3>
+<p>Since a USB version of the IR tower doesn't exist (yet), you will
+need a USB to serial converter (such as the Keyspan TWIN adapter). If
+the adapter provides a 9-pin serial connector, then you should be able
+to use the standard Mindstorms cable between the adapter and the IR
+tower. If the adapter provides mac-style serial connector, then you will
+also need an appropriate cable as desribed <a
+ href="../../lego/macmind/cables.html">here</a>.</p>
+<p><i>Note: I have heard several reports of the Palm USB adapter not
+working. I am not sure if this is a problem with the adapter itself, or
+some unusual interaction between it and the OS. If you have been able to
+use a Palm USB adapter with MacNQC or NQC, please let me know. I would
+like to get a definitive answer on whether this adapter can be made to
+work. Personally, I use the Keyspan Twin adapter (USA-28X), and I've
+heard that both the Keyspan PDA adapter (USA-19) and Xircom PortGear
+USB also work.</i></p>
+<p>If you are using MacNQC, then the popup menu in the Preferences
+dialog box will list all available serial ports (including those
+provided by USB converters).</p>
+<p>If you are using the MPW version of NQC, then you will need to
+specify the serial port either on the command line (using the -S option)
+or in the RCX_PORT environment variable. Both methods require that you
+know the name of the serial port driver. The easiest way to make this
+work is to use the adapter's control panel to configure the serial port
+to "emulate the printer port". This will cause the serial port to be
+named "B", thus you could do either of the following:</p>
+<p><tt>nqc -SB -d foo.nqc</tt></p>
+<p>or</p>
+<p><tt>set -e RCX_PORT B</tt></p>
+<p><tt>nqc -d foo.nqc</tt></p>
+<p>If you choose the second option, the <tt>set</tt> command only needs
+to be executed once per MPW session - adding it to a Startup file will
+make life simpler.</p>
+<h3>
+<hr align="left"><a name="irdebug"></a>Help, RcxCC/MacNQC/NQC can't
+communicate with my RCX!</h3>
+<p>In most cases, problems like this boil down to a configuration
+issue, bad cable, or dead battery. Here are some troubleshooting tips.</p>
+<p>If the program says it cannot open the serial port, then this is
+almost certainly a configuration problem. For MacNQC, make sure you have
+a valid serial port selected in the Preferences dialog box. For NQC,
+make sure you have specified the appropriate serial port name (default
+is modem port, "B" is the printer port, see <a href="#irusb">above</a>
+for USB based macs). For RcxCC, I suggest trying once with
+auto-detection, and if that fails, then manually set the serial port in
+the RcxCC program.</p>
+<p>If the program reports that it cannot communicate with the IR
+device, then either the program is talking to the wrong serial port (see
+the previous item), or there's a problem with the cable and/or battery.
+Make sure you have a fresh 9v battery installed in the IR tower, and if
+possible use the cable supplied by Lego.</p>
+<p>If the program reports that it cannot communicate with the RCX, then
+communication with the IR tower is probably OK, and the problem is
+between the tower and the RCX.</p>
+<ul>
+  <li>Certain light sources (bright sunlight, certain projection TVs)
+can cause interference...try using a towel or other item to shield the
+IR tower   and RCX from other light. </li>
+  <li>The tower and RCX should be about 6 inches apart. Tty the switch
+on the front of the tower in both positions - some people report better
+success   with "near" mode, and some with "far" mode. </li>
+  <li>Make sure you have firmware downloaded into the RCX. If the
+display only shows "1" on it, then firmware isn't installed
+yet...download the firmware using the Lego software or the -firmware
+option for NQC (the   firmware itself must be copied from the Lego CD or
+downloaded from <a href="http://www.legomindstorms.com/"
+ target="_blank">www.legomindstorms.com</a>).   Once the firmware is
+installed you should see something like "00.00   1" on the display. </li>
+</ul>
+<p>If you have a terminal program (e.g. HyperTerminal for Windows,
+Zterm for the Mac), then you can check the IR tower directly. Open up a
+session to the appropriate serial port at 2400 baud, 1 stop bit, odd
+parity, and 8 data bits. Turn off local echo. Start typing a few
+characters. A green LED on the front of the IR tower should light up,
+and the characters you typed should be echoed back to the screen (with
+an occasional mistake depending on how much interference there is).</p>
+<p>If you are using the command line version of NQC, then you can have
+it log any serial communication. This is helpful in trying to isolate
+where communication is failing. A good general-purpose test is</p>
+<p><tt>nqc -v -raw 10</tt></p>
+<p>Please include the output of this test in any e-mail to me regarding
+IR communication problems.</p>
+<p></p>
+<hr align="left">
+<p></p>
+<h3><a name="irlaptop"></a>How do I use my computer IR port with the
+RCX?</h3>
+<p>You can't. At least not easily.</p>
+<p>Most computers use the IrDA protocols for IR communication. The RCX
+uses a proprietary protocol developed by Lego for communication. Quite
+simply, these protocols are incompatable.</p>
+<h4>What about IrCom? Doesn't that let me use the IR port as a regular
+serial port?</h4>
+<p>Yes and no. From an application's point of view, IrCom looks like a
+serial port (complete with hardware handshaking and control lines).
+However, the IrCom layer actually resides on top of normal IrDA
+communication, so what appears to the application to be async serial
+communication, is in fact a bunch of IrDA packets getting sent back and
+forth. Since the RCX doesn't understand IrDA packets, it can't
+understand IrCom either.</p>
+<h4>What if I access the hardware directly?</h4>
+<p>Even if you bypassed the IrDA protocol stacks on the computer and
+somehow managed to control the hardware directly (a task that is likely
+to be different for different computer vendors), it still may not be
+possible. The Lego protocols encode bits using a 38kHz carrier
+frequency. This frequency is generated an filtered in hardware. IrDA
+doesn't really use a carrier frequency, and the actual specs on bit
+times provide a lot of lattitued to device manufacturers. As a result,
+it is difficult to get generic IrDA hardware to generate the required
+38kHz carrier reliably. Filtering the recieve side is even more
+problematic.</p>
+<p>I would hesitate to say that this problem is "impossible" to solve,
+but people have been asking about this for over a year, and to my
+knowledge no general solution has emerged. There are, however,
+specialized solutions for specific pieces of hardware (usually PDAs or
+other handled devices such as a Palm III).<br>
+</p>
+<hr align="left">
+<h3><a name="irxp"></a>How can I get the USB IR tower to work under Win
+XP?</h3>
+<p>There appear to be some timing related difficulties when using NQC
+with the USB tower under Windows XP.&nbsp; If you are having difficulty
+downloading programs, open the LEGO USB Tower control panel, select the
+Advanced Tab, and set the Read Timeout to 300 msec.&nbsp; This
+generally fixes the problem.<br>
+</p>
+<h3>
+<hr align="left"><a name="spirit"></a>Why doesn't NQC use the Spirit
+OCX?</h3>
+<p>The Spirit OCX is only available on the PC. My personal preference
+is to use a Macintosh, so I needed to have a platform independent means
+for communicating with the RCX.</p>
+<h3>
+<hr align="left"><a name="vision"></a>Does NQC Support Vision Command?</h3>
+<p>Vision command programs run in two places...all of the image
+processing software runs on the PC, then sends messages to a program
+running on the RCX. The messages that are sent are ordinary RCX
+messages, and by using Message() and ClearMessage(), NQC programs can
+respond to them. Mike Gasperi calls this "<a
+ href="http://www.plazaearth.com/usr/gasperi/vcsensor.htm"
+ target="_blank">Using Vision Command as a Smart Sensor</a>".</p>
+<p>Note that I have never tried this myself (Vision Command doesn't run
+on Mac), so I can't really help if things don't work as expected.</p>
+<h3>
+<hr align="left"></h3>
+<h3><a name="build"></a>What computers/tools/etc do you use to develop
+NQC?</h3>
+<p>All of the NQC development takes place on my Macintosh PowerBook. I
+use Metrowerks CodeWarrior to write and debug the code as a Macintosh
+application.</p>
+<p>The Code Warrior project also has targets to build the MPW version
+of NQC as well as the Win32 version. Regression tests on the compiler
+are done on the PPC version of the MPW tool (via a couple of MPW scripts
+and a bunch of sample programs). Some minimal testing of the Win32
+version is done from within Virtual PC - I just make sure that the
+build went fine and that the serial port works since that is really the
+only code custom to Win32.</p>
+<p>For the source release, I boot into Mac OS X, copy over the NQC
+source tree and build it (using make, gcc, etc). A simple test (again
+just to make sure the serial port code for Unix is working) is
+performed. I then use a shell script to create a source release tree,
+strip out any unwanted binaries, and package the entire thing up as a
+.tar.gz. Recently, I've also been packaging up a Mac OS X binary version.</p>
+<p>So there you have it...development for Mac, Windows, and Unix all
+done on my trusty PowerBook.</p>
+<p></p>
+<hr align="left">
+<table width="100%" height="24" border="0" cellspacing="0"
+ cellpadding="0">
+  <tbody>
+    <tr>
+      <td width="50%" height="17">&nbsp;<a href="index.html"
+ target="_parent">[Home]</a></td>
+      <td width="50%" align="right">&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

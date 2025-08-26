@@ -1,0 +1,6 @@
+task main()          // MASTER
+{
+  SendMessage(1); Wait(200);
+  SendMessage(2); Wait(200);
+  SendMessage(3);
+}

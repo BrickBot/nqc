@@ -1,0 +1,8 @@
+task main()
+{
+  SetWatch(1,1); Wait(100);
+  SetWatch(2,4); Wait(100);
+  SetWatch(3,9); Wait(100);
+  SetWatch(4,16); Wait(100);
+  SetWatch(5,25); Wait(100);
+}

@@ -1,0 +1,25 @@
+int speed, __speed;
+
+task run_motor()
+{
+  while (true)
+  {
+    __speed = speed;
+    if (__speed > 0) {OnFwd(OUT_A+OUT_B);}
+    if (__speed < 0) {OnRev(OUT_A+OUT_B); __speed = -__speed;}
+    Wait(__speed);
+    Off(OUT_A+OUT_B);
+  }
+}
+
+task main()
+{
+  speed = 0;
+  start run_motor;
+  speed = 1;   Wait(200);
+  speed = -10; Wait(200);
+  speed = 5;   Wait(200);
+  speed = -2;  Wait(200);
+  stop run_motor;
+  Off(OUT_A+OUT_B);
+}

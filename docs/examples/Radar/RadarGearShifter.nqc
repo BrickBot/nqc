@@ -1,0 +1,103 @@
+#define Bumper SENSOR_1
+#define RadarIn SENSOR_2
+#define DriveM  OUT_C
+#define IR_Light OUT_B
+#define GearShift OUT_A
+
+#define ThrBack 40
+#define ThrFast 20
+#define ThrSlow 10
+
+#define HiGear 1
+#define LoGear 0
+
+int Diff;
+int MaxLight;
+int MinLight;
+int Light;
+int Gear;
+
+task main()
+{
+  SetSensor(Bumper,SENSOR_TOUCH);
+
+  SetSensor(RadarIn,SENSOR_LIGHT);
+  SetSensorMode(RadarIn,SENSOR_MODE_RAW);
+
+  Diff=15;
+  start Radar; // Starts IR radar
+  Gear = LoGear;
+  start GearShiftTask; // Start in lo-gear mode
+  OnFwd(DriveM);
+  while (true) // Check sensors forever
+  {
+    // we hit something, or we are too close : 
+    // Go back and turn, thanks to the ratchet
+    if ((Bumper == 0) || (Diff > ThrBack))
+    {
+      Gear = LoGear;
+      OnRev(DriveM);
+      Wait(200);
+      OnFwd(DriveM);
+    }
+    
+    // Nothing in front : full speed ahead !
+    if ((Gear == LoGear)&&(Diff < ThrFast))
+    {
+      Gear = HiGear;
+    }
+    
+    // Aproaching something, time to be cautious : Lo-Gear
+    if ((Gear == HiGear)&&(Diff > ThrSlow))
+    {
+      Gear = LoGear;
+    }
+    Wait(50);
+  }
+}
+  
+task Radar()
+{
+  while (true)
+  {
+    MaxLight=0;
+    MinLight=2000;
+    OnFwd(IR_Light); // IR illuminate in front
+    repeat (5) // get the brightest value in 5 measures
+    {
+      Wait(1);
+      Light = RadarIn;
+      if (Light > MaxLight) MaxLight=Light;
+    }
+    
+    Off(IR_Light);
+    repeat (5) // Ambient light
+    {
+      Wait(1);
+      Light = RadarIn; // get the dimest value in 5 measures
+      if (Light < MinLight) MinLight=Light;
+    }
+    // Get the difference between lighted scene and ambient.
+    // High value means we are near of IR-reflecting object.
+    Diff=MinLight-MaxLight; 
+  }
+}  
+
+  
+task GearShiftTask()
+{
+  int OldGear;
+  OldGear = HiGear;
+  while (true)
+  {
+    if (Gear != OldGear) // The command was modified : change gear.
+    {
+      OldGear = Gear;
+      if (Gear == HiGear) OnFwd(GearShift); else OnRev(GearShift);
+      Wait(50);
+      Off(GearShift);
+    }
+  }
+}
+
+  

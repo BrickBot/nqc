@@ -1,0 +1,11 @@
+task main()
+{
+  SetPower(OUT_A+OUT_B,10);
+  OnFwd(OUT_A+OUT_B);
+  Wait(400);
+  OnRev(OUT_A+OUT_B);
+  Wait(400);
+  Off(OUT_A+OUT_B);
+}
+
+

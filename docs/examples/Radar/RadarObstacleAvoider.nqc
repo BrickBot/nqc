@@ -1,0 +1,123 @@
+//sensor1.nqc
+//Jack Foust
+//foustja@gmail.com
+//based on a program by Mark Overmars
+//4.20.16
+
+//This nqc file is writtten for RCX 2.0 (use the -Trcx2 option or it won't
+//compile). It uses a variable argument for the note in the PlayNote()
+//function, which is not allowed by the RCX 1.0 firmware. It has been tested
+//with nqc version 3.1 r6 under Ubuntu Linux version 14.04 (Trusty Tahr).
+
+//The program moves the brick forward, while sending infrared messages that
+//bounce back and are detected by the light sensor. When the light sensor
+//detects a sufficient change in light (effectively reads the message), it
+//reverses, turns and then moves forward while playing an 8 note melody composed
+//randomly from the ACDEG pentatonic scale.
+
+//The program is based on one by Mark Overmars in his nqc guide "Programming
+//Lego Robots Using NQC," which can found at:
+
+//bricxcc.sourceforge.net/nqc/doc/NQC_Tutorial.pdf
+
+#define TURN_TIME 150
+#define BACKUP_TIME 100
+#define DISPLAY_TIME 200
+#define LIGHT_THRESHOLD 100
+#define DUR 10  //note duration in one-hundredths of a second
+
+#define A 440  //pentatonic scale
+#define C 523
+#define D 587
+#define E 659
+#define G 784
+
+task main()
+{
+  sensor_init();        //intitializes sensors
+  start rcx_display;    //displays inputs, outputs, clock
+  OnFwd(OUT_A + OUT_C); //begin forward movement
+  start send_signal;    //infrared messages are sent
+  start check_signal;   //infrared messages are detected; motors and sound
+}                       //are controlled
+
+void sensor_init()
+{
+  ClearSensor(SENSOR_1);
+  ClearSensor(SENSOR_2);
+  ClearSensor(SENSOR_3);
+  SetSensorType(SENSOR_1, SENSOR_TYPE_LIGHT);
+  SetSensorMode(SENSOR_1, SENSOR_MODE_RAW);
+}
+
+task rcx_display()
+{
+  while(true)
+  {
+    SelectDisplay(DISPLAY_SENSOR_1); Wait(DISPLAY_TIME); // Input 1
+    SelectDisplay(DISPLAY_SENSOR_2); Wait(DISPLAY_TIME); // Input 2
+    SelectDisplay(DISPLAY_SENSOR_3); Wait(DISPLAY_TIME); // Input 3
+    SelectDisplay(DISPLAY_OUT_A); Wait(DISPLAY_TIME);    // Output A
+    SelectDisplay(DISPLAY_OUT_B); Wait(DISPLAY_TIME);    // Output B
+    SelectDisplay(DISPLAY_OUT_C); Wait(DISPLAY_TIME);    // Output C
+    SelectDisplay(DISPLAY_WATCH); Wait(DISPLAY_TIME);    // System clock
+  }
+}
+
+task send_signal()
+{
+  while(true)
+  {
+    SendMessage(0);  //send infrared signal 10 times a seco
+    Wait(10);
+  }
+}
+
+task check_signal()
+{
+  int lastlevel;
+
+  while(true)
+  {
+    lastlevel = SENSOR_1;
+    if(SENSOR_1 < lastlevel - LIGHT_THRESHOLD)  //detect reflected infrared
+    {
+      OnRev(OUT_A + OUT_C);         //RCX moves back
+      start Melody;                 //play radomly generated pentatonic melody
+      Wait(BACKUP_TIME);
+      OnFwd(OUT_A);                 //turn
+      OnRev(OUT_C);
+      Wait(TURN_TIME);              //determines turn angle
+      OnFwd(OUT_A + OUT_C);         //RCX moves forward
+    }
+  }
+}
+
+task Melody()  //8 note melody played with notes randomly selected from
+{              //pentatonic scale ACDEG
+  int count;
+  count = 0;
+
+  while(count < 9)
+  {
+    RandomNote();
+    count = count +1;
+  }
+}
+
+void RandomNote()
+{
+  int note;
+  int randomnumber;
+
+  {
+    randomnumber = Random(4);
+    if (randomnumber == 0) note = A;
+    if (randomnumber == 1) note = C;
+    if (randomnumber == 2) note = D;
+    if (randomnumber == 3) note = E;
+    if (randomnumber == 4) note = G;
+  }
+  PlayTone(note, DUR);
+  Wait(DUR);
+}

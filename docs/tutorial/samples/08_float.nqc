@@ -1,0 +1,10 @@
+task main()
+{
+  OnFwd(OUT_A+OUT_C);
+  Wait(200);
+  Off(OUT_A+OUT_C);
+  Wait(100);
+  OnFwd(OUT_A+OUT_C);
+  Wait(200);
+  Float(OUT_A+OUT_C);
+}

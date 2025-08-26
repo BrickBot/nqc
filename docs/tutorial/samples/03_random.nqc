@@ -1,0 +1,14 @@
+int move_time, turn_time;
+
+task main()
+{
+  while(true)
+  {
+    move_time = Random(60);
+    turn_time = Random(40);
+    OnFwd(OUT_A+OUT_C);
+    Wait(move_time);
+    OnRev(OUT_A);
+    Wait(turn_time);
+  }
+}

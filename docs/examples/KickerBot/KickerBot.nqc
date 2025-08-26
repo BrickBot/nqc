@@ -1,0 +1,197 @@
+/*
+    Made by Bryce Guinta
+	
+	Original Project Website — https://github.com/manitourobotics/nqc-programs
+
+    The program's intent is:
+        -to spin left when sensor 1 and not 3 are pressed
+        -to spin right when sensor 3 and not 1 are pressed
+        -to go forward when sensor 1 and 3 are pressed
+        -to kick when sensor 2 is pressed
+        -to move backward when a key combo is pressed( a only, c only, b only)
+
+    Output Mapping:
+        - A -- Right motor
+        - B -- Kicker
+        - C -- Left motor
+*/
+
+#define KICK_TIME 10 // 1/100 of a second at 7.7 power tested
+
+task main() 
+{
+
+    SetSensor(SENSOR_1, SENSOR_TOUCH);
+    SetSensor(SENSOR_2, SENSOR_TOUCH);
+    SetSensor(SENSOR_3, SENSOR_TOUCH);
+
+    start movement;
+    start kick;
+    start codes;
+}
+
+task movement() 
+{
+    while(true)
+    {
+        spin();
+        forward();
+    }
+}
+
+task kick()
+{
+
+    int first_pressed = 1;
+
+    while(true)
+    {
+        // rest upward, move downward when first pressed
+        // kick upward when released
+
+        if(SENSOR_2 == 1 && first_pressed) 
+        {
+            OnFwd(OUT_B);
+            Wait(KICK_TIME * 2);
+            Off(OUT_B);
+            first_pressed = 0;
+        }
+        else if(SENSOR_2 == 0 && !first_pressed)
+        {
+            OnRev(OUT_B);
+            Wait(KICK_TIME);
+            Off(OUT_B);
+            first_pressed = 1;
+        }
+    }
+}
+
+
+void forward()
+{
+    if(SENSOR_1 == 1 && SENSOR_3 == 1 )
+    {
+        OnRev(OUT_A + OUT_C);
+        //*robot_wheels_on = 1;
+    }
+    else if( SENSOR_1 == 0 && SENSOR_3 == 0 /*&& *robot_wheels_on*/) // Stop if no input
+    {
+        Off(OUT_A + OUT_C);
+        //*robot_wheels_on = 0;
+    }
+}
+
+void spin()
+{
+    // Left
+    if(SENSOR_1 == 1 && SENSOR_3 == 0)
+    {
+        OnFwd(OUT_C);
+        OnRev(OUT_A);
+        //*robot_wheels_on = 1;
+    }
+    // Right
+    else if(SENSOR_1 == 0 && SENSOR_3 == 1)
+    {
+        OnRev(OUT_C);
+        OnFwd(OUT_A);
+    }
+    else if( SENSOR_1 == 0 && SENSOR_3 == 0 /*&& *robot_wheels_on*/) // Stop if no input
+    {
+        Off(OUT_A + OUT_C);
+        //*robot_wheels_on = 0;
+    }
+}
+
+task codes()
+{
+    #define PRESS_INTERVAL 5
+    int *backward_state = 0;
+
+    while(true)
+    {
+        code_backward(&backward_state);
+    }
+}
+
+// key combinations to incite a backward movement
+// A, C, B
+void code_backward(int *state)
+{
+    // a pressed
+    if(SENSOR_1 == 1 && !SENSOR_2 && !SENSOR_3)
+    {
+        *state = 1;
+        ClearTimer(0);
+    }
+    // c pressed after a
+    else if(!SENSOR_1 && !SENSOR_2 && SENSOR_3 && *state == 1 )
+    {
+        // within time
+        if(Timer(0) <= PRESS_INTERVAL)
+            *state = 2;
+        else
+        {
+            *state = 0;
+            ClearTimer(0);
+        }
+    }
+    // b pressed within time
+    else if(!SENSOR_1 && SENSOR_2 && !SENSOR_3 && *state == 2)
+    {
+        if(Timer(0) <= PRESS_INTERVAL * 2)
+            *state = 3;
+        else
+        {
+            *state = 0;
+            ClearTimer(0);
+        }
+
+    }
+    else if(*state == 3)
+    {
+        
+        stop kick;
+        stop movement;
+        Off(OUT_B); // kicker still on
+        OnFwd(OUT_A + OUT_C);
+        if(SENSOR_2)
+        {
+            Wait(1);
+        }
+        else
+        {
+            Off(OUT_A + OUT_C);
+            *state = 0;
+            start kick;
+            start movement;
+            ClearTimer(0);
+        }
+    }
+    else
+    {
+        // if another button is pressed, then the combination fails
+        int *is_pressed = 0;
+        is_sensor_pressed(&is_pressed);
+        if(is_pressed)
+        {
+            *state = 0;
+        }
+    }
+}
+
+void is_sensor_pressed(int *bool)
+{
+    if(SENSOR_1)
+    {
+       *bool = 1;
+    }
+    else if(SENSOR_2)
+    {
+       *bool = 1;
+    }
+    else if(SENSOR_3)
+    {
+       *bool = 1;
+    }
+}

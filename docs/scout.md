@@ -1,5 +1,5 @@
-Scout support in NQC
---------------------
+Scout Support in NQC
+====================
 
 LEGO has introduced a number of new (and useful) extensions in the Scout.
 Taking full advantage of these within NQC is going to take some work.  However,
@@ -8,16 +8,15 @@ version of NQC with very preliminary Scout support.  Currently, many of
 the Scout features must be manually invoked from within NQC, and there are a
 few things that aren't supported at all.  Future releases will improve this.
 
-* The -TScout option can be used to inform NQC that it should target (and/or
+The `-TScout` option can be used to inform NQC that it should target (and/or
 download to) a Scout.  Downloading will only work if the Scout is in "power
 mode".
 
 
-**************************************************************************
-* The Scout API is very preliminary.  It will change.  A lot.  Anything
-* you write today probably won't compile two months from now.  You've been
-* warned.
-**************************************************************************
+> The Scout API is very preliminary.  It will change.  A lot.  Anything
+> you write today probably won't compile two months from now.  You've been
+> warned.
+
 
 Why so preliminary?  Simple...nobody has much experience using the Scout from
 within NQC.  The RCX API evolved over many months (including a good amount of
@@ -26,8 +25,12 @@ names for the different API calls and/or constants.  I want to keep the names
 consistent with the RCX API as much as possible, but also make sure that the
 resulting functions seem intuitive from a Scout perspective.
 
+
+Scout API Calls
+---------------
 Here are the Scout API calls (listed with their Scout SDK mnemonic)
 
+```
 cntd	DecCounter(counter)
 cnti	IncCounter(counter)
 cnts	SetCounterLimit(counter, limit)
@@ -50,16 +53,23 @@ setp	SetPriority(p)
 sound	Sound(mode)
 tmrs	SetTimerLimit(timer, limit)
 vll     VLL(value)
+```
 
 There are also global versions of the standard NQC output calls:
 
 GOn, GOff, GFloat, GToggle, GFwd, GRev, GOnFwd, GOnRev, GOnFor
 
+
+Counters
+--------
 If you want to read one of the counters, use Counter(n) (just like reading a 
 timer for the RCX)...
 
 x = Counter(0); // read counter 0 into variable x
 
+
+Variables and Subroutines
+-------------------------
 Variables present some new problems.  Scout has global variables (just like the
 RCX) and "local" variables.  The locals are pretty useful, and it will take a
 good deal of work to get NQC to support them fully.  In the meantime, NQC simply
@@ -83,29 +93,29 @@ I've added some really crude support for events in the form of the WaitEvents()
 function.  You pass it an event mask and control waits at that point until one
 of the specified events happens.
 
------------------------
 
 Pending Issues for Future Releases
+----------------------------------
 
-A) Consistent mnemonics for listings.  Scout-style mnemonics are being used,
+1. Consistent mnemonics for listings.  Scout-style mnemonics are being used,
 however there are still some RCX-only functions using my old mnemonics.
 
-B) Full support for resource acquisition, events, and loops (decvjn, decvjnl, monal,
+2. Full support for resource acquisition, events, and loops (decvjn, decvjnl, monal,
 monax, mone, monel, and monex bytecodes).  This will probably involve new syntax,
 and I'd love to hear some suggestions.
 
-C) Use short forms of branches where possible (this will save program space)
+3. Use short forms of branches where possible (this will save program space)
 
-D) Full utilization of locals
+4. Full utilization of locals
 
-E) Calling of library subroutines with normal call syntax (including parameter
+5. Calling of library subroutines with normal call syntax (including parameter
 lists for the arguments).
 
-F) Better names for the various API functions.  What should the output
+6. Better names for the various API functions.  What should the output
 functions be called?  Is is ok to just prepend "G" to the standard ones,
 or does this look hideous?  What about the light sensor calls?  LSxxx is
 pretty ugly.  Any ideas?  In general, feel free to suggest names for some
 or all of the API functions.
 
-G) Support for all of the different data sources (listed in the SDK).  All
+7. Support for all of the different data sources (listed in the SDK).  All
 that's really needed here is good names for each of them.

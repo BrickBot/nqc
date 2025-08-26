@@ -1,0 +1,9 @@
+task main()
+{
+  PlaySound(0); Wait(100);
+  PlaySound(1); Wait(100);
+  PlaySound(2); Wait(100);
+  PlaySound(3); Wait(100);
+  PlaySound(4); Wait(100);
+  PlaySound(5); Wait(100);
+}

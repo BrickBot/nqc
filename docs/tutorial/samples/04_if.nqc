@@ -1,0 +1,20 @@
+#define MOVE_TIME   100
+#define TURN_TIME    85
+
+task main()
+{
+  while(true)
+  {
+    OnFwd(OUT_A+OUT_C);
+    Wait(MOVE_TIME);
+    if (Random(1) == 0)
+    {
+      OnRev(OUT_C);
+    }
+    else
+    {
+      OnRev(OUT_A);
+    }
+    Wait(TURN_TIME);
+  }
+}

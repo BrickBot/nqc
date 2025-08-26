@@ -1,0 +1,161 @@
+/************************************************/
+/*Name: Ryan Bahm                               */
+/*Robot: Omnidirectional 3-wheeled robot        */
+/*Filename: RCX-Omni.nqc                        */
+/*Date: 3/13/2014                               */
+/************************************************/
+
+#include "Compare.nqh"
+#include "Trig.nqh"
+
+#define WHEEL SENSOR_1
+#define RESETBUTTON SENSOR_2
+#define GOBUTTON SENSOR_3
+
+#define MAXSPEED 7
+
+#define WHEELREVS 80 //How many times will the sensor go around for 360 degrees?
+
+
+int wheelSpeed; //How much has the wheel moved since the last loop? (In rotation sensor ticks)
+int bearing=0; //Which direction do we want to go? (In degrees)
+
+task main()
+{
+	//Initialization
+    SetSensor(WHEEL,SENSOR_ROTATION);
+    SetSensor(GOBUTTON,SENSOR_TOUCH);
+    SetSensor(RESETBUTTON,SENSOR_TOUCH);
+
+    while(true)
+    {
+        if (RESETBUTTON == 1)
+        {
+            bearing=0;
+        }
+
+        if (GOBUTTON == 0) //If the user is not holding the "go" button.
+        {
+			//In this mode, turning the wheel spins the robot.
+            wheelSpeed=WHEEL*2; //Read the wheel and multiply by 2.
+            ClearSensor(WHEEL); //Clear the wheel
+			range(wheelSpeed,wheelSpeed,-MAXSPEED,MAXSPEED);
+            spin(wheelSpeed);
+        }
+
+        else if (GOBUTTON == 1) //If the user is holding the "go" button.
+        {
+			//In this mode, the robot moves in direction "bearing."
+            wheelSpeed=WHEEL; //Read the wheel sensor
+            ClearSensor(WHEEL); //Clear the wheel sensor
+            wheelSpeed=(360/WHEELREVS)*wheelSpeed; //Calculate the degrees turned.
+            bearing=bearing-wheelSpeed; //Bearing is our running total of intended direction.
+            fixAngle(bearing); //Brings to within range 0-360.
+            drive(bearing);
+        }
+    }
+    Float(OUT_A+OUT_B+OUT_C);	 //Turning off motors completely. This serves no function except when the "run" button is pressed again.
+}
+
+void controlMotor(int motorID, int power)
+{
+	///Simplifies motor control by allowing control by speed and motor number.
+	if(power == 0)
+	{ //Stop
+		switch (motorID)
+		{
+			case 0:
+				Off(OUT_A);
+				break;
+			case 1:
+				Off(OUT_B);
+				break;
+			case 2:
+				Off(OUT_C);
+				break;
+		}
+		return;
+	}
+	
+	if(power == 0)
+	{ //Forward
+		switch (motorID)
+		{
+			case 0:
+				SetDirection(OUT_A,OUT_FWD);
+				break;
+			case 1:
+				SetDirection(OUT_B,OUT_FWD);
+				break;
+			case 2:
+				SetDirection(OUT_C,OUT_FWD);
+				break;
+		}
+	}
+	else
+	{ //Reverse
+		power*=-1;
+		switch (motorID)
+		{
+			case 0:
+				SetDirection(OUT_A,OUT_REV);
+				break;
+			case 1:
+				SetDirection(OUT_B,OUT_REV);
+				break;
+			case 2:
+				SetDirection(OUT_C,OUT_REV);
+				break;
+		}
+	}
+	
+	switch (motorID)
+	{
+		case 0:
+			SetPower(OUT_A,power);
+			On(OUT_A);
+			break;
+		case 1:
+			SetPower(OUT_B,power);
+			On(OUT_B);
+			break;
+		case 2:
+			SetPower(OUT_C,power);
+			On(OUT_C);
+			break;
+	}
+} //End of controlMotor.
+
+void drive(int direction)
+{
+    int aPower;
+    int bPower;
+    int cPower;
+
+	//Do trig. Cos function is custom and returns values as cosine*100.
+	cos(aPower,direction-30);
+	cos(bPower,direction-30);
+	cos(cPower,direction-30);
+	
+	//Calculate power output.
+    aPower=(7*aPower)/100;
+    bPower=(7*bPower)/100;
+    cPower=(7*cPower)/100;
+	
+	range(aPower,aPower,-MAXSPEED,MAXSPEED);
+	range(aPower,bPower,-MAXSPEED,MAXSPEED);
+	range(aPower,cPower,-MAXSPEED,MAXSPEED);
+	
+	controlMotor(0,aPower);
+	controlMotor(1,bPower);
+	controlMotor(2,cPower);
+}
+
+
+void spin(int spinSpeed)
+{
+    controlMotor(0,spinSpeed);
+	controlMotor(1,spinSpeed);
+	controlMotor(2,spinSpeed);
+}
+
