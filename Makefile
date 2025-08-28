@@ -24,6 +24,10 @@
 #
 .SUFFIXES: .cpp .c
 
+# Project-related names (all lowercase by convention)
+ORG = brickbot
+PACKAGE = nqc
+
 #
 # Pick your C++ compiler.
 #
@@ -85,13 +89,14 @@ ifneq ($(prefix),)
 prefix := $(patsubst %/,%,$(prefix))
 endif
 
-prefix ?= /opt/stow/nqc
+prefix      ?= /opt/stow/$(PACKAGE)
 exec_prefix ?= $(prefix)
-bindir ?= $(exec_prefix)/bin
+bindir      ?= $(exec_prefix)/bin
+includedir  ?= $(prefix)/include
 datarootdir ?= $(prefix)/share
-mandir ?= $(datarootdir)/man
-man1dir ?= $(mandir)/man1
-manext ?= 1
+mandir      ?= $(datarootdir)/man
+man1dir     ?= $(mandir)/man1
+manext      ?= 1
 
 # other commands
 CP ?= cp -f
@@ -255,9 +260,9 @@ NQCOBJ = $(addprefix nqc/, $(addsuffix .o, $(NQCOBJS)))
 
 all: info exec emscripten-emmake default-check-fastdl
 
-exec: info $(EXEC_DIR)/nqc$(EXEC_EXT)
+exec: info $(EXEC_DIR)/$(PACKAGE)$(EXEC_EXT)
 
-$(EXEC_DIR)/nqc$(EXEC_EXT): compiler/parse.cpp $(OBJ)
+$(EXEC_DIR)/$(PACKAGE)$(EXEC_EXT): compiler/parse.cpp $(OBJ)
 	$(MKDIR) $(dir $@)
 	$(CXX) $(CFLAGS) $(CFLAGS_EXEC) -o $@ $(OBJ) $(LIBS) $(LDFLAGS)
 
@@ -430,7 +435,9 @@ install: info exec
 	-mkdir -p $(DESTDIR)$(bindir)
 	cp -r $(EXEC_DIR)/* $(DESTDIR)$(bindir)
 	-mkdir -p $(DESTDIR)$(man1dir)
-	cp nqc-man.man $(DESTDIR)$(man1dir)/nqc.$(manext)
+	cp nqc-man.man $(DESTDIR)$(man1dir)/$(PACKAGE).$(manext)
+	-mkdir -p $(DESTDIR)$(includedir)/$(PACKAGE)
+	cp nqh-includes/*.nqh $(DESTDIR)$(includedir)/$(PACKAGE)
 
 
 #
