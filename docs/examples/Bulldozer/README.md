@@ -1,7 +1,8 @@
-CMPS2D21 - Operating Systems Kernels and Architecture; Coursework 1
-====================================================================
+Bulldozer
+=========
+From CMPS2D21 - Operating Systems Kernels and Architecture, Coursework 1
 
-> Original Website – https://github.com/mudge/lego_bulldozer
+The associated code may be found under the [repository site](https://github.com/BrickBot/nqc/tree/master/docs/examples/Bulldozer).
 
 
 Structure of the Program
@@ -50,3 +51,10 @@ With respect to this program, the NQC variables `obstacles`, `status` and `turns
 In NQC, interrupt-driven programming is implemented primarily by the `acquire` and `monitor` commands and by setting the priorities of tasks with `SetPriority()`. When two tasks are running concurrently, the one with the highest priority gets the appropriately high interrupt vector and takes precedence over other processes until it is either complete or interrupted by a process with a higher (or equal) priority. In order to do this, the kernel has to save any registers which will be used, clear the interrupt, service the interrupt (by taking appropriate action or by passing sufficient information to the calling program for it to act appropriately when required) and then restore any registers. Using `acquire` or `monitor` mimics using interrupt service routines: with the former it will interrupt any other processes using the desired resources (perhaps a motor as defined by  `ACQUIRE_OUT_A`) and with the latter it will interrupt itself when a certain event has been detected.
 
 Events themselves (as defined by the use of `SetEvent()`) are merely polling loops that check whether a device has met a certain criterion---such as going high (`EVENT_TYPE_PRESSED`)---and when they do, set a certain designated area in memory to be appropriately high. A `monitor` statement merely polls these event-designated areas of memory and when such an event has been triggered (as defined by its relevant area of memory being set to a certain value), executes its relevant `catch` statement.
+
+
+&nbsp;
+
+------
+
+via [Original Website](https://github.com/mudge/lego_bulldozer)

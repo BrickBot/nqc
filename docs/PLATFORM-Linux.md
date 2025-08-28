@@ -99,4 +99,4 @@ Upload the test program:
 ./bin/nqc -Susb -d test.nqc
 ```
 
-Proceed with [Getting started](#getting-started).
+Proceed with [Getting started](README.md#getting-started).

@@ -40,13 +40,13 @@ Resources & Information
   + Libraries for NQC
   + [NQC and the Scout](Scout.md)
 * NQC Coding Examples
-  + [NQC Tutorial](./tutorial/NQC_Tutorial.pdf) &nbsp; ([related code samples](https://downgit.github.io/#/home?url=https://github.com/BrickBot/nqc/tree/master/docs/tutorial/samples))
-  + [Example code that accompanied Dave Baum’s _Definitive Guide to LEGO MindStorms, Second Edition_](https://downgit.github.io/#/home?url=https://github.com/BrickBot/nqc/tree/master/docs/guidebook)
-  + [Community Examples](./examples/README.md)
-    - [Bulldozer](./examples/Bulldozer/README.md) &nbsp; ([code](https://downgit.github.io/#/home?url=https://github.com/BrickBot/nqc/tree/master/docs/examples/Bulldozer))
-    - [KickerBot](./examples/KickerBot/README.md) &nbsp; ([code](https://downgit.github.io/#/home?url=https://github.com/BrickBot/nqc/tree/master/docs/examples/KickerBot))
-    - [Omni](./examples/Omni/README.md) &nbsp; ([code](https://downgit.github.io/#/home?url=https://github.com/BrickBot/nqc/tree/master/docs/examples/Omni))
-    - [Radar](./examples/Radar/README.md) &nbsp; ([code](https://downgit.github.io/#/home?url=https://github.com/BrickBot/nqc/tree/master/docs/examples/Radar))
+  + [NQC Tutorial](./tutorial/)
+  + [Example code that accompanied Dave Baum’s _Definitive Guide to LEGO MindStorms, Second Edition_](./guidebook/)
+  + [Community Examples](./examples/)
+    - [Bulldozer](./examples/Bulldozer/)
+    - [KickerBot](./examples/KickerBot/)
+    - [Omni](./examples/Omni/)
+    - [Radar](./examples/Radar/)
 
 
 Getting Started
