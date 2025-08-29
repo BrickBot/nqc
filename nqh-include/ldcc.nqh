@@ -1,0 +1,87 @@
+/** LDCC library for NQC 
+ *  Send commands to RCX devices running Mark Riley's LDCC firmware
+ *    For more info on LDCC, please see https://github.com/BrickBot/LDCC 
+ *
+ *  Author: Matthew Sheets, based on documentation for the following:
+ *   * Mark Riley's LDCC
+ *     - https://web.archive.org/web/20151002092624/http://home.surewest.net/markril/lego/dcc/
+ *   * Seibz's LEGO DCC (builds on Riley's LDCC)
+ *     - https://seibz.seibeltechnology.com/LegoProjects/LDCC_DCC
+ *  License: Mozilla Public License 2.0
+ */
+
+#define LDCC_STATE_OFF 0
+#define LDCC_STATE_ON  1
+
+#define LDCC_CMD_SPEED 1
+#define LDCC_CMD_FN_OFF 2
+#define LDCC_CMD_FN_ON 3
+#define LDCC_CMD_STOP_ALL 4
+#define LDCC_CMD_POWER_OFF 5
+#define LDCC_CMD_POWER_ON 6
+#define LDCC_CMD_SWITCH_CLOSED 7
+#define LDCC_CMD_SWITCH_THROWN 8
+
+
+void InitLdccComm()
+{
+   SetSerialComm(SERIAL_COMM_DEFAULT);
+   SetSerialPacket(SERIAL_PACKET_RCX);
+}
+
+void SetLdccMsgHeader(int &bufferCount)
+{
+   SetSerialData(bufferCount++, 0xF5);
+   SetSerialData(bufferCount++, 0x01);
+}
+
+void SetLdccPower(int state)
+{
+   int bufferStart = 0;
+   int bufferCount = bufferStart;
+   SetLdccMsgHeader(bufferCount);
+   SetSerialData(bufferCount++, state ? LDCC_CMD_POWER_ON : LDCC_CMD_POWER_OFF);
+   SendSerial(bufferStart, bufferCount);
+}
+
+void EmergencyLdccStop()
+{
+   int bufferStart = 0;
+   int bufferCount = bufferStart;
+   SetLdccMsgHeader(bufferCount);
+   SetSerialData(bufferCount++, LDCC_CMD_STOP_ALL);
+   SendSerial(bufferStart, bufferCount);
+}
+
+void SetLdccSpeed(int loco, int speed)
+{
+   int bufferStart = 0;
+   int bufferCount = bufferStart;
+   SetLdccMsgHeader(bufferCount);
+   SetSerialData(bufferCount++, LDCC_CMD_SPEED);
+   SetSerialData(bufferCount++, loco);
+   SetSerialData(bufferCount++, speed >> 8);
+   SetSerialData(bufferCount++, speed & 0xFF);
+   SendSerial(bufferStart, bufferCount);
+}
+
+void SetLdccFunction(int loco, int fn, int state)
+{
+   int bufferStart = 0;
+   int bufferCount = bufferStart;
+   SetLdccMsgHeader(bufferCount);
+   SetSerialData(bufferCount++, state ? LDCC_CMD_FN_ON : LDCC_CMD_FN_OFF);
+   SetSerialData(bufferCount++, loco);
+   SetSerialData(bufferCount++, fn);
+   SendSerial(bufferStart, bufferCount);
+}
+
+void SetLdccAccessory(int address, int state)
+{
+   int bufferStart = 0;
+   int bufferCount = bufferStart;
+   SetLdccMsgHeader(bufferCount);
+   SetSerialData(bufferCount++, state ? LDCC_CMD_SWITCH_CLOSED : LDCC_CMD_SWITCH_THROWN);
+   SetSerialData(bufferCount++, address);
+   SendSerial(bufferStart, bufferCount);
+}

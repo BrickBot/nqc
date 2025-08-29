@@ -1,0 +1,88 @@
+/** Visible Light Link (VLL) library for NQC
+ *  vll.nqh -- Copyright 2013 Michiel Tiller
+ * 
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details. 
+ *  see <http://www.gnu.org/licenses/>. 
+ *  
+ *  Each VLL command consists of:
+ *  vll_start, 3 checksum bits (vll_0 | vll_1), 7 data bits, and vll_stop
+ *  VLL output must be ON for at least 400mS (wait 40) before vll_start
+ */
+
+#define vll_init(v)  { OnFwd(v); Wait(40); }
+#define vll_start(v) { Off(v); Wait(2); }
+#define vll_stop(v)  { OnFor(v,2); Wait(6); OnFwd(v); Wait(12); }
+#define vll_0(v) { OnFor(v,4); Wait(2); }
+#define vll_1(v) { OnFor(v,2); Wait(4); }
+
+/*
+ * MicroScout direct (immediate) VLL commands
+ */
+#define MsInit(v)  {vll_init(v)} 
+#define MsOff(v)   { Off(v); } 
+#define MsFwd(v)   {vll_start(v) vll_1(v) vll_1(v) vll_1(v) \
+                   vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_stop(v)}
+#define MsRev(v)   {vll_start(v) vll_1(v) vll_1(v) vll_0(v) \
+                   vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_1(v) vll_stop(v)}
+#define MsStopMotors(v) {vll_start(v) vll_0(v) vll_1(v) vll_1(v) \
+                   vll_0(v) vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_1(v) vll_0(v) vll_stop(v)}
+#define MsBeep1(v) {vll_start(v) vll_0(v) vll_1(v) vll_0(v) \
+                   vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_0(v) vll_stop(v)}
+#define MsBeep2(v) {vll_start(v) vll_0(v) vll_0(v) vll_1(v) \
+                   vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_1(v) vll_stop(v)}
+#define MsBeep3(v) {vll_start(v) vll_0(v) vll_0(v) vll_0(v) \
+                   vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_1(v) vll_1(v) vll_0(v) vll_stop(v)}
+#define MsBeep4(v) {vll_start(v) vll_1(v) vll_1(v) vll_1(v) \
+                   vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_1(v) vll_1(v) vll_1(v) vll_stop(v)}
+#define MsBeep5(v) {vll_start(v) vll_1(v) vll_0(v) vll_1(v) \
+                   vll_0(v) vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_0(v) vll_0(v) vll_stop(v)}
+#define MsRunScript(v) {vll_start(v) vll_1(v) vll_0(v) vll_0(v) \
+                   vll_0(v) vll_1(v) vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_1(v) vll_stop(v)}
+#define MsDeleteScript(v) {vll_start(v) vll_0(v) vll_1(v) vll_1(v) \
+                   vll_0(v) vll_1(v) vll_0(v) vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_stop(v)}
+
+/*
+ * MicroScout VLL scripting commands
+ */
+#define MsScriptFwd05(v) {vll_start(v) vll_0(v) vll_1(v) vll_0(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_stop(v)}
+#define MsScriptFwd10(v) {vll_start(v) vll_0(v) vll_0(v) vll_1(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_0(v) vll_0(v) vll_1(v) vll_stop(v)}
+#define MsScriptFwd20(v) {vll_start(v) vll_0(v) vll_0(v) vll_0(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_stop(v)}
+#define MsScriptFwd50(v) {vll_start(v) vll_1(v) vll_1(v) vll_1(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_0(v) vll_1(v) vll_1(v) vll_stop(v)}
+#define MsScriptRev05(v) {vll_start(v) vll_1(v) vll_0(v) vll_1(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_1(v) vll_0(v) vll_0(v) vll_stop(v)}
+#define MsScriptRev10(v) {vll_start(v) vll_1(v) vll_0(v) vll_0(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_1(v) vll_0(v) vll_1(v) vll_stop(v)}
+#define MsScriptRev20(v) {vll_start(v) vll_0(v) vll_1(v) vll_1(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_1(v) vll_1(v) vll_0(v) vll_stop(v)}
+#define MsScriptRev50(v) {vll_start(v) vll_0(v) vll_1(v) vll_0(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_0(v) vll_1(v) vll_1(v) vll_1(v) vll_stop(v)}
+#define MsScriptBeep1(v) {vll_start(v) vll_0(v) vll_0(v) vll_0(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_1(v) vll_0(v) vll_0(v) vll_0(v) vll_stop(v)}
+#define MsScriptBeep2(v) {vll_start(v) vll_1(v) vll_1(v) vll_1(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_1(v) vll_0(v) vll_0(v) vll_1(v) vll_stop(v)}
+#define MsScriptBeep3(v) {vll_start(v) vll_1(v) vll_1(v) vll_0(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_1(v) vll_0(v) vll_1(v) vll_0(v) vll_stop(v)}
+#define MsScriptBeep4(v) {vll_start(v) vll_1(v) vll_0(v) vll_1(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_1(v) vll_0(v) vll_1(v) vll_1(v) vll_stop(v)}
+#define MsScriptBeep5(v) {vll_start(v) vll_0(v) vll_1(v) vll_1(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_1(v) vll_1(v) vll_0(v) vll_0(v) vll_stop(v)}
+#define MsScriptWaitLight(v) {vll_start(v) vll_0(v) vll_1(v) vll_0(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_1(v) vll_1(v) vll_0(v) vll_1(v) vll_stop(v)}
+#define MsScriptSeekLight(v) {vll_start(v) vll_0(v) vll_0(v) vll_1(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_1(v) vll_1(v) vll_1(v) vll_0(v) vll_stop(v)}
+#define MsScriptCode(v) {vll_start(v) vll_0(v) vll_0(v) vll_0(v)  \
+                   vll_0(v) vll_0(v) vll_1(v) vll_1(v) vll_1(v) vll_1(v) vll_1(v) vll_stop(v)}
+#define MsScriptKeepAlive(v) {vll_start(v) vll_1(v) vll_0(v) vll_1(v)  \
+                   vll_0(v) vll_1(v) vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_0(v) vll_stop(v)}

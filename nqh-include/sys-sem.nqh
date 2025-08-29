@@ -1,0 +1,41 @@
+/** Semaphore Macros for NQC
+ *  sys-sem.nqh
+ *
+ *  This file is part of the NQCIPC package and should not be 
+ *  distributed separately. See
+ *    http://www.geocities.com/ResearchTriangle/Station/2266/nqcipc/nqcipcdoc.html
+ *    https://web.archive.org/web/20091026230348/http://www.geocities.com/ResearchTriangle/Station/2266/nqcipc/nqcipcdoc.html
+ *  
+ *  for details.
+ *  
+ *  (c)1999 Brian Connors under terms of the MPL
+ *  contact: connorbd@yahoo.com
+ */
+
+// semaphores version
+#define SEMVER 2
+
+// notational convenience
+#define sem int
+
+// set/clear values
+#define SEM_STATE_CLEAR 0		//semaphore is clear
+#define SEM_STATE_SET 1			//semaphore is set
+
+
+// Semaphore Operations
+
+// SemClear -- sets a semaphore to 0
+#define SemClear(s) 	s = SEM_STATE_CLEAR;
+
+// SemInit -- initializes a semaphore (sets to 0)
+#define SemInit(s) 	SemClear(s)
+
+// SemRelease -- clears a semaphore and relinquishes control
+#define SemRelease(s)  SemClear(s)
+
+// Yes, SemInit(s) and SemRelease(s) are technically identical to SemClear(s),
+// but users don't need to know that.
+
+// SemAcquire -- waits for a semaphore to clear, then takes control
+#define SemAcquire(s) 	until (s == SEM_STATE_CLEAR); s = SEM_STATE_SET;

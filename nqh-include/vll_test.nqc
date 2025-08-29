@@ -1,0 +1,45 @@
+/*
+ *  vll_test.nqc -- Copyright 2013 Michiel Tiller
+ *  
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details. 
+ *  see <http://www.gnu.org/licenses/>. 
+ * 
+ */
+#include "vll.nqh"
+
+task main()
+{
+   MsInit(OUT_A);  // Lamp attached to Output A
+
+   //move motor forwards and backwards once
+   MsFwd(OUT_A);
+   Wait(20);
+   MsRev(OUT_A);
+   Wait(20);
+
+   //now produce all five beeps
+   MsBeep1(OUT_A);
+   Wait(150);
+   MsBeep2(OUT_A);
+   Wait(150);
+   MsBeep3(OUT_A);
+   Wait(150);
+   MsBeep4(OUT_A);
+   Wait(150);
+   MsBeep5(OUT_A);
+   Wait(150);
+
+   // Always turn off the lamp when done, to save batteries.
+   MsOff(OUT_A); 
+}
+
+
+

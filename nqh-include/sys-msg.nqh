@@ -1,0 +1,39 @@
+/** Intertask Messaging Macros for NQC
+ *  sys-msg.nqh
+ *
+ *  This file is part of the NQCIPC package and should not be 
+ *  distributed separately. See
+ *    http://www.geocities.com/ResearchTriangle/Station/2266/nqcipc/nqcipcdoc.html
+ *    https://web.archive.org/web/20091026230348/http://www.geocities.com/ResearchTriangle/Station/2266/nqcipc/nqcipcdoc.html
+ *  
+ *  for details.
+ *  
+ *  (c)1999 Brian Connors under terms of the MPL
+ *  contact: connorbd@yahoo.com
+ */
+
+// messages version
+#define MSGVER 2
+
+// notational convenience
+#define msg int
+
+
+// Message Operations
+
+// MsgClear -- clears a specified message buffer b
+#define MsgClear(b) 	b = 0;
+
+// MsgSend -- places a value m in a specified message buffer b
+#define MsgSend(b,m)	b = m;
+
+// MsgAwait -- watches message buffer b, then blocks until 
+//	 an expected value m appears
+#define MsgAwait(b,m) 	until (b == m);
+
+// MsgRead -- takes the contents of message buffer b and copies 
+//	 to specified variable v
+#define MsgRead(b,v)	v = b;
+
+// MsgBiff -- is there a message in the first place?
+#define MsgBiff(b)		b > 0

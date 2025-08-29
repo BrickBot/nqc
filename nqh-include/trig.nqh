@@ -1,0 +1,78 @@
+/** Trigonometry library for NQC
+ *  Implements a trig table.
+ *  Returned values are times 100.
+ *  Author: Ryan Bahm
+ *  Original Website - https://github.com/rdbahm/RCX-Omni
+ *  Archived Website - https://web.archive.org/web/20210112170202/https://github.com/rdbahm/RCX-Omni
+ *  License: Unlicense License - https://unlicense.org/
+ */
+
+// Given an angle outside 0-360, moves it back into range.
+void UnwrapAngle(int &angle)
+{
+   while(angle >= 360)
+   {
+      angle=angle-360;
+   }
+   while(angle < 0)
+   {
+      angle=angle+360;
+   }
+}
+
+// Simple cosine table.
+void Cosine(int &returnValue, int angle)
+{
+   // I could do this more simply but where's the fun in that?
+
+   UnwrapAngle(angle);  // Brings angle to 0-360.
+
+   if (angle <= 30)
+   {
+      returnValue=(-2/60)*(angle-30)+7;
+   }
+   else if (angle <= 60)
+   {
+      returnValue=(-5/60)*(angle-60)+6;
+   }
+   else if (angle <= 90)
+   {
+      returnValue=(-7/60)*(angle-90)+(7/2);
+   }
+   else if (angle <= 120)
+   {
+      returnValue=(-7/60)*(angle-120)+0;
+   }
+   else if (angle <= 150)
+   {
+      returnValue=(-5/60)*(angle-150)-(7/2);
+   }
+   else if (angle <= 180)
+   {
+      returnValue=(-2/60)*(angle-180)-6;
+   }
+   else if (angle <= 210)
+   {
+      returnValue=(2/60)*(angle-210)-7;
+   }
+   else if (angle <= 240)
+   {
+      returnValue=(5/60)*(angle-240)-6;
+   }
+   else if (angle <= 270)
+   {
+      returnValue=(7/60)*(angle-270)-(7/2);
+   }
+   else if (angle <= 300)
+   {
+      returnValue=(7/60)*(angle-300)+0;
+   }
+   else if (angle <= 330)
+   {
+      returnValue=(5/60)*(angle-330)+(7/2);
+   }
+   else if (angle <= 360)
+   {
+      returnValue=(2/60)*angle+6;
+   }
+}

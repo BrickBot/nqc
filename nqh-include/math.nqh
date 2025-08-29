@@ -1,0 +1,41 @@
+/** Compare library for NQC 
+ *  Implements some basic functions for use in NQC programs.
+ *  Author: Ryan Bahm
+ *  Original Filename - Compare.nqh
+ *  Original Website  - https://github.com/rdbahm/RCX-Omni
+ *  Archived Website  - https://web.archive.org/web/20210112170202/https://github.com/rdbahm/RCX-Omni
+ *  License: Unlicense License - https://unlicense.org/
+ */
+
+// Returns the smaller of two provided values.
+void Min(int &returnValue, int x, int y)
+{
+   if(x > y)
+   {
+      returnValue = y;
+   }
+   else
+   {
+      returnValue = x;
+   }
+}
+
+// Returns the larger of two provided values.
+void Max(int &returnValue, int x, int y)
+{
+   if(x < y)
+   {
+      returnValue = y;
+   }
+   else
+   {
+      returnValue = x;
+   }
+}
+
+// If input is outside min/max, return min or max as appropriate.
+void Range(int &returnValue, int input, int min, int max)
+{
+   Min(returnValue, input, max);
+   Max(returnValue, input, min);
+}
