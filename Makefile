@@ -437,7 +437,7 @@ install: info exec
 	-mkdir -p $(DESTDIR)$(man1dir)
 	cp nqc-man.man $(DESTDIR)$(man1dir)/$(PACKAGE).$(manext)
 	-mkdir -p $(DESTDIR)$(includedir)/$(PACKAGE)
-	cp nqh-includes/*.nqh $(DESTDIR)$(includedir)/$(PACKAGE)
+	cp nqh-include/*.nqh $(DESTDIR)$(includedir)/$(PACKAGE)
 
 
 #
