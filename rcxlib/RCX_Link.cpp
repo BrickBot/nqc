@@ -18,7 +18,8 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <limits.h>
+
+#include <string.h>
 
 #include "RCX_Link.h"
 #include "RCX_Cmd.h"
@@ -97,7 +98,7 @@ RCX_Result RCX_Link::Open(RCX_TargetType target, const char *portName, ULong opt
     {
         ifstream userCfgFile;
         char *homePath = getenv("HOME");
-        char userConfPath[PATH_MAX];
+        char userConfPath[strlen(homePath) + strlen(kDeviceUserConfFile) + 1];
         strcpy(userConfPath, homePath);
         strcat(userConfPath, kDeviceUserConfFile);
 

@@ -37,8 +37,6 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#include <limits.h>
-
 #include <cstdio>
 
 class RCX_TcpPipe_linux : public RCX_Pipe
@@ -80,7 +78,7 @@ RCX_Pipe* RCX_NewTcpPipe()
 
 RCX_Result RCX_TcpPipe_linux::Open(const char *name, int mode)
 {
-	char name_buf[PATH_MAX];
+	char name_buf[strlen(name) + 1];
 	int port = 0;
 	struct hostent *h;
 	struct sockaddr_in localAddr, ttyAddr;
