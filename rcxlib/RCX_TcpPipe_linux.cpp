@@ -44,8 +44,8 @@
 class RCX_TcpPipe_linux : public RCX_Pipe
 {
 public:
-	        RCX_TcpPipe_linux() : fd(-1) {}
-        virtual	~RCX_TcpPipe_linux() { Close(); }
+	RCX_TcpPipe_linux() : fd(-1) {}
+	virtual	~RCX_TcpPipe_linux() { Close(); }
 
 	virtual RCX_Result	Open(const char *name, int mode);
 	virtual void		Close();
@@ -55,7 +55,7 @@ public:
 
 	virtual long		Read(void *ptr, long count, long timeout_ms);
 	virtual long		Write(const void *ptr, long count);
-        virtual bool            IsUSB() const { return true; };
+	virtual bool		IsUSB() const { return true; };
 
 private:
 	void		SetTimeout(long timeout_ms);
