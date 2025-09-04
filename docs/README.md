@@ -1,4 +1,4 @@
-NQC  ![NQC CI](https://github.com/BrickBot/nqc/workflows/NQC%20CI/badge.svg)
+NQC
 ===
 Not Quite C is a simple language with a C-like syntax that can be used to program
 LEGO’s RCX programmable brick (from the MindStorms set) that is running
@@ -104,7 +104,7 @@ set RCX_PORT=usb
 
 &nbsp;
 
----
+- - -
 
 References to Original NQC Project Content:
 * Original [ReadMe](./_original/readme.txt).
