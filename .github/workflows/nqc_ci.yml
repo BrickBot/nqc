@@ -12,7 +12,7 @@ on:
     # branches: [ master ]
 
 env:
-  UBUNTU_BUILD_DEPENDS:        make flex bison binutils gcc g++ emscripten  stow
+  UBUNTU_BUILD_DEPENDS:        make flex bison binutils gcc g++ emscripten pandoc  stow
   UBUNTU_CROSS_BUILD_DEPENDS:  binutils-h8300-hms
 
   CYGWIN_BUILD_DEPENDS:        make flex bison binutils gcc-core gcc-g++  tree stow

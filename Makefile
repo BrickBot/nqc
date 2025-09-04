@@ -63,7 +63,7 @@ H8300_AS ?= $(H8300_TOOLPREFIX)as
 H8300_OBJDUMP ?= $(H8300_TOOLPREFIX)objdump
 
 H8300_FOUND := $(shell $(H8300_AS) --version > /dev/null 2>&1 && echo found)
-ifneq ($(H8300_FOUND),found)
+ifneq ($(H8300_FOUND), found)
   $(warning h8300-hitachi-coff binutils toolchain not found, using pre-built files)
 endif
 
@@ -73,9 +73,19 @@ endif
 EMSCRIPTEN_MAKE ?= emmake
 # NOTE: "emmake --version" does not work as a test and returns a non-zero error code
 EMSCRIPTEN_FOUND := $(shell which $(EMSCRIPTEN_MAKE) > /dev/null 2>&1 && echo found)
-ifneq ($(EMSCRIPTEN_FOUND),found)
+ifneq ($(EMSCRIPTEN_FOUND), found)
   $(warning Emscripten "$(EMSCRIPTEN_MAKE)" toolchain not found, skipping Emscripten build)
 endif
+
+#
+# Toolchain for pandoc
+#
+PANDOC ?= pandoc
+PANDOC_FOUND := $(shell $(PANDOC) --version > /dev/null 2>&1 && echo found)
+ifneq ($(PANDOC_FOUND), found)
+  $(warning pandoc not found, skipping documentation build)
+endif
+
 
 # installation defaults
 
@@ -94,6 +104,7 @@ exec_prefix ?= $(prefix)
 bindir      ?= $(exec_prefix)/bin
 includedir  ?= $(prefix)/include
 datarootdir ?= $(prefix)/share
+docdir      ?= $(datarootdir)/doc/$(PACKAGE)
 mandir      ?= $(datarootdir)/man
 man1dir     ?= $(mandir)/man1
 manext      ?= 1
@@ -119,6 +130,7 @@ H8300_SUBDIR_NAME ?= h8300
 UTILS_SUBDIR_NAME ?= utils
 EXEC_SUBDIR_NAME ?= bin
 GEN_SUBDIR_NAME ?= generated
+DOCS_SUBDIR_NAME ?= docs
 
 BUILD_DIR ?= build
 OBJ_DIR ?= $(BUILD_DIR)/$(OBJ_SUBDIR_NAME)
@@ -126,6 +138,7 @@ H8300_DIR ?= $(BUILD_DIR)/$(H8300_SUBDIR_NAME)
 EXEC_DIR ?= $(BUILD_DIR)/$(EXEC_SUBDIR_NAME)
 UTILS_DIR ?= $(BUILD_DIR)/$(UTILS_SUBDIR_NAME)
 GEN_DIR ?= $(BUILD_DIR)/$(GEN_SUBDIR_NAME)
+DOCS_DIR ?= $(BUILD_DIR)/$(DOCS_SUBDIR_NAME)
 
 
 # Default to NO USB tower support and NO TCP support.
@@ -258,7 +271,7 @@ NQCOBJS = nqc SRecord DirList CmdLine
 NQCOBJ = $(addprefix nqc/, $(addsuffix .o, $(NQCOBJS)))
 
 
-all: info exec emscripten-emmake default-check-fastdl
+all: info exec emscripten-emmake default-check-fastdl maybe-docs-user
 
 exec: info $(EXEC_DIR)/$(PACKAGE)$(EXEC_EXT)
 
@@ -423,22 +436,55 @@ default-snapshot: default-snapshot-fastdl $(DEF_FILES)
 
 
 #
+# Generate user doc content
+#
+rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
+HTML_DOCS=$(patsubst %.md,$(BUILD_DIR)/%.html,$(call rwildcard,$(DOCS_SUBDIR_NAME)/,*.md))
+
+ifeq ($(PANDOC_FOUND), found)
+maybe-docs-user:   docs-user
+maybe-install-doc: install-doc
+else
+maybe-docs-user:
+maybe-install-doc:
+endif
+
+$(BUILD_DIR)/%.html: %.md
+	-$(MKDIR) $(dir $@)
+	$(PANDOC) --from=gfm --to=html --lua-filter=links-md-to-html.lua --output=$@ $<
+
+docs-user-markdown: docs-user-content $(HTML_DOCS)
+
+docs-user-content:
+	rsync -av --exclude='*.md' docs/ "$(DOCS_DIR)"
+
+docs-user: docs-user-markdown
+
+#
 # Generate API docs. Not part of a port.
 #
-docs:
+docs-api:
 	@$(DOXYGEN) Doxyfile
+
+#
+# Generate docs
+#
+docs: docs-user docs-api
 
 #
 # Installation of binary and man page
 #
-install: info exec
-	-mkdir -p $(DESTDIR)$(bindir)
-	cp -r $(EXEC_DIR)/* $(DESTDIR)$(bindir)
-	-mkdir -p $(DESTDIR)$(man1dir)
-	cp nqc-man.man $(DESTDIR)$(man1dir)/$(PACKAGE).$(manext)
-	-mkdir -p $(DESTDIR)$(includedir)/$(PACKAGE)
-	cp nqh-include/*.nqh $(DESTDIR)$(includedir)/$(PACKAGE)
+install: info exec maybe-install-doc
+	-$(MKDIR) $(DESTDIR)$(bindir)
+	$(CP) -r $(EXEC_DIR)/* $(DESTDIR)$(bindir)
+	-$(MKDIR) $(DESTDIR)$(man1dir)
+	$(CP) nqc-man.man $(DESTDIR)$(man1dir)/$(PACKAGE).$(manext)
+	-$(MKDIR) $(DESTDIR)$(includedir)/$(PACKAGE)
+	$(CP) nqh-include/*.nqh $(DESTDIR)$(includedir)/$(PACKAGE)
 
+install-doc: docs-user
+	-$(MKDIR) $(DESTDIR)$(docdir)
+	$(CP) -r $(DOCS_DIR)/* $(DESTDIR)$(docdir)
 
 #
 # Print some info about the environment
@@ -474,6 +520,7 @@ info:
 	@echo CFLAGS=$(CFLAGS)
 	@echo CFLAGS_EXEC=$(CFLAGS_EXEC)
 	@echo OBJ=$(OBJ)
+	@echo HTML_DOCS=$(HTML_DOCS)
 	@echo H8300_TOOLPREFIX=$(H8300_TOOLPREFIX)
 	@echo H8300_LD=$(H8300_LD)
 	@echo H8300_AS=$(H8300_AS)
