@@ -7,7 +7,7 @@
  *  License: Unlicense License - https://unlicense.org/
  */
 
-// Given an angle outside 0-360, moves it back into range.
+// Given an angle outside 0-360 degrees, move it back into range.
 void UnwrapAngle(int &angle)
 {
    while(angle >= 360)

@@ -1,5 +1,5 @@
 /** Compare library for NQC 
- *  Implements some basic functions for use in NQC programs.
+ *  Implements some basic math compare functions for use in NQC programs.
  *  Author: Ryan Bahm
  *  Original Filename - Compare.nqh
  *  Original Website  - https://github.com/rdbahm/RCX-Omni
