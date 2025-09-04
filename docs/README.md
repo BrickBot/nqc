@@ -38,6 +38,11 @@ Resources & Information
   + [NQC User Manual](NQC_User_Manual.pdf)
   + [NQC Programmer’s Guide](NQC_Programmers_Guide.pdf)
   + Libraries for NQC
+    - LEGO Ecosystem  (ldcc.nqh, vll.nqh)
+      * [LEGO Digital Command Control (LDCC)](./nqh-include/ldcc_doc.md)
+      * [Visual Light Link (VLL)](./nqh-include/vll_doc.md)
+    - [Mathematics](./nqh-include/math_doc.md)  (math-compare.nqh, math-trig.nqh)
+    - [System—IPC](./nqh-include/nqcipc_doc.md)  (NQCIPC package: sys-msg.nqh, sys-sem.nqh)
   + [NQC and the Scout](Scout.md)
 * NQC Coding Examples
   + [NQC Tutorial](./tutorial/)
