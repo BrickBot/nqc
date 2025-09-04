@@ -39,8 +39,12 @@ void SetLdccPower(int state)
 {
    int bufferStart = 0;
    int bufferCount = bufferStart;
+   int powerState = LDCC_CMD_POWER_OFF;
+   if (state) {
+      powerState = LDCC_CMD_POWER_ON;
+   }
    SetLdccMsgHeader(bufferCount);
-   SetSerialData(bufferCount++, state ? LDCC_CMD_POWER_ON : LDCC_CMD_POWER_OFF);
+   SetSerialData(bufferCount++, powerState);
    SendSerial(bufferStart, bufferCount);
 }
 
@@ -69,8 +73,12 @@ void SetLdccFunction(int loco, int fn, int state)
 {
    int bufferStart = 0;
    int bufferCount = bufferStart;
+   int functionState = LDCC_CMD_FN_OFF;
+   if (state) {
+      functionState = LDCC_CMD_FN_ON;
+   }
    SetLdccMsgHeader(bufferCount);
-   SetSerialData(bufferCount++, state ? LDCC_CMD_FN_ON : LDCC_CMD_FN_OFF);
+   SetSerialData(bufferCount++, functionState);
    SetSerialData(bufferCount++, loco);
    SetSerialData(bufferCount++, fn);
    SendSerial(bufferStart, bufferCount);
@@ -80,8 +88,12 @@ void SetLdccAccessory(int address, int state)
 {
    int bufferStart = 0;
    int bufferCount = bufferStart;
+   int accessoryState = LDCC_CMD_SWITCH_THROWN;
+   if (state) {
+      accessoryState = LDCC_CMD_SWITCH_CLOSED;
+   }
    SetLdccMsgHeader(bufferCount);
-   SetSerialData(bufferCount++, state ? LDCC_CMD_SWITCH_CLOSED : LDCC_CMD_SWITCH_THROWN);
+   SetSerialData(bufferCount++, accessoryState);
    SetSerialData(bufferCount++, address);
    SendSerial(bufferStart, bufferCount);
 }
