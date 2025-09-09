@@ -31,8 +31,6 @@ jobs:
         exclude:
           - os:            ubuntu-latest
             platform:      x86
-          - os:            windows-latest
-            with_cross:    true
 
     steps:
     - name: Get the latest from version control
