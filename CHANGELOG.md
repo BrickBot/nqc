@@ -1,6 +1,28 @@
 NQC Release Notes
 =================
 
+version 4.1.0 - September 8, 2025
+-------------
+
+Matthew Sheets
+* Remove use of PATH_MAX (from limits.h) for GNU Hurd compatability
+* Incorporate the nqc-libs project into the main NQC project here
+   + NQC include files from other projects (\*.nqh files) outside the main NQC project
+   + Reference information, documentation, and learning
+* Establish a project website (using GitHub Pages) under the “docs” folder, using content from both the original project website and the nqc-libs project
+  + Documentation
+    - FAQs
+    - Programmer’s Guide
+    - User Manual
+    - NQH Includes
+  + Learning
+    - Examples
+    - Guidebook
+    - Tutorial
+* Package the “docs” folder for installing to ${docdir} upon “make install” or “make install-doc”
+* Enable configurable project naming
+
+
 version 4.0.3 – August 12, 2025
 -------------
 
