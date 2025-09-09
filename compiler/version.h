@@ -15,8 +15,8 @@
 #define __version_h
 
 #define MAJOR_VERSION	4
-#define MINOR_VERSION	0
-#define PATCH_VERSION 0
+#define MINOR_VERSION	1
+#define PATCH_VERSION	0
 
 // 0=alpha, 2=release
 #define RELEASE_STAGE	"r"
