@@ -7,7 +7,7 @@ Most Linux distributions ship with Linux kernels which include support for the L
 
 To check if your Linux has support for the LEGO USB Tower open a terminal and show the kernel ring buffer using this command:
 
-```
+``` shell
 sudo dmesg --follow
 ```
 
@@ -44,7 +44,7 @@ In order to build NQC you need
 
 On Debian based distributions you can install those using:
 
-```
+``` shell
 sudo apt update
 sudo apt install git build-essential yacc flex emscripten
 ```
@@ -55,7 +55,7 @@ Goto https://github.com/BrickBot/nqc to dowload the ZIP archive (`<>` Code -> Do
 
 Or use `git`:
 
-```
+``` shell
 git clone https://github.com/BrickBot/nqc.git
 ```
 
@@ -63,12 +63,12 @@ git clone https://github.com/BrickBot/nqc.git
 
 Change into the NQC source directory
 
-```
+``` shell
 cd nqc
 ```
 and build it:
 
-```
+``` shell
 make
 ```
 
@@ -76,12 +76,12 @@ make
 
 Change into the NQC source directory (if not already there):
 
-```
+``` shell
 cd nqc
 ```
 Upload the latest firmware:
 
-```
+``` shell
 ./bin/nqc  -Susb -firmware firmware/firm0332.lgo
 ```
 
@@ -89,13 +89,13 @@ Upload the latest firmware:
 
 Change into the NQC source directory (if not already there):
 
-```
+``` shell
 cd nqc
 ```
 
 Upload the test program:
 
-```
+``` shell
 ./bin/nqc -Susb -d test.nqc
 ```
 
