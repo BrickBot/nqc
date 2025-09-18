@@ -69,7 +69,7 @@ should also be set for this mode, and firmware must already be downloaded.
 
 Compile and download the test file using the following command line:
 
-```
+``` shell
 nqc -d test.nqc
 ```
 
@@ -86,17 +86,17 @@ Linux.
 Here are some examples:
 
 USB tower (where supported)
-```
+``` shell
 nqc -Susb -d test.nqc
 ```
 
 Win32 COM2 port:
-```
+``` shell
 set RCX_PORT=COM2
 ```
 
 Win32 USB port:
-```
+``` shell
 set RCX_PORT=usb
 ```
 
