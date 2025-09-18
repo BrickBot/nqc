@@ -7,6 +7,9 @@
 *.cpp text
 *.h text
 *.l text
+*.md text
+*.html text
+*.yml text
 
 # Text, but please do not touch.
 *.srec -text
