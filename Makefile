@@ -438,6 +438,9 @@ default-snapshot: default-snapshot-fastdl $(DEF_FILES)
 #
 # Generate user doc content
 #
+
+# Makefile recursive wildcard:
+# * https://news.ycombinator.com/item?id=23270235
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 HTML_DOCS=$(patsubst %.md,$(BUILD_DIR)/%.html,$(call rwildcard,$(DOCS_SUBDIR_NAME)/,*.md))
 
@@ -449,6 +452,8 @@ maybe-docs-user:
 maybe-install-doc:
 endif
 
+# Update *.md links to *.html
+# * https://stackoverflow.com/a/49396058
 $(BUILD_DIR)/%.html: %.md
 	-$(MKDIR) $(dir $@)
 	$(PANDOC) --from=gfm --to=html --lua-filter=links-md-to-html.lua --output=$@ $<
