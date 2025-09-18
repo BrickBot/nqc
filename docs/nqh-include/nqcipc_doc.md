@@ -26,15 +26,15 @@ This is a simple package to do a simple job. I don't guarantee that it's good fo
 The NQCIPC package consists of the following files:
 
 *   This document (nqcipcdoc.html)
-*   [rcxsem.nqh](rcxsem.txt) -- the semaphore macros
-*   [rcxmsg.nqh](rcxmsg.txt) -- the internal messaging macros
-*   [README](readme.txt) -- A readme file describing the current release in detail
+*   rcxsem.nqh -- the semaphore macros
+*   rcxmsg.nqh -- the internal messaging macros
+*   [README](nqcipc_readme.txt) -- A readme file describing the current release in detail
 
 The home page for the package is at [2266 Research Triangle](http://www.geocities.com/ResearchTriangle/Station/2266/nqcipc/nqcipcdoc.html), my personal webpage. It's at GeoCities, so prepare to be bothered a bit.
 
 #### 2.1 System Requirements
 
-NQCIPC requires the use of David Baum's [NQC compiler](http://www.enteract.com/~dbaum/lego/nqc) (version 2.0 or later), and can be used with Lego's [MindStorms](http://www.legomindstorms.com) and Cybermaster robotics products. It is intended for use with the standard Lego firmware, though I wouldn't mind seeing someone port the API to LegOS.
+NQCIPC requires the use of David Baum's [NQC compiler](http://www.enteract.com/~dbaum/lego/nqc) (version 2.0 or later), and can be used with Lego's [MindStorms](http://www.legomindstorms.com/) and Cybermaster robotics products. It is intended for use with the standard Lego firmware, though I wouldn't mind seeing someone port the API to LegOS.
 
 Note that NQC does not support Lego's standalone MindStorms Robotics Discovery Kit or Star Wars Droid Developer kit; though it is theoretically possible for a computer to communicate with the former, both are marketed as self-contained toys at present and details of their internal systems ("Scout" and "MicroScout") remain unpublished.
 
@@ -191,7 +191,3 @@ Website:
 - - -
 
 Click [here](http://www.geocities.com/ResearchTriangle/Station/2266) to go to my (Brian's) homepage, 2266 Research Triangle.
-
-![setstats](http://visit.geocities.yahoo.com/visit.gif?us1151763774)
-
-![1](http://geo.yahoo.com/serv?s=76001067&t=1151763774&f=us-w85)
