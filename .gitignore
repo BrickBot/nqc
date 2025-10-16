@@ -1,6 +1,9 @@
 # OS X Noise
 .DS_Store
 
+# Windows Noise
+[Tt]humbs.db
+
 # IDE noise
 .idea/*
 
