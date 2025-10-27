@@ -1,6 +1,15 @@
 /* bulldozer.nqc		2004-11-01
  *
- * Paul Mucur and James Sudbury
+ * Original Authors - Paul Mucur and James Sudbury
+ * Original Site -    https://github.com/mudge/lego_bulldozer/
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * Copyright (c) 2004 Paul Mucur and James Sudbury.
+ * All rights reserved.
+ *
  * CMPS2D21 - Operating Systems Kernels and Architecture
  */
  

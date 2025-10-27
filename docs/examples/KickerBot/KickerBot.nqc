@@ -1,8 +1,11 @@
 /*
     Made by Bryce Guinta
-	
-	Original Project Website — https://github.com/manitourobotics/nqc-programs
 
+    Original Project Website: https://github.com/manitourobotics/nqc-programs
+
+    License: MIT
+        -c.f. https://github.com/manitourobotics/nqc-programs/issues/1
+	
     The program's intent is:
         -to spin left when sensor 1 and not 3 are pressed
         -to spin right when sensor 3 and not 1 are pressed
@@ -14,7 +17,7 @@
         - A -- Right motor
         - B -- Kicker
         - C -- Left motor
-*/
+ */
 
 #define KICK_TIME 10 // 1/100 of a second at 7.7 power tested
 

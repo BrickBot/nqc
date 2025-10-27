@@ -2,7 +2,8 @@ KickerBot
 =========
 Used in a [Manitou FIRST Robotics](http://manitourobotics.com/) summer camp.
 
-The associated code may be found under the [repository site](https://github.com/BrickBot/nqc/tree/master/docs/examples/KickerBot).
+The associated MIT-licensed code ([see here for license declaration](https://github.com/manitourobotics/nqc-programs/issues/1))
+may be found under the [repository site](https://github.com/BrickBot/nqc/tree/master/docs/examples/KickerBot).
 
 
 Robot Design and Setup

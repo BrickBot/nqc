@@ -1,9 +1,11 @@
-/************************************************/
-/*Name: Ryan Bahm                               */
-/*Robot: Omnidirectional 3-wheeled robot        */
-/*Filename: RCX-Omni.nqc                        */
-/*Date: 3/13/2014                               */
-/************************************************/
+/*****************************************************/
+/* Name: Ryan Bahm                                   */
+/* Robot: Omnidirectional 3-wheeled robot            */
+/* Filename: RCX-Omni.nqc                            */
+/* Date: 3/13/2014                                   */
+/* License: Unlicense                                */
+/* Original Site: https://github.com/rdbahm/RCX-Omni */
+/*****************************************************/
 
 #include "Compare.nqh"
 #include "Trig.nqh"

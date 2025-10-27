@@ -28,4 +28,4 @@ Images
 
 [Original Website](https://github.com/rdbahm/RCX-Omni).
 * For CSCI 172 at Western Washington University in Spring quarter of 2010
-* Written 3-10-2010 and Released to Public Domain 3-13-2014
+* Written 3-10-2010 and Released to Public Domain 3-13-2014 under the Unlicense
