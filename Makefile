@@ -461,7 +461,7 @@ $(BUILD_DIR)/%.html: %.md
 docs-user-markdown: docs-user-content $(HTML_DOCS)
 
 docs-user-content:
-	rsync -av --exclude='*.md' docs/ "$(DOCS_DIR)"
+	rsync -av --exclude='*.md' --exclude='_original' docs/ "$(DOCS_DIR)"
 
 docs-user: docs-user-markdown
 
