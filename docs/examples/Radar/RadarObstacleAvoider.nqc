@@ -1,24 +1,26 @@
-//sensor1.nqc
-//Jack Foust
-//foustja@gmail.com
-//based on a program by Mark Overmars
-//4.20.16
-
-//This nqc file is writtten for RCX 2.0 (use the -Trcx2 option or it won't
-//compile). It uses a variable argument for the note in the PlayNote()
-//function, which is not allowed by the RCX 1.0 firmware. It has been tested
-//with nqc version 3.1 r6 under Ubuntu Linux version 14.04 (Trusty Tahr).
-
-//The program moves the brick forward, while sending infrared messages that
-//bounce back and are detected by the light sensor. When the light sensor
-//detects a sufficient change in light (effectively reads the message), it
-//reverses, turns and then moves forward while playing an 8 note melody composed
-//randomly from the ACDEG pentatonic scale.
-
-//The program is based on one by Mark Overmars in his nqc guide "Programming
-//Lego Robots Using NQC," which can found at:
-
-//bricxcc.sourceforge.net/nqc/doc/NQC_Tutorial.pdf
+/* RadarObstacleAvoider.nqc
+ * Jack Foust
+ * foustja@gmail.com
+ * https://github.com/foustja/nqc
+ * based on a program by Mark Overmars
+ * 4.20.16
+ *
+ * This nqc file is writtten for RCX 2.0 (use the -Trcx2 option or it won't
+ * compile). It uses a variable argument for the note in the PlayNote()
+ * function, which is not allowed by the RCX 1.0 firmware. It has been tested
+ * with nqc version 3.1 r6 under Ubuntu Linux version 14.04 (Trusty Tahr).
+ *
+ * The program moves the brick forward, while sending infrared messages that
+ * bounce back and are detected by the light sensor. When the light sensor
+ * detects a sufficient change in light (effectively reads the message), it
+ * reverses, turns and then moves forward while playing an 8 note melody composed
+ * randomly from the ACDEG pentatonic scale.
+ *
+ * The program is based on one by Mark Overmars in his nqc guide "Programming
+ * Lego Robots Using NQC," which can found at:
+ *
+ * https://bricxcc.sourceforge.net/nqc/doc/NQC_Tutorial.pdf
+ */
 
 #define TURN_TIME 150
 #define BACKUP_TIME 100

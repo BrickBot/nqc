@@ -1,3 +1,9 @@
+/* Radar Gear Shifter
+ *
+ * Original site:
+ *  - https://github.com/rmikio/rcx1/blob/master/resources/radar2.nqc
+ */
+
 #define Bumper SENSOR_1
 #define RadarIn SENSOR_2
 #define DriveM  OUT_C
