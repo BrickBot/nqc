@@ -7,7 +7,12 @@ project website [here](https://github.com/BrickBot/nqc/releases/tag/v3.1-r6).
 The `nqc-win-3.1-r6.zip` contains the `nqc.exe` needed to compile and upload
 your programs and RCX firmware.
 
-This is the note to Windows Users from the [original README](./readme.txt):
+For newer versions of NQC, a
+[build for Cygwin](https://cygwin.com/packages/summary/nqc.html)
+is available in the Cygwin package repository.  If using the Cygwin build,
+it would be advisable to also review the [guide for Linux](./PLATFORM-Linux.md).
+
+Below is the note to Windows Users from the [original README](./_original/readme.txt):
 
 NQC is a command line based tool - normally you run it by typing an
 appropriate command into an MS-DOS window.  There is no GUI for it and
@@ -32,4 +37,3 @@ If any of the above seem either too confusing or too tedious, then you
 may want to try the BricxCC which provides a familiar Windows style GUI on top
 of the standard NQC compiler.  You can download BricxCC
 [here](http://bricxcc.sourceforge.net/).
-

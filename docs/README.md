@@ -61,7 +61,11 @@ See [NQC on Windows](#nqc-on-windows) or [NQC on Linux](#nqc-on-linux) for how
 to download the appropriate compiler (`nqc` or `nqc.exe`) and put it where your
 shell can find it as a command.
 
-On Debian-based systems, check out the `nqc` package (`sudo apt install nqc`)!
+On Debian-based systems, check out the `nqc` package
+([current Buildd status](https://buildd.debian.org/status/package.php?p=nqc))!
+``` shell
+sudo apt install nqc
+```
 
 The IR tower should be connected to your modem port (Mac/Linux) or COM1
 (Windows). The IR tower should be set for "near" mode (small triangle). The RCX
