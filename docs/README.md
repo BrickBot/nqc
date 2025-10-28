@@ -111,6 +111,7 @@ set RCX_PORT=usb
 - - -
 
 References to Original NQC Project Content:
-* Original [ReadMe](./_original/readme.txt).
+* Original [ReadMe](./_original/readme.txt)
+* Original [ReadMe for MacOS X (RTF format)](./_original/readme_macosx.rtf)
 * Original [FAQ](./_original/faq.html)
 * Original [NQC Web Site](http://bricxcc.sourceforge.net/nqc)

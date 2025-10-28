@@ -94,3 +94,9 @@ Writing Your Own Programs
 NQC compiles and downloads programs, but to write them you need to use a text editor.  There are many choices for text editors.  emacs and vi are two popular editors that run within shell windows.  If you have installed the Apple developer tools, then you can use Project Builder to write your NQC programs.  BBEdit is a popular classic Mac program for text editing.  Any program that can save plain text files will do.
 
 You can name your NQC programs however you want, but the convention is to name them ending in ".nqc".  Once you save your NQC program, use a shell window to type the appropriate NQC command (`nqc -d xxx` to download program xxx).
+
+&nbsp;
+
+- - -
+
+Content based on the original [ReadMe for MacOS X (RTF format)](./_original/readme_macosx.rtf).
