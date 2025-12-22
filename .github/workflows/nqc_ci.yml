@@ -42,7 +42,7 @@ jobs:
 
     - name: Setup Cygwin build environment
       if:   runner.os == 'Windows'
-      uses: cygwin/cygwin-install-action@v5
+      uses: cygwin/cygwin-install-action@v6
       with:
         platform: ${{ matrix.platform }}
         packages: ${{ env.CYGWIN_BUILD_DEPENDS }} $(if ${{ matrix.with_cross }} ; then echo "$CYGWIN_CROSS_BUILD_DEPENDS"; fi)
