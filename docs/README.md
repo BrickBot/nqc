@@ -21,7 +21,7 @@ This BrickBot/nqc repo continues the 3.1r6 codebase as found under the
 full list of all updates since that NQC 3.1r6 release, please refer to
 this project’s [Releases page](https://github.com/BrickBot/nqc/releases).
 
-For bug reports about _this_ fork of NQC, please
+For bug reports about this continuation of NQC, please
 [file a GitHub Issue](https://github.com/BrickBot/nqc/issues) for this project.
 
 
@@ -84,7 +84,7 @@ pressed, then it turns off the motor and plays a sound.
 If you are using a USB tower or a different serial port you will need to
 specify the port either by adding a `-Sx` option (where `x` is the name of the
 port) to the command line or by setting the `RCX_PORT` environment variable.
-Refer to [Installation on Linux](#installation-on-linux) for using USB tower on
+Refer to [Installation on Linux](PLATFORM-Linux.md) for using USB tower on
 Linux.
 
 Here are some examples:
